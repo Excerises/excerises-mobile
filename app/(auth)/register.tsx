@@ -23,6 +23,10 @@ export default function Page() {
   const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
   const themeColor = useThemeColor();
 
+  function handleSubmit() {
+    alert(`Halo ${name}`);
+  }
+
   return (
     <AuthForm
       title="Create Account"
@@ -34,6 +38,7 @@ export default function Page() {
           value={name}
           onChangeText={(v) => setName(v)}
         />
+        <AuthInput placeholder="Username" />
         <View style={{ gap: 10, display: "flex" }}>
           <AuthInput
             placeholder="Birth Date"
@@ -94,7 +99,11 @@ export default function Page() {
           isPassword
         />
       </View>
-      <UIButton style={styles.button} label="Register"></UIButton>
+      <UIButton
+        style={styles.button}
+        onPress={handleSubmit}
+        label="Register"
+      ></UIButton>
       <View style={styles.actionView}>
         <UIText variant="muted">Already have an account? </UIText>
         <Pressable
