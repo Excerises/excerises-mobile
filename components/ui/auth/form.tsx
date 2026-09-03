@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   },
   container: {
     display: "flex",
+    width: "100%",
     gap: 20,
   },
 });

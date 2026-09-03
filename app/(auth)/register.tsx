@@ -25,7 +25,7 @@ export default function Page() {
   return (
     <AuthForm
       title="Create Account"
-      description="Create a new account to get started with your fitness journey."
+      description="Create a new account to get started your journey."
     >
       <View style={styles.group}>
         <AuthInput
