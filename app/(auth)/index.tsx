@@ -1,65 +1,74 @@
-import AuthForm from "@/components/ui/auth/form";
-import AuthInput from "@/components/ui/auth/input";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
 import { useRouter } from "expo-router";
-import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 export default function Page() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   return (
-    <AuthForm
-      title="Log in"
-      description="Enter your email and password to access to your account."
-    >
-      <View style={styles.group}>
-        <AuthInput
-          placeholder="Email or username"
-          value={email}
-          onChangeText={(v) => setEmail(v)}
-        />
-        <AuthInput
-          placeholder="Password"
-          value={password}
-          keyboardType="visible-password"
-          onChangeText={(v) => setPassword(v)}
-          isPassword
-        />
+    <View style={styles.container}>
+      <View>
+        <UIText style={styles.bannerText}>Smart Workout</UIText>
+        <UIText
+          style={[styles.bannerText, { fontWeight: "light" }]}
+          variant="muted"
+        >
+          For a Better
+        </UIText>
+        <UIText style={styles.bannerText} variant="link">
+          You
+        </UIText>
       </View>
-      <UIButton style={styles.button} label="Login"></UIButton>
-      <View style={styles.actionView}>
-        <UIText variant="muted">Don{"'"}t have an account? </UIText>
-        <Pressable
-          onPress={() => {
-            router.push("/(auth)/register");
+      <View>
+        <UIText
+          style={{
+            fontSize: 18,
+          }}
+          variant="muted"
+        >
+          Get the best way to get fit with Artificial Intelligence. Start your
+          journey now with Excerises!
+        </UIText>
+      </View>
+      <View>
+        <View style={{ flexDirection: "row" }}>
+          <UIButton
+            style={styles.startButton}
+            label="Start Now"
+            onPress={() => router.push("/register")}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 20,
           }}
         >
-          <UIText variant="link">Sign Up here</UIText>
-        </Pressable>
+          <UIText variant="muted">Already have an account? </UIText>
+          <Pressable onPress={() => router.push("/login")}>
+            <UIText variant="link">Log In here</UIText>
+          </Pressable>
+        </View>
       </View>
-    </AuthForm>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  group: {
-    display: "flex",
-    gap: 15,
-    marginBottom: 30,
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+    gap: 30,
   },
-  button: {
+  startButton: {
+    width: "100%",
     borderRadius: 50,
-    marginBottom: 30,
   },
-  actionView: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+  bannerText: {
+    fontSize: 48,
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
 });

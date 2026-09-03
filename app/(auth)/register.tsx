@@ -99,7 +99,7 @@ export default function Page() {
         <UIText variant="muted">Already have an account? </UIText>
         <Pressable
           onPress={() => {
-            router.back();
+            router.replace("/login");
           }}
         >
           <UIText variant="link">Sign In here</UIText>
