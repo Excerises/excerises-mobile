@@ -1,5 +1,5 @@
 import AuthForm from "@/components/ui/auth/form";
-import AuthTextInput from "@/components/ui/auth/input";
+import AuthInput from "@/components/ui/auth/input";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
 import { useRouter } from "expo-router";
@@ -14,8 +14,8 @@ export default function Page() {
       description="Enter your email and password to access to your account."
     >
       <View style={styles.group}>
-        <AuthTextInput placeholder="Email or username" />
-        <AuthTextInput placeholder="Password" />
+        <AuthInput placeholder="Email or username" />
+        <AuthInput placeholder="Password" />
       </View>
       <UIButton style={styles.button} label="Login"></UIButton>
       <View style={styles.actionView}>

@@ -1,14 +1,18 @@
+import useThemeColor from "@/hooks/use-theme-color";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 
 interface Props extends TextInputProps {
   prefix?: React.ReactNode;
 }
 
-export default function AuthTextInput(props: Props) {
+export default function AuthInput(props: Props) {
+  const themeColor = useThemeColor();
   const { style, ...other } = props;
 
   return (
-    <View style={[styles.group, style as any]}>
+    <View
+      style={[{ backgroundColor: themeColor.card }, styles.group, style as any]}
+    >
       {props.prefix}
       <TextInput style={styles.input} {...other} />
     </View>
@@ -23,7 +27,6 @@ const styles = StyleSheet.create({
     height: 46,
     paddingHorizontal: 18,
     paddingVertical: 12,
-    backgroundColor: "white",
   },
   input: {
     flex: 1,
