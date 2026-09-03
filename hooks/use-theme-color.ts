@@ -1,7 +1,7 @@
+import { useThemeContext } from "@/components/provider/theme-provider";
 import { Colors } from "@/constant/theme";
-import { useTheme } from "@react-navigation/native";
 
 export default function useThemeColor() {
-  const { dark } = useTheme();
-  return Colors[dark ? "dark" : "light"];
+  const { theme } = useThemeContext();
+  return Colors[theme];
 }
