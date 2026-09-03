@@ -3,10 +3,14 @@ import AuthInput from "@/components/ui/auth/input";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 export default function Page() {
   const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <AuthForm
@@ -14,8 +18,18 @@ export default function Page() {
       description="Enter your email and password to access to your account."
     >
       <View style={styles.group}>
-        <AuthInput placeholder="Email or username" />
-        <AuthInput placeholder="Password" />
+        <AuthInput
+          placeholder="Email or username"
+          value={email}
+          onChangeText={(v) => setEmail(v)}
+        />
+        <AuthInput
+          placeholder="Password"
+          value={password}
+          keyboardType="visible-password"
+          onChangeText={(v) => setPassword(v)}
+          isPassword
+        />
       </View>
       <UIButton style={styles.button} label="Login"></UIButton>
       <View style={styles.actionView}>

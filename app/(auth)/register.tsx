@@ -82,6 +82,7 @@ export default function Page() {
           keyboardType="visible-password"
           value={password}
           onChangeText={(v) => setPassword(v)}
+          isPassword
         />
       </View>
       <UIButton style={styles.button} label="Register"></UIButton>

@@ -1,11 +1,20 @@
 import { Slot } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from "react-native";
 
 export default function Layout() {
+  const { height } = useWindowDimensions();
+
   return (
-    <View style={styles.container}>
-      <Slot />
-    </View>
+    <ScrollView>
+      <View style={[styles.container, { minHeight: height }]}>
+        <Slot />
+      </View>
+    </ScrollView>
   );
 }
 
@@ -15,6 +24,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: 30,
+    paddingHorizontal: 30,
+    paddingVertical: 80,
   },
 });
