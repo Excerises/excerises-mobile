@@ -26,9 +26,10 @@ export default function AuthInput({ isPassword, prefix, ...props }: Props) {
     >
       {prefix}
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: themeColor.foreground }]}
         {...other}
         secureTextEntry={!showPassword}
+        placeholderTextColor={themeColor.mutedForeground}
       />
       {isPassword && (
         <Pressable onPress={() => setShowPassword(!showPassword)}>

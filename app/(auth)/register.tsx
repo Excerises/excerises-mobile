@@ -21,6 +21,7 @@ export default function Page() {
   const [password, setPassword] = useState("");
 
   const [showBirthDatePicker, setShowBirthDatePicker] = useState(false);
+  const themeColor = useThemeColor();
 
   return (
     <AuthForm
@@ -46,6 +47,8 @@ export default function Page() {
               onValueChange={(e) =>
                 setBirthDate(new Date(e.nativeEvent.timestamp))
               }
+              textColor={themeColor.foreground}
+              accentColor={themeColor.primary}
               mode="date"
               maximumDate={new Date()}
             />
@@ -58,10 +61,16 @@ export default function Page() {
             backgroundColor: useThemeColor().card,
             borderRadius: 20,
             minHeight: 46,
+            color: themeColor.foreground,
           }}
         >
           {genderOptions.map((o) => (
-            <Picker.Item key={o.value} label={o.label} value={o.value} />
+            <Picker.Item
+              key={o.value}
+              label={o.label}
+              value={o.value}
+              color={themeColor.foreground}
+            />
           ))}
         </Picker>
         <AuthInput
