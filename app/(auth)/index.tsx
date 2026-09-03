@@ -28,7 +28,7 @@ export default function Page() {
           variant="muted"
         >
           Get the best way to get fit with Artificial Intelligence. Start your
-          journey now with Excerises!
+          journey now with us!
         </UIText>
       </View>
       <View>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   bannerText: {
-    fontSize: 48,
+    fontSize: 46,
     fontWeight: "bold",
     textTransform: "uppercase",
   },
