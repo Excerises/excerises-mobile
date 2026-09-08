@@ -3,10 +3,10 @@ import { useThemeContext } from "./provider/theme-provider";
 import { Pressable } from "react-native";
 import useThemeColor from "@/hooks/use-theme-color";
 
-export default function ThemeToggler() {
+export default function ThemeToggler({ color }: { color?: string }) {
   const themeColor = useThemeColor();
   const { theme, setTheme } = useThemeContext();
-  const isDark = theme == "dark";
+  const isDark = theme === "dark";
 
   function toggleTheme() {
     const nextTheme = isDark ? "light" : "dark";
@@ -16,9 +16,9 @@ export default function ThemeToggler() {
   return (
     <Pressable onPress={toggleTheme}>
       {isDark ? (
-        <MoonIcon color={themeColor.foreground} />
+        <MoonIcon color={color ?? themeColor.foreground} />
       ) : (
-        <SunIcon color={themeColor.foreground} />
+        <SunIcon color={color ?? themeColor.foreground} />
       )}
     </Pressable>
   );

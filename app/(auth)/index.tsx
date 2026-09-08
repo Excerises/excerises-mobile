@@ -1,56 +1,75 @@
+import { useThemeContext } from "@/components/provider/theme-provider";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
+import useThemeColor from "@/hooks/use-theme-color";
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
 
 export default function Page() {
   const router = useRouter();
+  const { height } = useWindowDimensions();
+  const themeColor = useThemeColor();
+  const { theme } = useThemeContext();
 
   return (
-    <View style={styles.container}>
-      <View>
-        <UIText style={styles.bannerText}>Smart Workout</UIText>
-        <UIText
-          style={[styles.bannerText, { fontWeight: "light" }]}
-          variant="muted"
-        >
-          For a Better
-        </UIText>
-        <UIText style={styles.bannerText} variant="link">
-          You
-        </UIText>
-      </View>
-      <View>
-        <UIText
-          style={{
-            fontSize: 18,
-          }}
-          variant="muted"
-        >
-          Get the best way to get fit with Artificial Intelligence. Start your
-          journey now with us!
-        </UIText>
-      </View>
-      <View>
-        <View style={{ flexDirection: "row" }}>
-          <UIButton
-            style={styles.startButton}
-            label="Start Now"
-            onPress={() => router.push("/register")}
-          />
+    <View
+      style={[styles.container, { backgroundColor: themeColor.background }]}
+    >
+      <Image
+        source={
+          theme === "dark"
+            ? require("@/assets/images/workout-dark.jpeg")
+            : require("@/assets/images/workout-light.jpeg")
+        }
+        resizeMode="cover"
+        style={[styles.heroImage, { height: height * 0.35 }]}
+      />
+
+      <View style={styles.content}>
+        <View style={styles.titleContainer}>
+          <UIText style={[styles.title, { color: themeColor.foreground }]}>
+            Smart
+          </UIText>
+          <UIText style={[styles.title, { color: themeColor.foreground }]}>
+            Workout
+          </UIText>
+          <UIText
+            style={[
+              styles.title,
+              styles.lightText,
+              { color: themeColor.mutedForeground },
+            ]}
+          >
+            For a Better
+          </UIText>
+          <UIText
+            style={[
+              styles.title,
+              styles.youText,
+              { color: themeColor.destructive },
+            ]}
+          >
+            You
+          </UIText>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: 20,
-          }}
+
+        <UIText
+          style={[styles.description, { color: themeColor.mutedForeground }]}
         >
-          <UIText variant="muted">Already have an account? </UIText>
-          <Pressable onPress={() => router.push("/login")}>
-            <UIText variant="link">Log In here</UIText>
-          </Pressable>
-        </View>
+          Get workout recommendations
+          {"\n"}tailored to your needs
+          {"\n"}using AI.
+        </UIText>
+
+        <UIButton
+          style={[
+            styles.startButton,
+            { backgroundColor: themeColor.destructive },
+          ]}
+          label="Started"
+          labelStyle={styles.startButtonText}
+          onPress={() => router.push("/login")}
+        />
       </View>
     </View>
   );
@@ -59,16 +78,48 @@ export default function Page() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
-    gap: 30,
   },
-  startButton: {
+
+  heroImage: {
     width: "100%",
-    borderRadius: 50,
+    marginTop: 50,
   },
-  bannerText: {
-    fontSize: 46,
+
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 30,
+  },
+
+  titleContainer: {
+    gap: 0,
+  },
+
+  title: {
+    fontSize: 36,
+    lineHeight: 36,
     fontWeight: "bold",
     textTransform: "uppercase",
+  },
+
+  lightText: {
+    fontWeight: "400",
+  },
+
+  youText: {},
+
+  description: {
+    fontSize: 18,
+    lineHeight: 20,
+    marginTop: 16,
+  },
+
+  startButton: {
+    width: "100%",
+    height: 50,
+    marginTop: 60,
+  },
+
+  startButtonText: {
+    fontWeight: "bold",
   },
 });

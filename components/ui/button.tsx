@@ -1,6 +1,8 @@
 import useThemeColor from "@/hooks/use-theme-color";
 import {
   StyleSheet,
+  StyleProp,
+  TextStyle,
   TouchableOpacity,
   TouchableOpacityProps,
 } from "react-native";
@@ -9,11 +11,13 @@ import { Borders } from "@/constant/theme";
 
 interface Props extends TouchableOpacityProps {
   label: string;
+  labelStyle?: StyleProp<TextStyle>;
   variant?: "default" | "destructive";
 }
 
 export default function UIButton({
   label,
+  labelStyle,
   variant = "default",
   ...props
 }: Props) {
@@ -30,7 +34,7 @@ export default function UIButton({
       style={[styles.button, { backgroundColor: color }, style]}
       {...other}
     >
-      <UIText style={styles.text}>{label}</UIText>
+      <UIText style={[styles.text, labelStyle]}>{label}</UIText>
     </TouchableOpacity>
   );
 }

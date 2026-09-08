@@ -14,29 +14,55 @@ interface Props extends TextInputProps {
   isPassword?: boolean;
 }
 
-export default function AuthInput({ isPassword, prefix, ...props }: Props) {
+export default function AuthInput({
+  isPassword,
+  prefix,
+  ...props
+}: Props) {
   const themeColor = useThemeColor();
   const { style, ...other } = props;
 
-  const [showPassword, setShowPassword] = useState(!isPassword);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <View
-      style={[{ backgroundColor: themeColor.card }, styles.group, style as any]}
+      style={[
+        styles.group,
+        {
+          backgroundColor: themeColor.card,
+        },
+        style as any,
+      ]}
     >
       {prefix}
+
       <TextInput
-        style={[styles.input, { color: themeColor.foreground }]}
+        style={[
+          styles.input,
+          {
+            color: themeColor.foreground,
+          },
+        ]}
         {...other}
-        secureTextEntry={!showPassword}
+        secureTextEntry={isPassword ? !showPassword : false}
         placeholderTextColor={themeColor.mutedForeground}
       />
+
       {isPassword && (
-        <Pressable onPress={() => setShowPassword(!showPassword)}>
+        <Pressable
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.eyeButton}
+        >
           {showPassword ? (
-            <EyeIcon color={themeColor.mutedForeground} />
+            <EyeIcon
+              color={themeColor.mutedForeground}
+              size={20}
+            />
           ) : (
-            <EyeOffIcon color={themeColor.mutedForeground} />
+            <EyeOffIcon
+              color={themeColor.mutedForeground}
+              size={20}
+            />
           )}
         </Pressable>
       )}
@@ -46,17 +72,23 @@ export default function AuthInput({ isPassword, prefix, ...props }: Props) {
 
 const styles = StyleSheet.create({
   group: {
-    display: "flex",
-    borderRadius: 50,
     flexDirection: "row",
-    height: 46,
+    alignItems: "center",
+    height: 48,
+    borderRadius: 6,
     paddingHorizontal: 18,
-    paddingVertical: 12,
   },
+
   input: {
     flex: 1,
-    height: "100%",
-    borderWidth: 0,
-    borderColor: "transparent",
+    fontSize: 16,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+  },
+
+  eyeButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 8,
   },
 });
