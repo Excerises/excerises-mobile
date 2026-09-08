@@ -1,4 +1,5 @@
 import AuthInput from "@/components/ui/auth/input";
+import OAuthButton from "@/components/ui/auth/oauth-button";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
@@ -74,49 +75,15 @@ export default function Page() {
       </View>
 
       <View style={styles.socialRow}>
-        <Pressable
-          style={[
-            styles.socialButton,
-            {
-              backgroundColor: themeColor.card,
-            },
-          ]}
-        >
-          <FontAwesome name="google" size={18} color={themeColor.foreground} />
+        <OAuthButton
+          icon={<FontAwesome name="google" size={18} color={themeColor.foreground} />}
+          label="Google"
+        />
 
-          <UIText
-            style={[
-              styles.socialText,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            Google
-          </UIText>
-        </Pressable>
-
-        <Pressable
-          style={[
-            styles.socialButton,
-            {
-              backgroundColor: themeColor.card,
-            },
-          ]}
-        >
-          <Ionicons name="logo-apple" size={20} color={themeColor.foreground} />
-
-          <UIText
-            style={[
-              styles.socialText,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            Apple
-          </UIText>
-        </Pressable>
+        <OAuthButton
+          icon={<Ionicons name="logo-apple" size={20} color={themeColor.foreground} />}
+          label="Apple"
+        />
       </View>
 
       <View style={styles.signupRow}>
@@ -175,21 +142,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 16,
     marginTop: 40,
-  },
-
-  socialButton: {
-    flex: 1,
-    height: 48,
-    borderRadius: 6,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-
-  socialText: {
-    fontSize: 15,
-    fontWeight: "600",
   },
 
   signupRow: {
