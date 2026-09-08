@@ -2,40 +2,27 @@ import AuthInput from "@/components/ui/auth/input";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
-import { getUser, loginUser } from "@/constant/storage";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { useLogin } from "@/hooks/auth/use-login";
+import AuthFormGroup from "@/components/ui/auth/form-group";
+import Separator from "@/components/ui/separator";
 
 export default function Page() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { email, setEmail, password, setPassword, handleLogin } = useLogin();
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>
-        Log In
-      </UIText>
+      <UIText style={styles.title}>Log In</UIText>
 
-      <UIText style={styles.subtitle}>
-        Welcome back!
-      </UIText>
+      <UIText style={styles.subtitle}>Welcome back!</UIText>
 
       <View style={styles.form}>
-        <View style={styles.field}>
-          <UIText style={styles.label}>
-            Email
-          </UIText>
-
+        <AuthFormGroup label="Email">
           <AuthInput
             style={styles.input}
             placeholder="example@email.com"
@@ -45,13 +32,9 @@ export default function Page() {
             autoCapitalize="none"
             autoCorrect={false}
           />
-        </View>
+        </AuthFormGroup>
 
-        <View style={styles.field}>
-          <UIText style={styles.label}>
-            Password
-          </UIText>
-
+        <AuthFormGroup label="Password">
           <AuthInput
             style={styles.input}
             placeholder="Enter password"
@@ -59,75 +42,22 @@ export default function Page() {
             onChangeText={setPassword}
             isPassword
           />
-        </View>
+        </AuthFormGroup>
 
         <Pressable>
-          <UIText style={styles.redText}>
-            Lupa password
-          </UIText>
+          <UIText style={styles.redText}>Lupa password</UIText>
         </Pressable>
       </View>
 
       <UIButton
-        style={[
-          styles.loginButton,
-          {
-            backgroundColor: themeColor.destructive,
-          },
-        ]}
+        style={{ marginTop: 28 }}
         label="LOGIN"
-        onPress={async () => {
-          try {
-            const user = await getUser();
-
-            if (!user) {
-              Alert.alert(
-                "Login Gagal",
-                "Belum ada akun yang terdaftar."
-              );
-              return;
-            }
-
-            if (
-              user.email === email &&
-              user.password === password
-            ) {
-              await loginUser();
-
-              Alert.alert(
-                "Login Berhasil",
-                `Selamat datang, ${user.fullname}!`,
-                [
-                  {
-                    text: "OK",
-                    onPress: () => router.replace("/dashboard"),
-                  },
-                ]
-              );
-            } else {
-              Alert.alert(
-                "Login Gagal",
-                "Email atau password salah."
-              );
-            }
-          } catch {
-            Alert.alert(
-              "Login Gagal",
-              "Terjadi kesalahan saat login."
-            );
-          }
-        }}
+        variant="destructive"
+        onPress={handleLogin}
       />
 
       <View style={styles.divider}>
-        <View
-          style={[
-            styles.line,
-            {
-              backgroundColor: themeColor.border,
-            },
-          ]}
-        />
+        <Separator />
 
         <UIText
           style={[
@@ -140,14 +70,7 @@ export default function Page() {
           or login with
         </UIText>
 
-        <View
-          style={[
-            styles.line,
-            {
-              backgroundColor: themeColor.border,
-            },
-          ]}
-        />
+        <Separator />
       </View>
 
       <View style={styles.socialRow}>
@@ -159,11 +82,7 @@ export default function Page() {
             },
           ]}
         >
-          <FontAwesome
-            name="google"
-            size={18}
-            color={themeColor.foreground}
-          />
+          <FontAwesome name="google" size={18} color={themeColor.foreground} />
 
           <UIText
             style={[
@@ -185,11 +104,7 @@ export default function Page() {
             },
           ]}
         >
-          <Ionicons
-            name="logo-apple"
-            size={20}
-            color={themeColor.foreground}
-          />
+          <Ionicons name="logo-apple" size={20} color={themeColor.foreground} />
 
           <UIText
             style={[
@@ -205,16 +120,10 @@ export default function Page() {
       </View>
 
       <View style={styles.signupRow}>
-        <UIText variant="muted">
-          Don't have an account?{" "}
-        </UIText>
+        <UIText variant="muted">Don{"'"}t have an account? </UIText>
 
-        <Pressable
-          onPress={() => router.replace("/register")}
-        >
-          <UIText style={styles.redText}>
-            Sign up
-          </UIText>
+        <Pressable onPress={() => router.replace("/register")}>
+          <UIText style={styles.redText}>Sign up</UIText>
         </Pressable>
       </View>
     </View>
@@ -242,14 +151,6 @@ const styles = StyleSheet.create({
     gap: 14,
   },
 
-  field: {
-    gap: 6,
-  },
-
-  label: {
-    fontSize: 14,
-  },
-
   input: {
     height: 48,
     borderRadius: 6,
@@ -259,22 +160,10 @@ const styles = StyleSheet.create({
     color: "#d00000",
   },
 
-  loginButton: {
-    width: "100%",
-    height: 48,
-    marginTop: 40,
-    borderRadius: 6,
-  },
-
   divider: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 18,
-  },
-
-  line: {
-    flex: 1,
-    height: 1,
   },
 
   orText: {
