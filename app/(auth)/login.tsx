@@ -1,26 +1,43 @@
 import AuthInput from "@/components/ui/auth/input";
 import OAuthButton from "@/components/ui/auth/oauth-button";
+import AuthFormGroup from "@/components/ui/auth/form-group";
+import AuthFooter from "@/components/ui/auth/auth-footer";
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
+import Separator from "@/components/ui/separator";
+
 import useThemeColor from "@/hooks/use-theme-color";
+import { useLogin } from "@/hooks/auth/use-login";
+
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
-import { useLogin } from "@/hooks/auth/use-login";
-import AuthFormGroup from "@/components/ui/auth/form-group";
-import Separator from "@/components/ui/separator";
+import {
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 
 export default function Page() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
-  const { email, setEmail, password, setPassword, handleLogin } = useLogin();
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleLogin,
+  } = useLogin();
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>Log In</UIText>
+      <UIText style={styles.title}>
+        Log In
+      </UIText>
 
-      <UIText style={styles.subtitle}>Welcome back!</UIText>
+      <UIText style={styles.subtitle}>
+        Welcome back!
+      </UIText>
 
       <View style={styles.form}>
         <AuthFormGroup label="Email">
@@ -46,12 +63,14 @@ export default function Page() {
         </AuthFormGroup>
 
         <Pressable>
-          <UIText style={styles.redText}>Lupa password</UIText>
+          <UIText style={styles.redText}>
+            Lupa password
+          </UIText>
         </Pressable>
       </View>
 
       <UIButton
-        style={{ marginTop: 28 }}
+        style={styles.loginButton}
         label="LOGIN"
         variant="destructive"
         onPress={handleLogin}
@@ -76,23 +95,33 @@ export default function Page() {
 
       <View style={styles.socialRow}>
         <OAuthButton
-          icon={<FontAwesome name="google" size={18} color={themeColor.foreground} />}
+          icon={
+            <FontAwesome
+              name="google"
+              size={18}
+              color={themeColor.foreground}
+            />
+          }
           label="Google"
         />
 
         <OAuthButton
-          icon={<Ionicons name="logo-apple" size={20} color={themeColor.foreground} />}
+          icon={
+            <Ionicons
+              name="logo-apple"
+              size={20}
+              color={themeColor.foreground}
+            />
+          }
           label="Apple"
         />
       </View>
 
-      <View style={styles.signupRow}>
-        <UIText variant="muted">Don{"'"}t have an account? </UIText>
-
-        <Pressable onPress={() => router.replace("/register")}>
-          <UIText style={styles.redText}>Sign up</UIText>
-        </Pressable>
-      </View>
+      <AuthFooter
+        text="Don't have an account?"
+        actionText="Sign up"
+        onPress={() => router.replace("/register")}
+      />
     </View>
   );
 }
@@ -123,6 +152,10 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
 
+  loginButton: {
+    marginTop: 28,
+  },
+
   redText: {
     color: "#d00000",
   },
@@ -142,11 +175,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 16,
     marginTop: 40,
-  },
-
-  signupRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 18,
   },
 });
