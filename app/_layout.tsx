@@ -1,14 +1,17 @@
-import ThemeProvider from "@/components/provider/theme-provider";
 import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import ThemeProvider from "@/components/provider/theme-provider";
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        </Stack>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
       </ThemeProvider>
     </SafeAreaProvider>
   );

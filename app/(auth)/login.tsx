@@ -1,51 +1,31 @@
-import AuthInput from "@/components/ui/auth/input";
-import OAuthButton from "@/components/ui/auth/oauth-button";
-import AuthFormGroup from "@/components/ui/auth/form-group";
 import AuthFooter from "@/components/ui/auth/auth-footer";
+import OAuthButton from "@/components/ui/auth/oauth-button";
 import UIButton from "@/components/ui/button";
-import UIText from "@/components/ui/text";
+import AuthFormGroup from "@/components/ui/form-group";
+import AuthInput from "@/components/ui/input";
 import Separator from "@/components/ui/separator";
+import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
-import { useLogin } from "@/hooks/auth/use-login";
-
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import {
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 export default function Page() {
-  const router = useRouter();
   const themeColor = useThemeColor();
-
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    handleLogin,
-  } = useLogin();
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>
-        Log In
-      </UIText>
+      <UIText style={styles.title}>Log In</UIText>
 
-      <UIText style={styles.subtitle}>
-        Welcome back!
-      </UIText>
+      <UIText style={styles.subtitle}>Welcome back!</UIText>
 
       <View style={styles.form}>
         <AuthFormGroup label="Email">
           <AuthInput
             style={styles.input}
             placeholder="example@email.com"
-            value={email}
-            onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
@@ -56,16 +36,12 @@ export default function Page() {
           <AuthInput
             style={styles.input}
             placeholder="Enter password"
-            value={password}
-            onChangeText={setPassword}
             isPassword
           />
         </AuthFormGroup>
 
         <Pressable>
-          <UIText style={styles.redText}>
-            Lupa password
-          </UIText>
+          <UIText style={styles.redText}>Lupa password</UIText>
         </Pressable>
       </View>
 
@@ -73,7 +49,7 @@ export default function Page() {
         style={styles.loginButton}
         label="LOGIN"
         variant="destructive"
-        onPress={handleLogin}
+        onPress={() => router.push("/profile")}
       />
 
       <View style={styles.divider}>
@@ -118,7 +94,7 @@ export default function Page() {
       </View>
 
       <AuthFooter
-        text="Don't have an account?"
+        text={"Don't have an account?"}
         actionText="Sign up"
         onPress={() => router.replace("/register")}
       />
@@ -129,7 +105,7 @@ export default function Page() {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 45,
+    paddingTop: 10,
   },
 
   title: {
@@ -143,7 +119,7 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    marginTop: 28,
+    marginTop: 26,
     gap: 14,
   },
 

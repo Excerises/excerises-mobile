@@ -1,9 +1,9 @@
-import { Mars, Venus } from "lucide-react-native";
-import { Pressable, StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
+import { Mars, Venus } from "lucide-react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
-type Gender = "man" | "woman";
+type Gender = "male" | "female";
 
 type GenderSelectorProps = {
   value: Gender;
@@ -19,35 +19,27 @@ export default function GenderSelector({
   return (
     <View style={styles.row}>
       <GenderButton
-        label="Man"
+        label="Male"
         icon={
           <Mars
             size={20}
-            color={
-              value === "man"
-                ? "#FFFFFF"
-                : themeColor.foreground
-            }
+            color={value === "male" ? "#FFFFFF" : themeColor.foreground}
           />
         }
-        selected={value === "man"}
-        onPress={() => onChange("man")}
+        selected={value === "male"}
+        onPress={() => onChange("male")}
       />
 
       <GenderButton
-        label="Woman"
+        label="Female"
         icon={
           <Venus
             size={20}
-            color={
-              value === "woman"
-                ? "#FFFFFF"
-                : themeColor.foreground
-            }
+            color={value === "female" ? "#FFFFFF" : themeColor.foreground}
           />
         }
-        selected={value === "woman"}
-        onPress={() => onChange("woman")}
+        selected={value === "female"}
+        onPress={() => onChange("female")}
       />
     </View>
   );
@@ -60,12 +52,7 @@ type GenderButtonProps = {
   onPress: () => void;
 };
 
-function GenderButton({
-  label,
-  icon,
-  selected,
-  onPress,
-}: GenderButtonProps) {
+function GenderButton({ label, icon, selected, onPress }: GenderButtonProps) {
   const themeColor = useThemeColor();
 
   return (
@@ -74,9 +61,7 @@ function GenderButton({
       style={[
         styles.button,
         {
-          backgroundColor: selected
-            ? themeColor.destructive
-            : themeColor.card,
+          backgroundColor: selected ? themeColor.destructive : themeColor.card,
         },
       ]}
     >
@@ -84,9 +69,7 @@ function GenderButton({
 
       <UIText
         style={{
-          color: selected
-            ? "#FFFFFF"
-            : themeColor.foreground,
+          color: selected ? "#FFFFFF" : themeColor.foreground,
         }}
       >
         {label}

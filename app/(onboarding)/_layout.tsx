@@ -3,7 +3,7 @@ import { useThemeContext } from "@/components/provider/theme-provider";
 import useThemeColor from "@/hooks/use-theme-color";
 
 import { NavigationBar } from "expo-navigation-bar";
-import { Slot, useRouter } from "expo-router";
+import { Slot, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import {
@@ -13,6 +13,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from "react-native";
 
@@ -22,11 +23,24 @@ import {
 } from "react-native-safe-area-context";
 
 export default function Layout() {
+
+  const { height } = useWindowDimensions();
+
   const themeColor = useThemeColor();
+
   const { theme } = useThemeContext();
 
   const insets = useSafeAreaInsets();
+
+  const pathname = usePathname();
+
   const router = useRouter();
+
+  const isMainScreen =
+    pathname === "/profile";
+
+  const systemBarStyle =
+    theme === "dark" ? "light" : "dark";
 
   return (
     <View
@@ -37,9 +51,8 @@ export default function Layout() {
         },
       ]}
     >
-      <StatusBar
-        style={theme === "dark" ? "light" : "dark"}
-      />
+
+      <StatusBar style={systemBarStyle} />
 
       <NavigationBar
         style={theme === "dark" ? "dark" : "light"}
@@ -47,22 +60,26 @@ export default function Layout() {
 
       <SafeAreaView edges={["top"]} />
 
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => router.replace("/")}
-          style={styles.backButton}
-        >
-          <Text
-            style={[
-              styles.backText,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
+      <View style={styles.headers}>
+        {isMainScreen ? (
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.backButton}
           >
-            ←
-          </Text>
-        </Pressable>
+            <Text
+              style={[
+                styles.backText,
+                {
+                  color: themeColor.foreground,
+                },
+              ]}
+            >
+              ←
+            </Text>
+          </Pressable>
+        ) : (
+          <View style={styles.headerSpacer} />
+        )}
 
         <ThemeToggler
           color={themeColor.foreground}
@@ -77,7 +94,9 @@ export default function Layout() {
             : "height"
         }
         keyboardVerticalOffset={
-          Platform.OS === "ios" ? insets.top : 0
+          Platform.OS === "ios"
+            ? insets.top
+            : 0
         }
       >
         <ScrollView
@@ -86,7 +105,18 @@ export default function Layout() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.pageContainer}>
+          <View
+            style={[
+              styles.pageContainer,
+              {
+                minHeight:
+                  height -
+                  insets.top -
+                  insets.bottom -
+                  styles.headers.height,
+              },
+            ]}
+          >
             <Slot />
           </View>
         </ScrollView>
@@ -98,16 +128,21 @@ export default function Layout() {
 }
 
 const styles = StyleSheet.create({
+
   root: {
     flex: 1,
   },
 
-  header: {
+  headers: {
     height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 18,
+  },
+
+  headerSpacer: {
+    width: 40,
   },
 
   backButton: {

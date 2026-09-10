@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import UIText from "../text";
+import UIText from "./text";
 
 interface Props {
   label: string;

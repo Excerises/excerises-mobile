@@ -45,6 +45,7 @@ export default function OAuthButton({
 }
 
 const styles = StyleSheet.create({
+  
   button: {
     flex: 1,
     height: 48,
@@ -54,8 +55,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
+
   label: {
     fontSize: 15,
     fontWeight: "600",
   },
+
 });

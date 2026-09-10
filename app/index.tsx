@@ -1,20 +1,43 @@
 import { useThemeContext } from "@/components/provider/theme-provider";
+import useThemeColor from "@/hooks/use-theme-color";
+import ThemeToggler from "@/components/theme-toggler";
+
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
-import useThemeColor from "@/hooks/use-theme-color";
+
 import { useRouter } from "expo-router";
-import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
+
+import {
+  Image,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from "react-native";
 
 export default function Page() {
   const router = useRouter();
+
   const { height } = useWindowDimensions();
+
   const themeColor = useThemeColor();
   const { theme } = useThemeContext();
 
   return (
     <View
-      style={[styles.container, { backgroundColor: themeColor.background }]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: themeColor.background,
+        },
+      ]}
     >
+
+      <View style={styles.themeToggle}>
+        <ThemeToggler
+          color={themeColor.foreground}
+        />
+      </View>
+
       <Image
         source={
           theme === "dark"
@@ -22,31 +45,57 @@ export default function Page() {
             : require("@/assets/images/workout-light.jpeg")
         }
         resizeMode="cover"
-        style={[styles.heroImage, { height: height * 0.35 }]}
+        style={[
+          styles.heroImage,
+          {
+            height: height * 0.35,
+          },
+        ]}
       />
-
+      
       <View style={styles.content}>
         <View style={styles.titleContainer}>
-          <UIText style={[styles.title, { color: themeColor.foreground }]}>
+          <UIText
+            style={[
+              styles.title,
+              {
+                color: themeColor.foreground,
+              },
+            ]}
+          >
             Smart
           </UIText>
-          <UIText style={[styles.title, { color: themeColor.foreground }]}>
+
+          <UIText
+            style={[
+              styles.title,
+              {
+                color: themeColor.foreground,
+              },
+            ]}
+          >
             Workout
           </UIText>
+
           <UIText
             style={[
               styles.title,
               styles.lightText,
-              { color: themeColor.mutedForeground },
+              {
+                color: themeColor.mutedForeground,
+              },
             ]}
           >
             For a Better
           </UIText>
+
           <UIText
             style={[
               styles.title,
               styles.youText,
-              { color: themeColor.destructive },
+              {
+                color: themeColor.destructive,
+              },
             ]}
           >
             You
@@ -54,7 +103,12 @@ export default function Page() {
         </View>
 
         <UIText
-          style={[styles.description, { color: themeColor.mutedForeground }]}
+          style={[
+            styles.description,
+            {
+              color: themeColor.mutedForeground,
+            },
+          ]}
         >
           Get workout recommendations
           {"\n"}tailored to your needs
@@ -64,7 +118,9 @@ export default function Page() {
         <UIButton
           style={[
             styles.startButton,
-            { backgroundColor: themeColor.destructive },
+            {
+              backgroundColor: themeColor.destructive,
+            },
           ]}
           label="Started"
           labelStyle={styles.startButtonText}
@@ -78,6 +134,13 @@ export default function Page() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  themeToggle: {
+    position: "absolute",
+    top: 55,
+    right: 20,
+    zIndex: 10,
   },
 
   heroImage: {
