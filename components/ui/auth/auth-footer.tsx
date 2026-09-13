@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, View } from "react-native";
+
 import UIText from "@/components/ui/text";
 
 type AuthFooterProps = {
@@ -14,9 +15,11 @@ export default function AuthFooter({
 }: AuthFooterProps) {
   return (
     <View style={styles.container}>
+
       <UIText variant="muted">
         {text}{" "}
       </UIText>
+
 
       <Pressable onPress={onPress}>
         <UIText style={styles.action}>

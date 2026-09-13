@@ -1,4 +1,5 @@
 import useThemeColor from "@/hooks/use-theme-color";
+
 import {
   Pressable,
   StyleSheet,
@@ -6,7 +7,9 @@ import {
   TextInputProps,
   View,
 } from "react-native";
+
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
+
 import { useState } from "react";
 
 interface Props extends TextInputProps {
@@ -20,6 +23,7 @@ export default function AuthInput({
   ...props
 }: Props) {
   const themeColor = useThemeColor();
+
   const { style, ...other } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +38,9 @@ export default function AuthInput({
         style as any,
       ]}
     >
+
       {prefix}
+
 
       <TextInput
         style={[
@@ -48,11 +54,13 @@ export default function AuthInput({
         placeholderTextColor={themeColor.mutedForeground}
       />
 
+
       {isPassword && (
         <Pressable
           onPress={() => setShowPassword(!showPassword)}
           style={styles.eyeButton}
         >
+
           {showPassword ? (
             <EyeIcon
               color={themeColor.mutedForeground}

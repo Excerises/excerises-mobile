@@ -1,6 +1,9 @@
 import UIText from "@/components/ui/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
+
 import { Mars, Venus } from "lucide-react-native";
+
 import { Pressable, StyleSheet, View } from "react-native";
 
 type Gender = "male" | "female";
@@ -18,6 +21,7 @@ export default function GenderSelector({
 
   return (
     <View style={styles.row}>
+
       <GenderButton
         label="Male"
         icon={
@@ -29,6 +33,7 @@ export default function GenderSelector({
         selected={value === "male"}
         onPress={() => onChange("male")}
       />
+
 
       <GenderButton
         label="Female"
@@ -65,7 +70,9 @@ function GenderButton({ label, icon, selected, onPress }: GenderButtonProps) {
         },
       ]}
     >
+
       {icon}
+
 
       <UIText
         style={{

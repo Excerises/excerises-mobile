@@ -1,4 +1,5 @@
 import { StyleSheet, View } from "react-native";
+
 import UIText from "./text";
 
 interface Props {
@@ -9,7 +10,9 @@ interface Props {
 export default function AuthFormGroup({ label, children }: Props) {
   return (
     <View style={styles.field}>
+
       <UIText style={styles.label}>{label}</UIText>
+
 
       {children}
     </View>

@@ -1,9 +1,13 @@
 import ThemeToggler from "@/components/theme-toggler";
+
 import { useThemeContext } from "@/components/provider/theme-provider";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import { NavigationBar } from "expo-navigation-bar";
+
 import { Slot, useRouter } from "expo-router";
+
 import { StatusBar } from "expo-status-bar";
 
 import {
@@ -23,9 +27,11 @@ import {
 
 export default function Layout() {
   const themeColor = useThemeColor();
+
   const { theme } = useThemeContext();
 
   const insets = useSafeAreaInsets();
+
   const router = useRouter();
 
   return (
@@ -37,17 +43,22 @@ export default function Layout() {
         },
       ]}
     >
+
       <StatusBar
         style={theme === "dark" ? "light" : "dark"}
       />
+
 
       <NavigationBar
         style={theme === "dark" ? "dark" : "light"}
       />
 
+
       <SafeAreaView edges={["top"]} />
 
+
       <View style={styles.header}>
+
         <Pressable
           onPress={() => router.replace("/")}
           style={styles.backButton}
@@ -64,10 +75,12 @@ export default function Layout() {
           </Text>
         </Pressable>
 
+
         <ThemeToggler
           color={themeColor.foreground}
         />
       </View>
+
 
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
@@ -80,17 +93,20 @@ export default function Layout() {
           Platform.OS === "ios" ? insets.top : 0
         }
       >
+
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+
           <View style={styles.pageContainer}>
             <Slot />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
 
       <SafeAreaView edges={["bottom"]} />
     </View>

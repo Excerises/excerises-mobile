@@ -1,18 +1,16 @@
-import ThemeToggler from "@/components/theme-toggler";
 import { useThemeContext } from "@/components/provider/theme-provider";
+import ThemeToggler from "@/components/theme-toggler";
 import useThemeColor from "@/hooks/use-theme-color";
 
 import { NavigationBar } from "expo-navigation-bar";
-import { Slot, usePathname, useRouter } from "expo-router";
+import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import {
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -23,7 +21,6 @@ import {
 } from "react-native-safe-area-context";
 
 export default function Layout() {
-
   const { height } = useWindowDimensions();
 
   const themeColor = useThemeColor();
@@ -31,13 +28,6 @@ export default function Layout() {
   const { theme } = useThemeContext();
 
   const insets = useSafeAreaInsets();
-
-  const pathname = usePathname();
-
-  const router = useRouter();
-
-  const isMainScreen =
-    pathname === "/profile";
 
   const systemBarStyle =
     theme === "dark" ? "light" : "dark";
@@ -54,37 +44,22 @@ export default function Layout() {
 
       <StatusBar style={systemBarStyle} />
 
+
       <NavigationBar
         style={theme === "dark" ? "dark" : "light"}
       />
 
+
       <SafeAreaView edges={["top"]} />
 
-      <View style={styles.headers}>
-        {isMainScreen ? (
-          <Pressable
-            onPress={() => router.back()}
-            style={styles.backButton}
-          >
-            <Text
-              style={[
-                styles.backText,
-                {
-                  color: themeColor.foreground,
-                },
-              ]}
-            >
-              ←
-            </Text>
-          </Pressable>
-        ) : (
-          <View style={styles.headerSpacer} />
-        )}
+
+      <View style={styles.header}>
 
         <ThemeToggler
           color={themeColor.foreground}
         />
       </View>
+
 
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
@@ -99,12 +74,14 @@ export default function Layout() {
             : 0
         }
       >
+
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+
           <View
             style={[
               styles.pageContainer,
@@ -113,14 +90,16 @@ export default function Layout() {
                   height -
                   insets.top -
                   insets.bottom -
-                  styles.headers.height,
+                  styles.header.height,
               },
             ]}
           >
+
             <Slot />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
 
       <SafeAreaView edges={["bottom"]} />
     </View>
@@ -128,33 +107,16 @@ export default function Layout() {
 }
 
 const styles = StyleSheet.create({
-
   root: {
     flex: 1,
   },
 
-  headers: {
+  header: {
     height: 60,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: "center",
     paddingHorizontal: 18,
-  },
-
-  headerSpacer: {
-    width: 40,
-  },
-
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-
-  backText: {
-    fontSize: 32,
-    fontWeight: "300",
   },
 
   keyboardContainer: {

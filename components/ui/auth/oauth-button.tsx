@@ -1,5 +1,7 @@
 import UIText from "@/components/ui/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
+
 import { Pressable, StyleSheet, ViewStyle } from "react-native";
 
 interface OAuthButtonProps {
@@ -28,7 +30,9 @@ export default function OAuthButton({
       ]}
       onPress={onPress}
     >
+
       {icon}
+
 
       <UIText
         style={[
@@ -45,7 +49,6 @@ export default function OAuthButton({
 }
 
 const styles = StyleSheet.create({
-  
   button: {
     flex: 1,
     height: 48,
@@ -60,5 +63,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-
 });

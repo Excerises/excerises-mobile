@@ -1,18 +1,16 @@
 import { useThemeContext } from "@/components/provider/theme-provider";
+
 import useThemeColor from "@/hooks/use-theme-color";
+
 import ThemeToggler from "@/components/theme-toggler";
 
 import UIButton from "@/components/ui/button";
+
 import UIText from "@/components/ui/text";
 
 import { useRouter } from "expo-router";
 
-import {
-  Image,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
 
 export default function Page() {
   const router = useRouter();
@@ -20,6 +18,7 @@ export default function Page() {
   const { height } = useWindowDimensions();
 
   const themeColor = useThemeColor();
+
   const { theme } = useThemeContext();
 
   return (
@@ -31,11 +30,8 @@ export default function Page() {
         },
       ]}
     >
-
       <View style={styles.themeToggle}>
-        <ThemeToggler
-          color={themeColor.foreground}
-        />
+        <ThemeToggler color={themeColor.foreground} />
       </View>
 
       <Image
@@ -52,7 +48,7 @@ export default function Page() {
           },
         ]}
       />
-      
+
       <View style={styles.content}>
         <View style={styles.titleContainer}>
           <UIText

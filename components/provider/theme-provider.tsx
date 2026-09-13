@@ -1,11 +1,13 @@
 import { createContext, useContext, useState } from "react";
 
 export type ThemeType = "light" | "dark";
-export type ThemeContext = {
+
+export type ThemeContextType = {
   theme: ThemeType;
   setTheme: (theme: ThemeType) => void;
 };
-const ThemeContext = createContext({} as ThemeContext);
+
+const ThemeContext = createContext({} as ThemeContextType);
 
 export function useThemeContext() {
   return useContext(ThemeContext);

@@ -1,29 +1,44 @@
 import AuthFooter from "@/components/ui/auth/auth-footer";
+
 import UIButton from "@/components/ui/button";
+
 import AuthFormGroup from "@/components/ui/form-group";
+
 import AuthInput from "@/components/ui/input";
+
 import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
 import { useRouter } from "expo-router";
+
 import { StyleSheet, View } from "react-native";
 
 export default function Page() {
   const themeColor = useThemeColor();
+
   const router = useRouter();
 
   return (
     <View style={styles.container}>
+
       <UIText style={styles.title}>Create a New Account</UIText>
+
 
       <UIText style={styles.subtitle}>
         Let&apos;s start your fitness journey.
       </UIText>
 
+
       <View style={styles.form}>
+
         <AuthFormGroup label="Fullname">
-          <AuthInput style={styles.input} placeholder="Enter your full name" />
+          <AuthInput
+            style={styles.input}
+            placeholder="Enter your full name"
+          />
         </AuthFormGroup>
+
 
         <AuthFormGroup label="Email">
           <AuthInput
@@ -35,6 +50,7 @@ export default function Page() {
           />
         </AuthFormGroup>
 
+
         <AuthFormGroup label="Password">
           <AuthInput
             style={styles.input}
@@ -42,6 +58,7 @@ export default function Page() {
             isPassword
           />
         </AuthFormGroup>
+
 
         <AuthFormGroup label="Confirm Password">
           <AuthInput
@@ -51,6 +68,7 @@ export default function Page() {
           />
         </AuthFormGroup>
       </View>
+
 
       <UIButton
         style={[
@@ -62,6 +80,7 @@ export default function Page() {
         label="REGISTER"
         onPress={() => router.replace("/login")}
       />
+
 
       <AuthFooter
         text="Already have an account?"

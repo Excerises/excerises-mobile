@@ -1,27 +1,41 @@
 import AuthFooter from "@/components/ui/auth/auth-footer";
+
 import OAuthButton from "@/components/ui/auth/oauth-button";
+
 import UIButton from "@/components/ui/button";
+
 import AuthFormGroup from "@/components/ui/form-group";
+
 import AuthInput from "@/components/ui/input";
+
 import Separator from "@/components/ui/separator";
+
 import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+
 import { useRouter } from "expo-router";
+
 import { Pressable, StyleSheet, View } from "react-native";
 
 export default function Page() {
   const themeColor = useThemeColor();
+
   const router = useRouter();
 
   return (
     <View style={styles.container}>
+
       <UIText style={styles.title}>Log In</UIText>
+
 
       <UIText style={styles.subtitle}>Welcome back!</UIText>
 
+
       <View style={styles.form}>
+
         <AuthFormGroup label="Email">
           <AuthInput
             style={styles.input}
@@ -32,6 +46,7 @@ export default function Page() {
           />
         </AuthFormGroup>
 
+
         <AuthFormGroup label="Password">
           <AuthInput
             style={styles.input}
@@ -40,10 +55,12 @@ export default function Page() {
           />
         </AuthFormGroup>
 
+
         <Pressable>
           <UIText style={styles.redText}>Lupa password</UIText>
         </Pressable>
       </View>
+
 
       <UIButton
         style={styles.loginButton}
@@ -52,8 +69,10 @@ export default function Page() {
         onPress={() => router.push("/profile")}
       />
 
+
       <View style={styles.divider}>
         <Separator />
+
 
         <UIText
           style={[
@@ -69,7 +88,9 @@ export default function Page() {
         <Separator />
       </View>
 
+
       <View style={styles.socialRow}>
+
         <OAuthButton
           icon={
             <FontAwesome
@@ -80,6 +101,7 @@ export default function Page() {
           }
           label="Google"
         />
+
 
         <OAuthButton
           icon={
@@ -92,6 +114,7 @@ export default function Page() {
           label="Apple"
         />
       </View>
+
 
       <AuthFooter
         text={"Don't have an account?"}

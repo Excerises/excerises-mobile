@@ -1,7 +1,11 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { CalendarDays } from "lucide-react-native";
+
 import { Pressable, StyleSheet, View } from "react-native";
+
 import UIText from "@/components/ui/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type DateInputProps = {
@@ -23,6 +27,7 @@ export default function DateInput({
 
   return (
     <View>
+
       <Pressable
         onPress={onOpen}
         style={[
@@ -32,6 +37,7 @@ export default function DateInput({
           },
         ]}
       >
+
         <UIText
           style={[
             styles.text,
@@ -45,11 +51,13 @@ export default function DateInput({
           {value || "day/month/year"}
         </UIText>
 
+
         <CalendarDays
           size={20}
           color={themeColor.mutedForeground}
         />
       </Pressable>
+
 
       {showPicker && (
         <DateTimePicker
