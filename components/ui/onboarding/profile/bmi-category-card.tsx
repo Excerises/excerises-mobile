@@ -1,4 +1,6 @@
 import UIText from "@/components/ui/text";
+import useThemeColor from "@/hooks/use-theme-color";
+
 import { StyleSheet, View } from "react-native";
 
 type BMICategory = {
@@ -37,17 +39,26 @@ const defaultCategories: BMICategory[] = [
 export default function BMICategoryCard({
   categories = defaultCategories,
 }: BMICategoryCardProps) {
-  return (
-    <View style={styles.card}>
+  const themeColor = useThemeColor();
 
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: themeColor.card,
+        },
+      ]}
+    >
       <UIText style={styles.title}>
         BMI Categories (Asia-Pacific Standard)
       </UIText>
 
-
       {categories.map((category) => (
-        <View key={category.label} style={styles.row}>
-
+        <View
+          key={category.label}
+          style={styles.row}
+        >
           <View
             style={[
               styles.dot,
@@ -57,11 +68,27 @@ export default function BMICategoryCard({
             ]}
           />
 
+          <UIText
+            style={[
+              styles.range,
+              {
+                color: themeColor.foreground,
+              },
+            ]}
+          >
+            {category.range}
+          </UIText>
 
-          <UIText style={styles.range}>{category.range}</UIText>
-
-
-          <UIText style={styles.label}>{category.label}</UIText>
+          <UIText
+            style={[
+              styles.label,
+              {
+                color: themeColor.foreground,
+              },
+            ]}
+          >
+            {category.label}
+          </UIText>
         </View>
       ))}
     </View>
@@ -73,33 +100,27 @@ const styles = StyleSheet.create({
     marginTop: 22,
     padding: 10,
     borderRadius: 6,
-    backgroundColor: "#292929",
   },
-
   title: {
     fontSize: 12,
     fontWeight: "500",
     marginBottom: 10,
   },
-
   row: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 4,
   },
-
   dot: {
     width: 9,
     height: 9,
     borderRadius: 5,
     marginRight: 10,
   },
-
   range: {
     width: 90,
     fontSize: 12,
   },
-
   label: {
     fontSize: 12,
   },

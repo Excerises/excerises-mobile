@@ -1,4 +1,5 @@
 import UIText from "@/components/ui/text";
+import useThemeColor from "@/hooks/use-theme-color";
 import { StyleSheet, View } from "react-native";
 
 type InfoCardProps = {
@@ -7,18 +8,40 @@ type InfoCardProps = {
   icon?: React.ReactNode;
 };
 
-export default function InfoCard({ title, description, icon }: InfoCardProps) {
+export default function InfoCard({
+  title,
+  description,
+  icon,
+}: InfoCardProps) {
+  const themeColor = useThemeColor();
+
   return (
-    <View style={styles.card}>
-
-      {icon && <View style={styles.iconContainer}>{icon}</View>}
-
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: themeColor.card,
+        },
+      ]}
+    >
+      {icon}
 
       <View style={styles.content}>
-        <UIText style={styles.title}>{title}</UIText>
+        <UIText style={styles.title}>
+          {title}
+        </UIText>
 
         {description && (
-          <UIText style={styles.description}>{description}</UIText>
+          <UIText
+            style={[
+              styles.description,
+              {
+                color: themeColor.mutedForeground,
+              },
+            ]}
+          >
+            {description}
+          </UIText>
         )}
       </View>
     </View>
@@ -26,33 +49,23 @@ export default function InfoCard({ title, description, icon }: InfoCardProps) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12,
+  container: {
     borderRadius: 6,
-    backgroundColor: "#292929",
-  },
-
-  iconContainer: {
-    width: 20,
-    height: 20,
+    padding: 12,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
   },
-
   content: {
-    flex: 1,
+    width: "100%",
   },
-
   title: {
-    fontSize: 12,
+    fontSize: 13,
+    fontWeight: "600",
+    textAlign: "center",
   },
-
   description: {
     fontSize: 11,
-    opacity: 0.6,
-    marginTop: 2,
+    marginTop: 3,
+    textAlign: "center",
   },
 });
