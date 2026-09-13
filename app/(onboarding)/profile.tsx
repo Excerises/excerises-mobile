@@ -3,13 +3,13 @@ import AuthInput from "@/components/ui/input";
 
 import { useRouter } from "expo-router";
 
-import BMICategoryCard from "@/components/ui/onboarding/bmi-category-card";
-import BMIResult from "@/components/ui/onboarding/bmi-result";
-import DateInput from "@/components/ui/onboarding/date-input";
-import GenderSelector from "@/components/ui/onboarding/gender-selector";
-import StepIndicator from "@/components/ui/onboarding/step-indicator";
-import WorkoutDaysSelector from "@/components/ui/onboarding/workout-days-selector";
-import WorkoutFrequencySelector from "@/components/ui/onboarding/workout-frequency-selector";
+import BMICategoryCard from "@/components/ui/onboarding/profile/bmi-category-card";
+import BMIResult from "@/components/ui/onboarding/profile/bmi-result";
+import DateInput from "@/components/ui/onboarding/profile/date-input";
+import GenderSelector from "@/components/ui/onboarding/profile/gender-selector";
+import StepIndicator from "@/components/ui/onboarding/profile/step-indicator";
+import WorkoutDaysSelector from "@/components/ui/onboarding/profile/workout-days-selector";
+import WorkoutFrequencySelector from "@/components/ui/onboarding/profile/workout-frequency-selector";
 
 import UIButton from "@/components/ui/button";
 import DurationSelector from "@/components/ui/duration-selector";
