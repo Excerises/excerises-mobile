@@ -43,22 +43,13 @@ export default function Layout() {
         },
       ]}
     >
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
 
-      <StatusBar
-        style={theme === "dark" ? "light" : "dark"}
-      />
-
-
-      <NavigationBar
-        style={theme === "dark" ? "dark" : "light"}
-      />
-
+      <NavigationBar style={theme === "dark" ? "dark" : "light"} />
 
       <SafeAreaView edges={["top"]} />
 
-
       <View style={styles.header}>
-
         <Pressable
           onPress={() => router.replace("/")}
           style={styles.backButton}
@@ -75,38 +66,25 @@ export default function Layout() {
           </Text>
         </Pressable>
 
-
-        <ThemeToggler
-          color={themeColor.foreground}
-        />
+        <ThemeToggler color={themeColor.foreground} />
       </View>
-
 
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
-        behavior={
-          Platform.OS === "ios"
-            ? "padding"
-            : "height"
-        }
-        keyboardVerticalOffset={
-          Platform.OS === "ios" ? insets.top : 0
-        }
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? insets.top : 0}
       >
-
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-
           <View style={styles.pageContainer}>
             <Slot />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-
 
       <SafeAreaView edges={["bottom"]} />
     </View>

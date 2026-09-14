@@ -3,12 +3,7 @@ import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
 type WorkoutBannerProps = {
   image: ImageSourcePropType;
@@ -30,30 +25,16 @@ export default function WorkoutBanner({
       style={[
         styles.container,
         {
-          borderColor:
-            themeColor.destructive,
+          borderColor: themeColor.destructive,
         },
       ]}
     >
-
-      <Image
-        source={image}
-        resizeMode="cover"
-        style={styles.image}
-      />
-
+      <Image source={image} resizeMode="cover" style={styles.image} />
 
       <View style={styles.content}>
+        <UIText style={styles.title}>{title}</UIText>
 
-        <UIText style={styles.title}>
-          {title}
-        </UIText>
-
-
-        <UIText style={styles.description}>
-          {description}
-        </UIText>
-
+        <UIText style={styles.description}>{description}</UIText>
 
         <UIButton
           style={styles.button}

@@ -2,12 +2,7 @@ import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   Dimensions,
@@ -33,42 +28,28 @@ type NewsCardProps = {
 
 const { width } = Dimensions.get("window");
 
-export default function NewsCard({
-  data,
-  onPress,
-}: NewsCardProps) {
+export default function NewsCard({ data, onPress }: NewsCardProps) {
   const themeColor = useThemeColor();
 
-  const [activeIndex, setActiveIndex] =
-    useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const activeIndexRef = useRef(0);
 
-  const listRef =
-    useRef<FlatList<NewsItem> | null>(null);
+  const listRef = useRef<FlatList<NewsItem> | null>(null);
 
   const cardWidth = width - 48;
 
-  const handleViewableItemsChanged =
-    useCallback(
-      ({
-        viewableItems,
-      }: {
-        viewableItems: ViewToken[];
-      }) => {
-        const index =
-          viewableItems[0]?.index;
+  const handleViewableItemsChanged = useCallback(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      const index = viewableItems[0]?.index;
 
-        if (
-          index !== null &&
-          index !== undefined
-        ) {
-          activeIndexRef.current = index;
-          setActiveIndex(index);
-        }
-      },
-      [],
-    );
+      if (index !== null && index !== undefined) {
+        activeIndexRef.current = index;
+        setActiveIndex(index);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (data.length <= 1) {
@@ -76,13 +57,9 @@ export default function NewsCard({
     }
 
     const interval = setInterval(() => {
-      const currentIndex =
-        activeIndexRef.current;
+      const currentIndex = activeIndexRef.current;
 
-      const nextIndex =
-        currentIndex + 1 >= data.length
-          ? 0
-          : currentIndex + 1;
+      const nextIndex = currentIndex + 1 >= data.length ? 0 : currentIndex + 1;
 
       activeIndexRef.current = nextIndex;
       setActiveIndex(nextIndex);
@@ -100,7 +77,6 @@ export default function NewsCard({
 
   return (
     <View>
-
       <FlatList
         ref={listRef}
         data={data}
@@ -113,9 +89,7 @@ export default function NewsCard({
         viewabilityConfig={{
           itemVisiblePercentThreshold: 60,
         }}
-        onViewableItemsChanged={
-          handleViewableItemsChanged
-        }
+        onViewableItemsChanged={handleViewableItemsChanged}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => onPress?.(item)}
@@ -123,38 +97,26 @@ export default function NewsCard({
               styles.card,
               {
                 width: cardWidth,
-                borderColor:
-                  themeColor.destructive,
+                borderColor: themeColor.destructive,
               },
             ]}
           >
-
             <Image
               source={item.image}
               resizeMode="cover"
               style={styles.image}
             />
 
-
             <View style={styles.content}>
+              <UIText style={styles.title}>{item.title}</UIText>
 
-              <UIText style={styles.title}>
-                {item.title}
-              </UIText>
-
-
-              <UIText style={styles.readMore}>
-                Read More →
-              </UIText>
+              <UIText style={styles.readMore}>Read More →</UIText>
             </View>
           </Pressable>
         )}
       />
 
-
-      <View
-        style={styles.indicatorContainer}
-      >
+      <View style={styles.indicatorContainer}>
         {data.map((item, index) => (
           <View
             key={item.id}

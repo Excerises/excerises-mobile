@@ -6,11 +6,7 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 import { Bell, User } from "lucide-react-native";
 
-import {
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 type DashboardHeaderProps = {
   name: string;
@@ -25,56 +21,30 @@ export default function DashboardHeader({
 
   return (
     <View style={styles.header}>
-
       <View style={styles.userSection}>
-
         <View
           style={[
             styles.avatar,
             {
-              borderColor:
-                themeColor.destructive,
+              borderColor: themeColor.destructive,
             },
           ]}
         >
-          <User
-            size={26}
-            color={
-              themeColor.destructive
-            }
-          />
+          <User size={26} color={themeColor.destructive} />
         </View>
 
-
         <View>
+          <UIText style={styles.greeting}>Good Morning.</UIText>
 
-          <UIText style={styles.greeting}>
-            Good Morning.
-          </UIText>
-
-
-          <UIText style={styles.userName}>
-            {name} 👋
-          </UIText>
+          <UIText style={styles.userName}>{name} 👋</UIText>
         </View>
       </View>
 
-
       <View style={styles.actions}>
+        <ThemeToggler color={themeColor.foreground} />
 
-        <ThemeToggler
-          color={themeColor.foreground}
-        />
-
-
-        <Pressable
-          onPress={onNotificationPress}
-          style={styles.notification}
-        >
-          <Bell
-            size={21}
-            color={themeColor.foreground}
-          />
+        <Pressable onPress={onNotificationPress} style={styles.notification}>
+          <Bell size={21} color={themeColor.foreground} />
         </Pressable>
       </View>
     </View>

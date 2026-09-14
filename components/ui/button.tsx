@@ -1,8 +1,8 @@
 import useThemeColor from "@/hooks/use-theme-color";
 
 import {
-  StyleSheet,
   StyleProp,
+  StyleSheet,
   TextStyle,
   TouchableOpacity,
   TouchableOpacityProps,
@@ -38,7 +38,6 @@ export default function UIButton({
       style={[styles.button, { backgroundColor: color }, style]}
       {...other}
     >
-
       <UIText style={[styles.text, labelStyle]}>{label}</UIText>
     </TouchableOpacity>
   );

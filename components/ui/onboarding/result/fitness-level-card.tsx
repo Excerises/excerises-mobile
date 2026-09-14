@@ -26,9 +26,7 @@ export default function FitnessLevelCard({
         },
       ]}
     >
-
       <UIText style={styles.cardTitle}>Your Fitness Level</UIText>
-
 
       <View style={styles.content}>
         <View
@@ -41,7 +39,6 @@ export default function FitnessLevelCard({
         >
           <BarChart3 size={28} color={foregroundColor} />
         </View>
-
 
         <View style={styles.textContainer}>
           <UIText style={styles.level}>{level}</UIText>

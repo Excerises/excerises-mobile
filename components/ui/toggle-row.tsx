@@ -31,21 +31,17 @@ export default function ToggleRow({
       ]}
       onPress={() => onChange(!value)}
     >
-
       <View style={styles.leftSection}>
-
         {icon && <View style={styles.iconContainer}>{icon}</View>}
 
         <View style={styles.content}>
           <UIText style={styles.label}>{label}</UIText>
-
 
           {description && (
             <UIText style={styles.description}>{description}</UIText>
           )}
         </View>
       </View>
-
 
       <Switch
         value={value}

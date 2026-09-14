@@ -8,11 +8,7 @@ type InfoCardProps = {
   icon?: React.ReactNode;
 };
 
-export default function InfoCard({
-  title,
-  description,
-  icon,
-}: InfoCardProps) {
+export default function InfoCard({ title, description, icon }: InfoCardProps) {
   const themeColor = useThemeColor();
 
   return (
@@ -27,9 +23,7 @@ export default function InfoCard({
       {icon}
 
       <View style={styles.content}>
-        <UIText style={styles.title}>
-          {title}
-        </UIText>
+        <UIText style={styles.title}>{title}</UIText>
 
         {description && (
           <UIText

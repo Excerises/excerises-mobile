@@ -27,15 +27,11 @@ export default function Page() {
 
   return (
     <View style={styles.container}>
-
       <UIText style={styles.title}>Log In</UIText>
-
 
       <UIText style={styles.subtitle}>Welcome back!</UIText>
 
-
       <View style={styles.form}>
-
         <AuthFormGroup label="Email">
           <AuthInput
             style={styles.input}
@@ -46,7 +42,6 @@ export default function Page() {
           />
         </AuthFormGroup>
 
-
         <AuthFormGroup label="Password">
           <AuthInput
             style={styles.input}
@@ -55,12 +50,10 @@ export default function Page() {
           />
         </AuthFormGroup>
 
-
         <Pressable>
           <UIText style={styles.redText}>Lupa password</UIText>
         </Pressable>
       </View>
-
 
       <UIButton
         style={styles.loginButton}
@@ -69,10 +62,8 @@ export default function Page() {
         onPress={() => router.push("/profile")}
       />
 
-
       <View style={styles.divider}>
         <Separator />
-
 
         <UIText
           style={[
@@ -88,9 +79,7 @@ export default function Page() {
         <Separator />
       </View>
 
-
       <View style={styles.socialRow}>
-
         <OAuthButton
           icon={
             <FontAwesome
@@ -101,7 +90,6 @@ export default function Page() {
           }
           label="Google"
         />
-
 
         <OAuthButton
           icon={
@@ -114,7 +102,6 @@ export default function Page() {
           label="Apple"
         />
       </View>
-
 
       <AuthFooter
         text={"Don't have an account?"}

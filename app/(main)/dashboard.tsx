@@ -1,8 +1,8 @@
 import DashboardHeader from "@/components/ui/main/dashboard/dashboard-header";
-import WorkoutBanner from "@/components/ui/main/dashboard/workout-banner";
-import StatCard from "@/components/ui/main/dashboard/stat-card";
-import RecentWorkoutCard from "@/components/ui/main/dashboard/recent-workout-card";
 import NewsCard from "@/components/ui/main/dashboard/news-card";
+import RecentWorkoutCard from "@/components/ui/main/dashboard/recent-workout-card";
+import StatCard from "@/components/ui/main/dashboard/stat-card";
+import WorkoutBanner from "@/components/ui/main/dashboard/workout-banner";
 
 import UIText from "@/components/ui/text";
 
@@ -10,17 +10,9 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 import { useRouter } from "expo-router";
 
-import {
-  ChartNoAxesColumnIncreasing,
-  Dumbbell,
-} from "lucide-react-native";
+import { ChartNoAxesColumnIncreasing, Dumbbell } from "lucide-react-native";
 
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 export default function Page() {
   const themeColor = useThemeColor();
@@ -32,61 +24,41 @@ export default function Page() {
       style={[
         styles.container,
         {
-          backgroundColor:
-            themeColor.background,
+          backgroundColor: themeColor.background,
         },
       ]}
     >
-
       <View style={styles.headerContainer}>
-        <DashboardHeader
-          name="Rama"
-          onNotificationPress={() => {}}
-        />
+        <DashboardHeader name="Rama" onNotificationPress={() => {}} />
       </View>
-
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={
-          styles.scrollContent
-        }
+        contentContainerStyle={styles.scrollContent}
       >
-
         <WorkoutBanner
           image={require("@/assets/images/workout-dark.jpeg")}
           title={"Ready to\nWorkout?"}
           description={
             "Choose your workout type\nand get personalized exercises."
           }
-          onPress={() =>
-            router.push("/type-workout")
-          }
+          onPress={() => router.push("/type-workout")}
         />
 
-
         <View style={styles.sectionHeader}>
-          <UIText style={styles.sectionTitle}>
-            Your Body Stats
-          </UIText>
+          <UIText style={styles.sectionTitle}>Your Body Stats</UIText>
 
           <Pressable>
-            <UIText style={styles.seeDetails}>
-              See Details &gt;
-            </UIText>
+            <UIText style={styles.seeDetails}>See Details &gt;</UIText>
           </Pressable>
         </View>
 
-
         <View style={styles.statsRow}>
-
           <StatCard
             icon={
               <ChartNoAxesColumnIncreasing
                 size={21}
-                color={
-                  themeColor.destructive
-                }
+                color={themeColor.destructive}
               />
             }
             value="171"
@@ -94,29 +66,18 @@ export default function Page() {
             label="Height"
           />
 
-
           <StatCard
-            icon={
-              <Dumbbell
-                size={21}
-                color={
-                  themeColor.destructive
-                }
-              />
-            }
+            icon={<Dumbbell size={21} color={themeColor.destructive} />}
             value="68.5"
             unit="kg"
             label="Weight"
           />
 
-
           <StatCard
             icon={
               <ChartNoAxesColumnIncreasing
                 size={21}
-                color={
-                  themeColor.destructive
-                }
+                color={themeColor.destructive}
               />
             }
             value="23.4"
@@ -126,23 +87,13 @@ export default function Page() {
           />
         </View>
 
-
         <View style={styles.sectionHeader}>
-          <UIText style={styles.sectionTitle}>
-            Recent Workouts
-          </UIText>
+          <UIText style={styles.sectionTitle}>Recent Workouts</UIText>
 
-          <Pressable
-            onPress={() =>
-              router.push("/history")
-            }
-          >
-            <UIText style={styles.seeDetails}>
-              See All &gt;
-            </UIText>
+          <Pressable onPress={() => router.push("/history")}>
+            <UIText style={styles.seeDetails}>See All &gt;</UIText>
           </Pressable>
         </View>
-
 
         <RecentWorkoutCard
           title="Full Body Beginner"
@@ -158,46 +109,34 @@ export default function Page() {
           onPress={() => {}}
         />
 
-
         <View style={styles.sectionHeader}>
-          <UIText style={styles.sectionTitle}>
-            Latest News
-          </UIText>
+          <UIText style={styles.sectionTitle}>Latest News</UIText>
 
           <Pressable>
-            <UIText style={styles.seeDetails}>
-              See All &gt;
-            </UIText>
+            <UIText style={styles.seeDetails}>See All &gt;</UIText>
           </Pressable>
         </View>
-
 
         <NewsCard
           data={[
             {
               id: "1",
               image: require("@/assets/images/workout-dark.jpeg"),
-              title:
-                "5 Tips to Stay\nConsistent with\nYour Workout",
+              title: "5 Tips to Stay\nConsistent with\nYour Workout",
             },
             {
               id: "2",
               image: require("@/assets/images/workout-dark.jpeg"),
-              title:
-                "How to Build a\nConsistent Workout\nRoutine",
+              title: "How to Build a\nConsistent Workout\nRoutine",
             },
             {
               id: "3",
               image: require("@/assets/images/workout-dark.jpeg"),
-              title:
-                "Best Time to\nStart Your Daily\nWorkout",
+              title: "Best Time to\nStart Your Daily\nWorkout",
             },
           ]}
           onPress={(item) => {
-            console.log(
-              "News selected:",
-              item.id,
-            );
+            console.log("News selected:", item.id);
           }}
         />
       </ScrollView>

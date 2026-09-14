@@ -15,7 +15,6 @@ export default function WorkoutFrequencySelector({
 }: WorkoutFrequencySelectorProps) {
   return (
     <View style={styles.container}>
-
       {frequencies.map((frequency) => (
         <UIButton
           key={frequency}

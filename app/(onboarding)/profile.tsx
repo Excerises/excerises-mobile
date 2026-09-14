@@ -1,6 +1,10 @@
 import AuthFormGroup from "@/components/ui/form-group";
 import AuthInput from "@/components/ui/input";
 
+import {
+  useOnboardingContext,
+} from "@/components/provider/onboarding-provider";
+
 import { useRouter } from "expo-router";
 
 import BMICategoryCard from "@/components/ui/onboarding/profile/bmi-category-card";
@@ -13,7 +17,6 @@ import WorkoutFrequencySelector from "@/components/ui/onboarding/profile/workout
 
 import UIButton from "@/components/ui/button";
 import DurationSelector from "@/components/ui/duration-selector";
-import InfoCard from "@/components/ui/info-card";
 import UIText from "@/components/ui/text";
 import TimeSelector from "@/components/ui/time-selector";
 import ToggleRow from "@/components/ui/toggle-row";
@@ -21,10 +24,9 @@ import ToggleRow from "@/components/ui/toggle-row";
 import useThemeColor from "@/hooks/use-theme-color";
 
 import { useState } from "react";
+
 import {
-  Pressable,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 
@@ -33,13 +35,14 @@ export default function Page() {
 
   const router = useRouter();
 
-  const [step, setStep] = useState<
-    "profile" | "bmi" | "workout" | "time"
-  >("profile");
+  const { step, setStep } =
+    useOnboardingContext();
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] =
+    useState(new Date());
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] =
+    useState(false);
 
   const [gender, setGender] =
     useState<"male" | "female">("male");
@@ -53,42 +56,14 @@ export default function Page() {
   const [reminderEnabled, setReminderEnabled] =
     useState(false);
 
-  const handleBack = () => {
-    if (step === "time") {
-      setStep("workout");
-    } else if (step === "workout") {
-      setStep("bmi");
-    } else if (step === "bmi") {
-      setStep("profile");
-    } else {
-      router.replace("/login");
-    }
-  };
-
   return (
     <View style={styles.container}>
-
-      <Pressable
-        onPress={handleBack}
-        style={styles.backButton}
-      >
-        <Text
-          style={[
-            styles.backText,
-            {
-              color: themeColor.foreground,
-            },
-          ]}
-        >
-          ←
-        </Text>
-      </Pressable>
-
-
+    
       <View style={styles.stepContainer}>
         <StepIndicator
           currentStep={
-            step === "profile" || step === "bmi"
+            step === "profile" ||
+            step === "bmi"
               ? 1
               : step === "workout"
                 ? 2
@@ -98,24 +73,18 @@ export default function Page() {
         />
       </View>
 
-
-
       {step === "profile" && (
         <>
-
           <UIText style={styles.title}>
             Tell Us About You
           </UIText>
-
 
           <UIText style={styles.subtitle}>
             Enter your basic information to create a
             personalized workout plan.
           </UIText>
 
-
           <View style={styles.form}>
-
             <AuthFormGroup label="Date of birth">
               <DateInput
                 value=""
@@ -131,14 +100,12 @@ export default function Page() {
               />
             </AuthFormGroup>
 
-
             <AuthFormGroup label="Gender">
               <GenderSelector
                 value={gender}
                 onChange={setGender}
               />
             </AuthFormGroup>
-
 
             <AuthFormGroup label="Height (cm)">
               <AuthInput
@@ -147,7 +114,6 @@ export default function Page() {
                 keyboardType="numeric"
               />
             </AuthFormGroup>
-
 
             <AuthFormGroup label="Weight (kg)">
               <AuthInput
@@ -158,7 +124,6 @@ export default function Page() {
             </AuthFormGroup>
           </View>
 
-
           <UIButton
             style={[
               styles.mainButton,
@@ -168,7 +133,9 @@ export default function Page() {
               },
             ]}
             label="CONTINUE"
-            onPress={() => setStep("bmi")}
+            onPress={() =>
+              setStep("bmi")
+            }
           />
         </>
       )}
@@ -176,11 +143,9 @@ export default function Page() {
 
       {step === "bmi" && (
         <>
-
           <UIText style={styles.title}>
             Your BMI Result
           </UIText>
-
 
           <UIText style={styles.subtitle}>
             Based on your height and weight,
@@ -188,23 +153,12 @@ export default function Page() {
             here is your body mass index (BMI).
           </UIText>
 
-
           <BMIResult
             value="23,4"
             status="Normal"
           />
 
-
           <BMICategoryCard />
-
-
-          <View style={styles.infoContainer}>
-            <InfoCard
-              title="Your BMI is in the normal range."
-              description="Keep up the good work!"
-            />
-          </View>
-
 
           <UIButton
             style={[
@@ -215,7 +169,9 @@ export default function Page() {
               },
             ]}
             label="CONTINUE"
-            onPress={() => setStep("workout")}
+            onPress={() =>
+              setStep("workout")
+            }
           />
         </>
       )}
@@ -223,11 +179,9 @@ export default function Page() {
 
       {step === "workout" && (
         <>
-
           <UIText style={styles.title}>
             Set Your Workout Routine
           </UIText>
-
 
           <UIText style={styles.subtitle}>
             Choose how often you want to
@@ -237,16 +191,13 @@ export default function Page() {
             will be.
           </UIText>
 
-
           <View style={styles.form}>
-
             <AuthFormGroup label="Workout frequency per week">
               <WorkoutFrequencySelector
                 value={workoutFrequency}
                 onChange={setWorkoutFrequency}
               />
             </AuthFormGroup>
-
 
             <AuthFormGroup label="Workout duration per Session">
               <DurationSelector
@@ -255,7 +206,6 @@ export default function Page() {
               />
             </AuthFormGroup>
           </View>
-
 
           <UIButton
             style={[
@@ -266,7 +216,9 @@ export default function Page() {
               },
             ]}
             label="CONTINUE"
-            onPress={() => setStep("time")}
+            onPress={() =>
+              setStep("time")
+            }
           />
         </>
       )}
@@ -274,19 +226,15 @@ export default function Page() {
 
       {step === "time" && (
         <>
-
           <UIText style={styles.title}>
             Set Your Time
           </UIText>
-
 
           <UIText style={styles.subtitle}>
             Help us personalize your workout plan.
           </UIText>
 
-
           <View style={styles.form}>
-
             <AuthFormGroup label="Preferred workout days">
               <WorkoutDaysSelector
                 value={workoutDays}
@@ -294,10 +242,11 @@ export default function Page() {
               />
             </AuthFormGroup>
 
-
             <AuthFormGroup label="Reminder Time">
               <UIText
-                style={styles.reminderDescription}
+                style={
+                  styles.reminderDescription
+                }
               >
                 We&apos;ll remind you to work out at
                 {"\n"}
@@ -310,14 +259,12 @@ export default function Page() {
               />
             </AuthFormGroup>
 
-
             <ToggleRow
               label="Enable workout reminders"
               value={reminderEnabled}
               onChange={setReminderEnabled}
             />
           </View>
-
 
           <UIButton
             style={[
@@ -328,7 +275,9 @@ export default function Page() {
               },
             ]}
             label="CONTINUE"
-            onPress={() => router.push("/result")}
+            onPress={() =>
+              router.push("/result")
+            }
           />
         </>
       )}
@@ -340,19 +289,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingTop: 10,
-  },
-
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    marginBottom: 4,
-  },
-
-  backText: {
-    fontSize: 32,
-    fontWeight: "300",
   },
 
   stepContainer: {

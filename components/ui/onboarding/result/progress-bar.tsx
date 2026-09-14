@@ -8,7 +8,6 @@ type ProgressBarProps = {
 export default function ProgressBar({ progress, color }: ProgressBarProps) {
   return (
     <View style={styles.container}>
-
       <View
         style={[
           styles.progress,

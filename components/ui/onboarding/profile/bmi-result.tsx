@@ -2,19 +2,11 @@ import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-import {
-  StyleSheet,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import Svg, {
-  Path,
-} from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 
 type BMIResultProps = {
   value: string;
@@ -29,14 +21,9 @@ export default function BMIResult({
 }: BMIResultProps) {
   const themeColor = useThemeColor();
 
-  const bmi = parseFloat(
-    value.replace(",", "."),
-  );
+  const bmi = parseFloat(value.replace(",", "."));
 
-  const normalizedBMI = Math.min(
-    Math.max((bmi - 15) / 20, 0),
-    1,
-  );
+  const normalizedBMI = Math.min(Math.max((bmi - 15) / 20, 0), 1);
 
   const size = 190;
 
@@ -44,37 +31,24 @@ export default function BMIResult({
 
   const radius = 72;
 
-  const arcLength =
-    2 * Math.PI * radius * 0.75;
+  const arcLength = 2 * Math.PI * radius * 0.75;
 
-  const targetArc =
-    arcLength * normalizedBMI;
+  const targetArc = arcLength * normalizedBMI;
 
-  const [dashOffset, setDashOffset] =
-    useState(arcLength);
+  const [dashOffset, setDashOffset] = useState(arcLength);
 
-  const startAngle =
-    (135 * Math.PI) / 180;
+  const startAngle = (135 * Math.PI) / 180;
 
   const startPoint = {
-    x:
-      center +
-      radius * Math.cos(startAngle),
-    y:
-      center +
-      radius * Math.sin(startAngle),
+    x: center + radius * Math.cos(startAngle),
+    y: center + radius * Math.sin(startAngle),
   };
 
-  const endAngle =
-    (405 * Math.PI) / 180;
+  const endAngle = (405 * Math.PI) / 180;
 
   const endPoint = {
-    x:
-      center +
-      radius * Math.cos(endAngle),
-    y:
-      center +
-      radius * Math.sin(endAngle),
+    x: center + radius * Math.cos(endAngle),
+    y: center + radius * Math.sin(endAngle),
   };
 
   const arcPath = `
@@ -90,14 +64,9 @@ export default function BMIResult({
     const interval = setInterval(() => {
       frame += 1;
 
-      const progress = Math.min(
-        frame / totalFrames,
-        1,
-      );
+      const progress = Math.min(frame / totalFrames, 1);
 
-      const currentOffset =
-        arcLength -
-        targetArc * progress;
+      const currentOffset = arcLength - targetArc * progress;
 
       setDashOffset(currentOffset);
 
@@ -113,14 +82,8 @@ export default function BMIResult({
 
   return (
     <View style={styles.container}>
-
       <View style={styles.chartContainer}>
-        <Svg
-          width={size}
-          height={size}
-          viewBox={`0 0 ${size} ${size}`}
-        >
-
+        <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
           <Path
             d={arcPath}
             fill="none"
@@ -128,7 +91,6 @@ export default function BMIResult({
             strokeWidth={14}
             strokeLinecap="round"
           />
-
 
           <Path
             d={arcPath}
@@ -141,13 +103,8 @@ export default function BMIResult({
           />
         </Svg>
 
-
         <View style={styles.centerContent}>
-
-          <UIText style={styles.value}>
-            {value}
-          </UIText>
-
+          <UIText style={styles.value}>{value}</UIText>
 
           <UIText
             style={[

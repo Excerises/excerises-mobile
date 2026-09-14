@@ -31,7 +31,6 @@ export default function TimeSelector({
         },
       ]}
     >
-
       <View style={styles.leftSection}>
         {showIcon && (
           <Clock3 size={20} strokeWidth={1.8} color={themeColor.foreground} />
@@ -48,7 +47,6 @@ export default function TimeSelector({
           {value || placeholder}
         </UIText>
       </View>
-
 
       <ChevronDown
         size={20}

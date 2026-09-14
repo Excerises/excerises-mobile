@@ -1,9 +1,6 @@
 import useThemeColor from "@/hooks/use-theme-color";
 
-import {
-  StyleSheet,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 type CarouselIndicatorProps = {
   count: number;
@@ -18,22 +15,20 @@ export default function CarouselIndicator({
 
   return (
     <View style={styles.container}>
-      {Array.from({ length: count }).map(
-        (_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.indicator,
-              {
-                backgroundColor:
-                  index === activeIndex
-                    ? themeColor.destructive
-                    : themeColor.border,
-              },
-            ]}
-          />
-        ),
-      )}
+      {Array.from({ length: count }).map((_, index) => (
+        <View
+          key={index}
+          style={[
+            styles.indicator,
+            {
+              backgroundColor:
+                index === activeIndex
+                  ? themeColor.destructive
+                  : themeColor.border,
+            },
+          ]}
+        />
+      ))}
     </View>
   );
 }

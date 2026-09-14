@@ -1,3 +1,7 @@
+import OnboardingProvider, {
+  useOnboardingContext,
+} from "@/components/provider/onboarding-provider";
+
 import { useThemeContext } from "@/components/provider/theme-provider";
 import ThemeToggler from "@/components/theme-toggler";
 import useThemeColor from "@/hooks/use-theme-color";
@@ -9,8 +13,10 @@ import { StatusBar } from "expo-status-bar";
 import {
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
+  Text,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -20,7 +26,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-export default function Layout() {
+function OnboardingLayout() {
   const { height } = useWindowDimensions();
 
   const themeColor = useThemeColor();
@@ -28,6 +34,8 @@ export default function Layout() {
   const { theme } = useThemeContext();
 
   const insets = useSafeAreaInsets();
+
+  const { handleBack } = useOnboardingContext();
 
   const systemBarStyle =
     theme === "dark" ? "light" : "dark";
@@ -37,29 +45,47 @@ export default function Layout() {
       style={[
         styles.root,
         {
-          backgroundColor: themeColor.background,
+          backgroundColor:
+            themeColor.background,
         },
       ]}
     >
-
-      <StatusBar style={systemBarStyle} />
-
-
-      <NavigationBar
-        style={theme === "dark" ? "dark" : "light"}
+      <StatusBar
+        style={systemBarStyle}
       />
 
+      <NavigationBar
+        style={
+          theme === "dark"
+            ? "dark"
+            : "light"
+        }
+      />
 
       <SafeAreaView edges={["top"]} />
 
-
       <View style={styles.header}>
+        <Pressable
+          onPress={handleBack}
+          style={styles.backButton}
+        >
+          <Text
+            style={[
+              styles.backText,
+              {
+                color:
+                  themeColor.foreground,
+              },
+            ]}
+          >
+            ←
+          </Text>
+        </Pressable>
 
         <ThemeToggler
           color={themeColor.foreground}
         />
       </View>
-
 
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
@@ -74,14 +100,14 @@ export default function Layout() {
             : 0
         }
       >
-
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={
+            styles.scrollContent
+          }
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-
           <View
             style={[
               styles.pageContainer,
@@ -94,15 +120,21 @@ export default function Layout() {
               },
             ]}
           >
-
             <Slot />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
 
-
       <SafeAreaView edges={["bottom"]} />
     </View>
+  );
+}
+
+export default function Layout() {
+  return (
+    <OnboardingProvider>
+      <OnboardingLayout />
+    </OnboardingProvider>
   );
 }
 
@@ -114,9 +146,21 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 18,
+  },
+
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+
+  backText: {
+    fontSize: 32,
+    fontWeight: "300",
   },
 
   keyboardContainer: {

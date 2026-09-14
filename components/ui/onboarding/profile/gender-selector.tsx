@@ -21,7 +21,6 @@ export default function GenderSelector({
 
   return (
     <View style={styles.row}>
-
       <GenderButton
         label="Male"
         icon={
@@ -33,7 +32,6 @@ export default function GenderSelector({
         selected={value === "male"}
         onPress={() => onChange("male")}
       />
-
 
       <GenderButton
         label="Female"
@@ -70,9 +68,7 @@ function GenderButton({ label, icon, selected, onPress }: GenderButtonProps) {
         },
       ]}
     >
-
       {icon}
-
 
       <UIText
         style={{

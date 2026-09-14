@@ -21,24 +21,16 @@ export default function Page() {
 
   return (
     <View style={styles.container}>
-
       <UIText style={styles.title}>Create a New Account</UIText>
-
 
       <UIText style={styles.subtitle}>
         Let&apos;s start your fitness journey.
       </UIText>
 
-
       <View style={styles.form}>
-
         <AuthFormGroup label="Fullname">
-          <AuthInput
-            style={styles.input}
-            placeholder="Enter your full name"
-          />
+          <AuthInput style={styles.input} placeholder="Enter your full name" />
         </AuthFormGroup>
-
 
         <AuthFormGroup label="Email">
           <AuthInput
@@ -50,7 +42,6 @@ export default function Page() {
           />
         </AuthFormGroup>
 
-
         <AuthFormGroup label="Password">
           <AuthInput
             style={styles.input}
@@ -58,7 +49,6 @@ export default function Page() {
             isPassword
           />
         </AuthFormGroup>
-
 
         <AuthFormGroup label="Confirm Password">
           <AuthInput
@@ -68,7 +58,6 @@ export default function Page() {
           />
         </AuthFormGroup>
       </View>
-
 
       <UIButton
         style={[
@@ -80,7 +69,6 @@ export default function Page() {
         label="REGISTER"
         onPress={() => router.replace("/login")}
       />
-
 
       <AuthFooter
         text="Already have an account?"

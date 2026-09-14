@@ -17,7 +17,6 @@ export default function ProgressItem({
 }: ProgressItemProps) {
   return (
     <View style={styles.container}>
-
       {completed ? (
         <View
           style={[

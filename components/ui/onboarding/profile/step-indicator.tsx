@@ -13,28 +13,22 @@ export default function StepIndicator({
 }: StepIndicatorProps) {
   return (
     <View style={styles.container}>
-
       <View style={styles.steps}>
         {Array.from({
           length: totalSteps,
         }).map((_, index) => {
           const stepNumber = index + 1;
 
-          const isCompleted =
-            stepNumber <= currentStep;
+          const isCompleted = stepNumber <= currentStep;
 
           return (
             <View
               key={stepNumber}
-              style={[
-                styles.step,
-                isCompleted && styles.activeStep,
-              ]}
+              style={[styles.step, isCompleted && styles.activeStep]}
             />
           );
         })}
       </View>
-
 
       <UIText style={styles.counter}>
         {currentStep}/{totalSteps}

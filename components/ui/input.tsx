@@ -17,11 +17,7 @@ interface Props extends TextInputProps {
   isPassword?: boolean;
 }
 
-export default function AuthInput({
-  isPassword,
-  prefix,
-  ...props
-}: Props) {
+export default function AuthInput({ isPassword, prefix, ...props }: Props) {
   const themeColor = useThemeColor();
 
   const { style, ...other } = props;
@@ -38,9 +34,7 @@ export default function AuthInput({
         style as any,
       ]}
     >
-
       {prefix}
-
 
       <TextInput
         style={[
@@ -54,23 +48,15 @@ export default function AuthInput({
         placeholderTextColor={themeColor.mutedForeground}
       />
 
-
       {isPassword && (
         <Pressable
           onPress={() => setShowPassword(!showPassword)}
           style={styles.eyeButton}
         >
-
           {showPassword ? (
-            <EyeIcon
-              color={themeColor.mutedForeground}
-              size={20}
-            />
+            <EyeIcon color={themeColor.mutedForeground} size={20} />
           ) : (
-            <EyeOffIcon
-              color={themeColor.mutedForeground}
-              size={20}
-            />
+            <EyeOffIcon color={themeColor.mutedForeground} size={20} />
           )}
         </Pressable>
       )}

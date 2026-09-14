@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet } from "react-native";
 import { ChevronDown } from "lucide-react-native";
+import { Pressable, StyleSheet } from "react-native";
 
 import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
@@ -37,7 +37,6 @@ export default function DurationSelector({
       >
         {value || placeholder}
       </UIText>
-
 
       <ChevronDown
         size={20}

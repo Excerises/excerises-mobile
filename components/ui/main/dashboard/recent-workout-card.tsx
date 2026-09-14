@@ -4,11 +4,7 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 import { Check } from "lucide-react-native";
 
-import {
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 type RecentWorkoutCardProps = {
   title: string;
@@ -31,25 +27,18 @@ export default function RecentWorkoutCard({
       style={[
         styles.container,
         {
-          backgroundColor:
-            themeColor.card,
+          backgroundColor: themeColor.card,
         },
       ]}
     >
-
       <View style={styles.info}>
-
-        <UIText style={styles.title}>
-          {title}
-        </UIText>
-
+        <UIText style={styles.title}>{title}</UIText>
 
         <UIText
           style={[
             styles.type,
             {
-              color:
-                themeColor.mutedForeground,
+              color: themeColor.mutedForeground,
             },
           ]}
         >
@@ -57,25 +46,13 @@ export default function RecentWorkoutCard({
         </UIText>
       </View>
 
-
       <View style={styles.rightSection}>
-
-        <UIText style={styles.duration}>
-          {duration}
-        </UIText>
-
+        <UIText style={styles.duration}>{duration}</UIText>
 
         <View style={styles.status}>
-          <Check
-            size={12}
-            color="#16C84E"
-          />
+          <Check size={12} color="#16C84E" />
 
-          <UIText
-            style={styles.statusText}
-          >
-            Completed
-          </UIText>
+          <UIText style={styles.statusText}>Completed</UIText>
         </View>
       </View>
     </Pressable>

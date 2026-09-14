@@ -1,27 +1,14 @@
 import { useThemeContext } from "@/components/provider/theme-provider";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import {
-  Slot,
-  usePathname,
-  useRouter,
-} from "expo-router";
+import { Slot, usePathname, useRouter } from "expo-router";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
 
-import {
-  Clock3,
-  Dumbbell,
-  Home,
-  User,
-} from "lucide-react-native";
+import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
 
-import {
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/text";
 
@@ -34,8 +21,7 @@ export default function Layout() {
 
   const router = useRouter();
 
-  const systemBarStyle =
-    theme === "dark" ? "light" : "dark";
+  const systemBarStyle = theme === "dark" ? "light" : "dark";
 
   const menus = [
     {
@@ -69,41 +55,28 @@ export default function Layout() {
       style={[
         styles.root,
         {
-          backgroundColor:
-            themeColor.background,
+          backgroundColor: themeColor.background,
         },
       ]}
     >
-
       <StatusBar style={systemBarStyle} />
 
-
-      <NavigationBar
-        style={
-          theme === "dark"
-            ? "dark"
-            : "light"
-        }
-      />
-
+      <NavigationBar style={theme === "dark" ? "dark" : "light"} />
 
       <View style={styles.content}>
         <Slot />
       </View>
 
-
       <View
         style={[
           styles.bottomNavigation,
           {
-            backgroundColor:
-              themeColor.card,
+            backgroundColor: themeColor.card,
           },
         ]}
       >
         {menus.map((menu) => {
-          const isActive =
-            pathname === menu.path;
+          const isActive = pathname === menu.path;
 
           const Icon = menu.icon;
 
@@ -111,20 +84,14 @@ export default function Layout() {
             <Pressable
               key={menu.route}
               style={styles.navItem}
-              onPress={() =>
-                router.replace(menu.route)
-              }
+              onPress={() => router.replace(menu.route)}
             >
-
               <Icon
                 size={21}
                 color={
-                  isActive
-                    ? themeColor.destructive
-                    : themeColor.foreground
+                  isActive ? themeColor.destructive : themeColor.foreground
                 }
               />
-
 
               <UIText
                 style={[

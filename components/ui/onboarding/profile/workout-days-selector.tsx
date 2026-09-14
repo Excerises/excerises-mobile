@@ -25,7 +25,6 @@ export default function WorkoutDaysSelector({
 
   return (
     <View style={styles.container}>
-
       {days.map((day) => {
         const isSelected = value.includes(day);
 

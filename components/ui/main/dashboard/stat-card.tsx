@@ -2,10 +2,7 @@ import UIText from "@/components/ui/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import {
-  StyleSheet,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 type StatCardProps = {
   icon: React.ReactNode;
@@ -33,34 +30,22 @@ export default function StatCard({
         },
       ]}
     >
+      <View style={styles.icon}>{icon}</View>
 
-      <View style={styles.icon}>
-        {icon}
-      </View>
-
-
-      <UIText style={styles.value}>
-        {value}
-      </UIText>
-
+      <UIText style={styles.value}>{value}</UIText>
 
       <UIText
         style={[
           styles.unit,
           {
-            color:
-              unitColor ??
-              themeColor.mutedForeground,
+            color: unitColor ?? themeColor.mutedForeground,
           },
         ]}
       >
         {unit}
       </UIText>
 
-
-      <UIText style={styles.label}>
-        {label}
-      </UIText>
+      <UIText style={styles.label}>{label}</UIText>
     </View>
   );
 }

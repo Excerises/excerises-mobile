@@ -30,9 +30,7 @@ export default function OAuthButton({
       ]}
       onPress={onPress}
     >
-
       {icon}
-
 
       <UIText
         style={[

@@ -15,16 +15,10 @@ export default function AuthFooter({
 }: AuthFooterProps) {
   return (
     <View style={styles.container}>
-
-      <UIText variant="muted">
-        {text}{" "}
-      </UIText>
-
+      <UIText variant="muted">{text} </UIText>
 
       <Pressable onPress={onPress}>
-        <UIText style={styles.action}>
-          {actionText}
-        </UIText>
+        <UIText style={styles.action}>{actionText}</UIText>
       </Pressable>
     </View>
   );

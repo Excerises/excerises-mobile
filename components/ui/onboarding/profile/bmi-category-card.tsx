@@ -55,10 +55,7 @@ export default function BMICategoryCard({
       </UIText>
 
       {categories.map((category) => (
-        <View
-          key={category.label}
-          style={styles.row}
-        >
+        <View key={category.label} style={styles.row}>
           <View
             style={[
               styles.dot,

@@ -27,7 +27,6 @@ export default function DateInput({
 
   return (
     <View>
-
       <Pressable
         onPress={onOpen}
         style={[
@@ -37,27 +36,19 @@ export default function DateInput({
           },
         ]}
       >
-
         <UIText
           style={[
             styles.text,
             {
-              color: value
-                ? themeColor.foreground
-                : themeColor.mutedForeground,
+              color: value ? themeColor.foreground : themeColor.mutedForeground,
             },
           ]}
         >
           {value || "day/month/year"}
         </UIText>
 
-
-        <CalendarDays
-          size={20}
-          color={themeColor.mutedForeground}
-        />
+        <CalendarDays size={20} color={themeColor.mutedForeground} />
       </Pressable>
-
 
       {showPicker && (
         <DateTimePicker
