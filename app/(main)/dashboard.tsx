@@ -29,7 +29,7 @@ export default function Page() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <DashboardHeader name="Rama" onNotificationPress={() => {}} />
+        <DashboardHeader name="User" onNotificationPress={() => {}} />
       </View>
 
       <ScrollView
