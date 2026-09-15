@@ -16,12 +16,14 @@ interface Props extends TouchableOpacityProps {
   label: string;
   labelStyle?: StyleProp<TextStyle>;
   variant?: "default" | "destructive";
+  icon?: React.ReactNode;
 }
 
 export default function UIButton({
   label,
   labelStyle,
   variant = "default",
+  icon,
   ...props
 }: Props) {
   const themeColor = useThemeColor();
@@ -38,6 +40,7 @@ export default function UIButton({
       style={[styles.button, { backgroundColor: color }, style]}
       {...other}
     >
+      {icon}
       <UIText style={[styles.text, labelStyle]}>{label}</UIText>
     </TouchableOpacity>
   );

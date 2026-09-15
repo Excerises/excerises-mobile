@@ -1,17 +1,20 @@
 import { StyleSheet, View } from "react-native";
+import type { ReactNode } from "react";
 
 import UIText from "./text";
 
-interface Props {
+type FormGroupProps = {
   label: string;
-  children: React.ReactNode;
-}
+  children: ReactNode;
+};
 
-export default function AuthFormGroup({ label, children }: Props) {
+export default function FormGroup({ 
+  label,
+  children,
+}: FormGroupProps) {
   return (
     <View style={styles.field}>
       <UIText style={styles.label}>{label}</UIText>
-
       {children}
     </View>
   );
@@ -21,7 +24,6 @@ const styles = StyleSheet.create({
   field: {
     gap: 6,
   },
-
   label: {
     fontSize: 14,
   },

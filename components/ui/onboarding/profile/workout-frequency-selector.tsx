@@ -18,7 +18,10 @@ export default function WorkoutFrequencySelector({
       {frequencies.map((frequency) => (
         <UIButton
           key={frequency}
-          style={[styles.button, value === frequency && styles.activeButton]}
+          style={[
+            styles.button,
+            value === frequency && styles.activeButton,
+          ]}
           label={`${frequency} day`}
           onPress={() => onChange?.(frequency)}
         />
@@ -31,12 +34,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6,
+    gap: 8,
   },
 
   button: {
-    width: "31.8%",
+    width: "18%",
     height: 44,
+    paddingHorizontal: 0,
     borderRadius: 6,
     backgroundColor: "#292929",
   },

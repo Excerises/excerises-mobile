@@ -1,141 +1,124 @@
-import AuthFormGroup from "@/components/ui/form-group";
-import AuthInput from "@/components/ui/input";
-
-import {
-  useOnboardingContext,
-} from "@/components/provider/onboarding-provider";
-
 import { useRouter } from "expo-router";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
-import BMICategoryCard from "@/components/ui/onboarding/profile/bmi-category-card";
-import BMIResult from "@/components/ui/onboarding/profile/bmi-result";
-import DateInput from "@/components/ui/onboarding/profile/date-input";
-import GenderSelector from "@/components/ui/onboarding/profile/gender-selector";
-import StepIndicator from "@/components/ui/onboarding/profile/step-indicator";
-import WorkoutDaysSelector from "@/components/ui/onboarding/profile/workout-days-selector";
-import WorkoutFrequencySelector from "@/components/ui/onboarding/profile/workout-frequency-selector";
-
+import { useOnboardingContext } from "@/components/provider/onboarding-provider";
 import UIButton from "@/components/ui/button";
-import DurationSelector from "@/components/ui/duration-selector";
-import UIText from "@/components/ui/text";
-import TimeSelector from "@/components/ui/time-selector";
+import Selector from "@/components/ui/selector";
+import FormGroup from "@/components/ui/form-group";
+import Input from "@/components/ui/input";
+import BMICard from "@/components/ui/onboarding/profile/bmi-card";
+import DateInput from "@/components/ui/date-input";
+import { Mars, Venus } from "lucide-react-native";
+import StepIndicator from "@/components/ui/onboarding/profile/step-indicator";
+import OptionSelector from "@/components/ui/option-selector";
 import ToggleRow from "@/components/ui/toggle-row";
-
+import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import { useState } from "react";
-
-import {
-  StyleSheet,
-  View,
-} from "react-native";
-
-export default function Page() {
-  const themeColor = useThemeColor();
-
+export default function Profile() {
   const router = useRouter();
+  const themeColor = useThemeColor();
+  const { step, setStep } = useOnboardingContext();
 
-  const { step, setStep } =
-    useOnboardingContext();
+  const [date, setDate] = useState<Date | null>(null);
+  const [gender, setGender] = useState<"male" | "female">("male");
+  const [workoutFrequency, setWorkoutFrequency] = useState("");
+  const [selectedDuration, setSelectedDuration] = useState("");
+  const [workoutDays, setWorkoutDays] = useState<string[]>([]);
+  const [reminderTime, setReminderTime] = useState("");
+  const [reminderEnabled, setReminderEnabled] = useState(false);
 
-  const [date, setDate] =
-    useState(new Date());
+  const currentStep =
+    step === "profile" || step === "bmi"
+      ? 1
+      : step === "workout"
+        ? 2
+        : 3;
 
-  const [showDatePicker, setShowDatePicker] =
-    useState(false);
+  const goToBMI = () => {
+    setStep("bmi");
+  };
 
-  const [gender, setGender] =
-    useState<"male" | "female">("male");
+  const goToWorkout = () => {
+    setStep("workout");
+  };
 
-  const [workoutFrequency, setWorkoutFrequency] =
-    useState<number>();
+  const goToTime = () => {
+    setStep("time");
+  };
 
-  const [workoutDays, setWorkoutDays] =
-    useState<string[]>([]);
+  const goToResult = () => {
+    router.push("/result");
+  };
 
-  const [reminderEnabled, setReminderEnabled] =
-    useState(false);
 
   return (
     <View style={styles.container}>
-    
       <View style={styles.stepContainer}>
         <StepIndicator
-          currentStep={
-            step === "profile" ||
-            step === "bmi"
-              ? 1
-              : step === "workout"
-                ? 2
-                : 3
-          }
+          currentStep={currentStep}
           totalSteps={3}
         />
       </View>
 
       {step === "profile" && (
         <>
-          <UIText style={styles.title}>
-            Tell Us About You
-          </UIText>
+          <UIText style={styles.title}>Tell Us About You</UIText>
 
           <UIText style={styles.subtitle}>
-            Enter your basic information to create a
-            personalized workout plan.
+            Enter your basic information to create a personalized workout
+            plan.
           </UIText>
 
           <View style={styles.form}>
-            <AuthFormGroup label="Date of birth">
+            <FormGroup label="Date of birth">
               <DateInput
-                value=""
-                selectedDate={date}
-                showPicker={showDatePicker}
-                onOpen={() =>
-                  setShowDatePicker(true)
+                value={date}
+                onChange={setDate}
+              />
+            </FormGroup>
+
+            <FormGroup label="Gender">
+              <OptionSelector
+                options={["Male", "Female"]}
+                value={gender === "male" ? "Male" : "Female"}
+                onChange={(value) =>
+                  setGender(value === "Male" ? "male" : "female")
                 }
-                onChange={(selectedDate) => {
-                  setDate(selectedDate);
-                  setShowDatePicker(false);
-                }}
+                icons={[
+                  <Mars key="male" size={20} color="#FFFFFF" />,
+                  <Venus key="female" size={20} color="#FFFFFF" />,
+                ]}
               />
-            </AuthFormGroup>
+            </FormGroup>
 
-            <AuthFormGroup label="Gender">
-              <GenderSelector
-                value={gender}
-                onChange={setGender}
-              />
-            </AuthFormGroup>
-
-            <AuthFormGroup label="Height (cm)">
-              <AuthInput
+            <FormGroup label="Height (cm)">
+              <Input
                 style={styles.input}
                 placeholder="Enter the height"
                 keyboardType="numeric"
               />
-            </AuthFormGroup>
+            </FormGroup>
 
-            <AuthFormGroup label="Weight (kg)">
-              <AuthInput
+            <FormGroup label="Weight (kg)">
+              <Input
                 style={styles.input}
                 placeholder="Enter the weight"
                 keyboardType="numeric"
               />
-            </AuthFormGroup>
+            </FormGroup>
           </View>
 
           <UIButton
             style={[
               styles.mainButton,
               {
-                backgroundColor:
-                  themeColor.destructive,
+                backgroundColor: themeColor.destructive,
               },
             ]}
-            label="CONTINUE"
-            onPress={() =>
-              setStep("bmi")
-            }
+            label="Continue"
+            onPress={goToBMI}
           />
         </>
       )}
@@ -143,9 +126,7 @@ export default function Page() {
 
       {step === "bmi" && (
         <>
-          <UIText style={styles.title}>
-            Your BMI Result
-          </UIText>
+          <UIText style={styles.title}>Your BMI Result</UIText>
 
           <UIText style={styles.subtitle}>
             Based on your height and weight,
@@ -153,25 +134,20 @@ export default function Page() {
             here is your body mass index (BMI).
           </UIText>
 
-          <BMIResult
+          <BMICard
             value="23,4"
             status="Normal"
           />
-
-          <BMICategoryCard />
 
           <UIButton
             style={[
               styles.mainButton,
               {
-                backgroundColor:
-                  themeColor.destructive,
+                backgroundColor: themeColor.destructive,
               },
             ]}
-            label="CONTINUE"
-            onPress={() =>
-              setStep("workout")
-            }
+            label="Continue"
+            onPress={goToWorkout}
           />
         </>
       )}
@@ -179,9 +155,7 @@ export default function Page() {
 
       {step === "workout" && (
         <>
-          <UIText style={styles.title}>
-            Set Your Workout Routine
-          </UIText>
+          <UIText style={styles.title}>Set Your Workout Routine</UIText>
 
           <UIText style={styles.subtitle}>
             Choose how often you want to
@@ -192,33 +166,33 @@ export default function Page() {
           </UIText>
 
           <View style={styles.form}>
-            <AuthFormGroup label="Workout frequency per week">
-              <WorkoutFrequencySelector
+            <FormGroup label="Workout frequency per week">
+              <OptionSelector
+                options={["1 day", "2 days", "3 days", "4 days", "5 days", "6 days"]}
                 value={workoutFrequency}
                 onChange={setWorkoutFrequency}
               />
-            </AuthFormGroup>
+            </FormGroup>
 
-            <AuthFormGroup label="Workout duration per Session">
-              <DurationSelector
+            <FormGroup label="Workout duration per Session">
+              <Selector
                 placeholder="Select duration"
-                onPress={() => {}}
+                options={["15 minutes", "30 minutes", "45 minutes", "60 minutes"]}
+                value={selectedDuration}
+                onChange={setSelectedDuration}
               />
-            </AuthFormGroup>
+            </FormGroup>
           </View>
 
           <UIButton
             style={[
               styles.mainButton,
               {
-                backgroundColor:
-                  themeColor.destructive,
+                backgroundColor: themeColor.destructive,
               },
             ]}
-            label="CONTINUE"
-            onPress={() =>
-              setStep("time")
-            }
+            label="Continue"
+            onPress={goToTime}
           />
         </>
       )}
@@ -226,38 +200,36 @@ export default function Page() {
 
       {step === "time" && (
         <>
-          <UIText style={styles.title}>
-            Set Your Time
-          </UIText>
+          <UIText style={styles.title}>Set Your Time</UIText>
 
           <UIText style={styles.subtitle}>
             Help us personalize your workout plan.
           </UIText>
 
           <View style={styles.form}>
-            <AuthFormGroup label="Preferred workout days">
-              <WorkoutDaysSelector
+            <FormGroup label="Preferred workout days">
+              <OptionSelector
+                options={["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"]}
                 value={workoutDays}
                 onChange={setWorkoutDays}
+                multiple
               />
-            </AuthFormGroup>
+            </FormGroup>
 
-            <AuthFormGroup label="Reminder Time">
-              <UIText
-                style={
-                  styles.reminderDescription
-                }
-              >
+            <FormGroup label="Reminder Time">
+              <UIText style={styles.reminderDescription}>
                 We&apos;ll remind you to work out at
                 {"\n"}
                 your preferred time.
               </UIText>
 
-              <TimeSelector
+              <Selector
                 placeholder="Select time"
-                onPress={() => {}}
+                options={["07:00", "09:00", "12:00", "16:00", "19:00", "21:00"]}
+                value={reminderTime}
+                onChange={setReminderTime}
               />
-            </AuthFormGroup>
+            </FormGroup>
 
             <ToggleRow
               label="Enable workout reminders"
@@ -270,14 +242,11 @@ export default function Page() {
             style={[
               styles.mainButton,
               {
-                backgroundColor:
-                  themeColor.destructive,
+                backgroundColor: themeColor.destructive,
               },
             ]}
-            label="CONTINUE"
-            onPress={() =>
-              router.push("/result")
-            }
+            label="Continue"
+            onPress={goToResult}
           />
         </>
       )}
@@ -287,44 +256,31 @@ export default function Page() {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     paddingTop: 10,
   },
-
   stepContainer: {
     marginBottom: 18,
   },
-
   title: {
     fontSize: 30,
     fontWeight: "bold",
   },
-
   subtitle: {
     fontSize: 16,
     marginTop: 4,
   },
-
   form: {
     marginTop: 26,
     gap: 14,
   },
-
   input: {
     height: 48,
     borderRadius: 6,
   },
-
-  infoContainer: {
-    marginTop: 14,
-  },
-
   reminderDescription: {
-    fontSize: 11,
+    fontSize: 12,
     color: "#999999",
-    marginBottom: 10,
   },
-
   mainButton: {
     width: "100%",
     height: 48,

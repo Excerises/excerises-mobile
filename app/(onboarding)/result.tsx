@@ -1,28 +1,26 @@
-import UIButton from "@/components/ui/button";
-import UIText from "@/components/ui/text";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 
+import UIButton from "@/components/ui/button";
 import AILoader from "@/components/ui/onboarding/result/ai-loader";
 import CompleteIllustration from "@/components/ui/onboarding/result/complete-illustration";
 import FitnessLevelCard from "@/components/ui/onboarding/result/fitness-level-card";
 import ProgressBar from "@/components/ui/onboarding/result/progress-bar";
 import ProgressItem from "@/components/ui/onboarding/result/progress-item";
-
+import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import { useRouter } from "expo-router";
-
-import { useEffect, useState } from "react";
-
-import { StyleSheet, View } from "react-native";
-
-export default function Page() {
+export default function Result() {
+  const router = useRouter();
   const themeColor = useThemeColor();
 
-  const router = useRouter();
-
   const [isComplete, setIsComplete] = useState(false);
-
   const [progress, setProgress] = useState(0);
+
+  const goToDashboard = () => {
+    router.replace("/dashboard");
+  };
 
   useEffect(() => {
     if (isComplete) {
@@ -30,13 +28,12 @@ export default function Page() {
     }
 
     const interval = setInterval(() => {
-      setProgress((current) => {
-        if (current >= 100) {
-          clearInterval(interval);
+      setProgress((currentProgress) => {
+        if (currentProgress >= 100) {
           return 100;
         }
 
-        return current + 2;
+        return currentProgress + 2;
       });
     }, 100);
 
@@ -46,15 +43,17 @@ export default function Page() {
   }, [isComplete]);
 
   useEffect(() => {
-    if (progress >= 100) {
-      const timeout = setTimeout(() => {
-        setIsComplete(true);
-      }, 700);
-
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (progress < 100) {
+      return;
     }
+
+    const timeout = setTimeout(() => {
+      setIsComplete(true);
+    }, 700);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [progress]);
 
   return (
@@ -106,7 +105,10 @@ export default function Page() {
             />
           </View>
 
-          <ProgressBar progress={progress} color={themeColor.destructive} />
+          <ProgressBar
+            progress={progress}
+            color={themeColor.destructive}
+          />
 
           <UIText style={styles.progressText}>
             {progress >= 100 ? "Complete!" : "Almost there..."}
@@ -141,7 +143,7 @@ export default function Page() {
               },
             ]}
             label="Go to Dashboard"
-            onPress={() => router.replace("/dashboard")}
+            onPress={goToDashboard}
           />
         </>
       )}
@@ -156,32 +158,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingTop: 20,
   },
-
   progressContainer: {
     width: "100%",
     marginTop: 22,
     gap: 10,
   },
-
   title: {
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
   },
-
   description: {
     fontSize: 13,
     textAlign: "center",
     lineHeight: 16,
     marginTop: 8,
   },
-
   progressText: {
     fontSize: 13,
     marginTop: 10,
     opacity: 0.7,
   },
-
   mainButton: {
     width: "100%",
     height: 48,

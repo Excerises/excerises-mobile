@@ -1,15 +1,6 @@
-import ThemeToggler from "@/components/theme-toggler";
-
-import { useThemeContext } from "@/components/provider/theme-provider";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import { NavigationBar } from "expo-navigation-bar";
-
 import { Slot, useRouter } from "expo-router";
-
 import { StatusBar } from "expo-status-bar";
-
 import {
   KeyboardAvoidingView,
   Platform,
@@ -19,20 +10,24 @@ import {
   Text,
   View,
 } from "react-native";
-
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
+import { useThemeContext } from "@/components/provider/theme-provider";
+import ThemeToggler from "@/components/theme-toggler";
+import useThemeColor from "@/hooks/use-theme-color";
+
 export default function Layout() {
+  const router = useRouter();
   const themeColor = useThemeColor();
-
   const { theme } = useThemeContext();
-
   const insets = useSafeAreaInsets();
 
-  const router = useRouter();
+  const goToHome = () => {
+    router.replace("/");
+  };
 
   return (
     <View
@@ -50,10 +45,7 @@ export default function Layout() {
       <SafeAreaView edges={["top"]} />
 
       <View style={styles.header}>
-        <Pressable
-          onPress={() => router.replace("/")}
-          style={styles.backButton}
-        >
+        <Pressable onPress={goToHome} style={styles.backButton}>
           <Text
             style={[
               styles.backText,
@@ -95,7 +87,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-
   header: {
     height: 60,
     flexDirection: "row",
@@ -103,31 +94,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 18,
   },
-
   backButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
     alignItems: "flex-start",
   },
-
   backText: {
     fontSize: 32,
     fontWeight: "300",
   },
-
   keyboardContainer: {
     flex: 1,
   },
-
   scrollView: {
     flex: 1,
   },
-
   scrollContent: {
     flexGrow: 1,
   },
-
   pageContainer: {
     flex: 1,
     paddingHorizontal: 18,

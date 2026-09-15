@@ -1,15 +1,6 @@
-import OnboardingProvider, {
-  useOnboardingContext,
-} from "@/components/provider/onboarding-provider";
-
-import { useThemeContext } from "@/components/provider/theme-provider";
-import ThemeToggler from "@/components/theme-toggler";
-import useThemeColor from "@/hooks/use-theme-color";
-
 import { NavigationBar } from "expo-navigation-bar";
 import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-
 import {
   KeyboardAvoidingView,
   Platform,
@@ -20,46 +11,38 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
+import OnboardingProvider, {
+  useOnboardingContext,
+} from "@/components/provider/onboarding-provider";
+import { useThemeContext } from "@/components/provider/theme-provider";
+import ThemeToggler from "@/components/theme-toggler";
+import useThemeColor from "@/hooks/use-theme-color";
+
 function OnboardingLayout() {
   const { height } = useWindowDimensions();
-
   const themeColor = useThemeColor();
-
   const { theme } = useThemeContext();
-
   const insets = useSafeAreaInsets();
-
   const { handleBack } = useOnboardingContext();
-
-  const systemBarStyle =
-    theme === "dark" ? "light" : "dark";
 
   return (
     <View
       style={[
         styles.root,
         {
-          backgroundColor:
-            themeColor.background,
+          backgroundColor: themeColor.background,
         },
       ]}
     >
-      <StatusBar
-        style={systemBarStyle}
-      />
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
 
       <NavigationBar
-        style={
-          theme === "dark"
-            ? "dark"
-            : "light"
-        }
+        style={theme === "dark" ? "dark" : "light"}
       />
 
       <SafeAreaView edges={["top"]} />
@@ -73,8 +56,7 @@ function OnboardingLayout() {
             style={[
               styles.backText,
               {
-                color:
-                  themeColor.foreground,
+                color: themeColor.foreground,
               },
             ]}
           >
@@ -82,29 +64,17 @@ function OnboardingLayout() {
           </Text>
         </Pressable>
 
-        <ThemeToggler
-          color={themeColor.foreground}
-        />
+        <ThemeToggler color={themeColor.foreground} />
       </View>
 
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
-        behavior={
-          Platform.OS === "ios"
-            ? "padding"
-            : "height"
-        }
-        keyboardVerticalOffset={
-          Platform.OS === "ios"
-            ? insets.top
-            : 0
-        }
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? insets.top : 0}
       >
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={
-            styles.scrollContent
-          }
+          contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -142,7 +112,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-
   header: {
     height: 60,
     flexDirection: "row",
@@ -150,31 +119,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 18,
   },
-
   backButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
     alignItems: "flex-start",
   },
-
   backText: {
     fontSize: 32,
     fontWeight: "300",
   },
-
   keyboardContainer: {
     flex: 1,
   },
-
   scrollView: {
     flex: 1,
   },
-
   scrollContent: {
     flexGrow: 1,
   },
-
   pageContainer: {
     flex: 1,
     paddingHorizontal: 18,

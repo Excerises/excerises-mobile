@@ -1,37 +1,42 @@
-import useThemeColor from "@/hooks/use-theme-color";
-
+import { EyeIcon, EyeOffIcon } from "lucide-react-native";
+import { useState } from "react";
 import {
   Pressable,
   StyleSheet,
   TextInput,
-  TextInputProps,
   View,
 } from "react-native";
+import type {
+  StyleProp,
+  TextInputProps,
+  ViewStyle,
+} from "react-native";
 
-import { EyeIcon, EyeOffIcon } from "lucide-react-native";
+import useThemeColor from "@/hooks/use-theme-color";
 
-import { useState } from "react";
-
-interface Props extends TextInputProps {
+type InputProps = Omit<TextInputProps, "style"> & {
   prefix?: React.ReactNode;
   isPassword?: boolean;
-}
+  style?: StyleProp<ViewStyle>;
+};
 
-export default function AuthInput({ isPassword, prefix, ...props }: Props) {
+export default function Input({
+  isPassword,
+  prefix,
+  style,
+  ...props
+}: InputProps) {
   const themeColor = useThemeColor();
-
-  const { style, ...other } = props;
-
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <View
       style={[
-        styles.group,
+        styles.container,
         {
           backgroundColor: themeColor.card,
         },
-        style as any,
+        style,
       ]}
     >
       {prefix}
@@ -43,7 +48,7 @@ export default function AuthInput({ isPassword, prefix, ...props }: Props) {
             color: themeColor.foreground,
           },
         ]}
-        {...other}
+        {...props}
         secureTextEntry={isPassword ? !showPassword : false}
         placeholderTextColor={themeColor.mutedForeground}
       />
@@ -54,9 +59,15 @@ export default function AuthInput({ isPassword, prefix, ...props }: Props) {
           style={styles.eyeButton}
         >
           {showPassword ? (
-            <EyeIcon color={themeColor.mutedForeground} size={20} />
+            <EyeIcon
+              color={themeColor.mutedForeground}
+              size={20}
+            />
           ) : (
-            <EyeOffIcon color={themeColor.mutedForeground} size={20} />
+            <EyeOffIcon
+              color={themeColor.mutedForeground}
+              size={20}
+            />
           )}
         </Pressable>
       )}
@@ -65,21 +76,19 @@ export default function AuthInput({ isPassword, prefix, ...props }: Props) {
 }
 
 const styles = StyleSheet.create({
-  group: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
     height: 48,
     borderRadius: 6,
     paddingHorizontal: 18,
   },
-
   input: {
     flex: 1,
     fontSize: 16,
     paddingVertical: 0,
     paddingHorizontal: 0,
   },
-
   eyeButton: {
     justifyContent: "center",
     alignItems: "center",

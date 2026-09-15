@@ -1,23 +1,34 @@
+import { useRouter } from "expo-router";
+import {
+  ChartNoAxesColumnIncreasing,
+  Dumbbell,
+} from "lucide-react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+
 import DashboardHeader from "@/components/ui/main/dashboard/dashboard-header";
 import NewsCard from "@/components/ui/main/dashboard/news-card";
 import RecentWorkoutCard from "@/components/ui/main/dashboard/recent-workout-card";
 import StatCard from "@/components/ui/main/dashboard/stat-card";
 import WorkoutBanner from "@/components/ui/main/dashboard/workout-banner";
-
 import UIText from "@/components/ui/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
-import { useRouter } from "expo-router";
-
-import { ChartNoAxesColumnIncreasing, Dumbbell } from "lucide-react-native";
-
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-
-export default function Page() {
+export default function Dashboard() {
+  const router = useRouter();
   const themeColor = useThemeColor();
 
-  const router = useRouter();
+  const goToWorkout = () => {
+    router.push("/type-workout");
+  };
+
+  const goToHistory = () => {
+    router.push("/history");
+  };
 
   return (
     <View
@@ -29,7 +40,10 @@ export default function Page() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <DashboardHeader name="User" onNotificationPress={() => {}} />
+        <DashboardHeader
+          name="User"
+          onNotificationPress={() => {}}
+        />
       </View>
 
       <ScrollView
@@ -42,14 +56,18 @@ export default function Page() {
           description={
             "Choose your workout type\nand get personalized exercises."
           }
-          onPress={() => router.push("/type-workout")}
+          onPress={goToWorkout}
         />
 
         <View style={styles.sectionHeader}>
-          <UIText style={styles.sectionTitle}>Your Body Stats</UIText>
+          <UIText style={styles.sectionTitle}>
+            Your Body Stats
+          </UIText>
 
           <Pressable>
-            <UIText style={styles.seeDetails}>See Details &gt;</UIText>
+            <UIText style={styles.seeDetails}>
+              See Details &gt;
+            </UIText>
           </Pressable>
         </View>
 
@@ -67,7 +85,12 @@ export default function Page() {
           />
 
           <StatCard
-            icon={<Dumbbell size={21} color={themeColor.destructive} />}
+            icon={
+              <Dumbbell
+                size={21}
+                color={themeColor.destructive}
+              />
+            }
             value="68.5"
             unit="kg"
             label="Weight"
@@ -88,10 +111,14 @@ export default function Page() {
         </View>
 
         <View style={styles.sectionHeader}>
-          <UIText style={styles.sectionTitle}>Recent Workouts</UIText>
+          <UIText style={styles.sectionTitle}>
+            Recent Workouts
+          </UIText>
 
-          <Pressable onPress={() => router.push("/history")}>
-            <UIText style={styles.seeDetails}>See All &gt;</UIText>
+          <Pressable onPress={goToHistory}>
+            <UIText style={styles.seeDetails}>
+              See All &gt;
+            </UIText>
           </Pressable>
         </View>
 
@@ -110,10 +137,14 @@ export default function Page() {
         />
 
         <View style={styles.sectionHeader}>
-          <UIText style={styles.sectionTitle}>Latest News</UIText>
+          <UIText style={styles.sectionTitle}>
+            Latest News
+          </UIText>
 
           <Pressable>
-            <UIText style={styles.seeDetails}>See All &gt;</UIText>
+            <UIText style={styles.seeDetails}>
+              See All &gt;
+            </UIText>
           </Pressable>
         </View>
 
@@ -148,17 +179,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
   headerContainer: {
     paddingHorizontal: 17,
     paddingTop: 14,
   },
-
   scrollContent: {
     paddingHorizontal: 17,
     paddingBottom: 20,
   },
-
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
@@ -166,16 +194,13 @@ const styles = StyleSheet.create({
     marginTop: 17,
     marginBottom: 7,
   },
-
   sectionTitle: {
     fontSize: 12,
     fontWeight: "600",
   },
-
   seeDetails: {
     fontSize: 10,
   },
-
   statsRow: {
     flexDirection: "row",
     gap: 14,
