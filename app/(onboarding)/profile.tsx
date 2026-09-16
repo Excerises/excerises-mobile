@@ -4,17 +4,17 @@ import { StyleSheet, View } from "react-native";
 
 import { useOnboardingContext } from "@/components/provider/onboarding-provider";
 import UIButton from "@/components/ui/button";
-import Selector from "@/components/ui/selector";
+import DateInput from "@/components/ui/date-input";
 import FormGroup from "@/components/ui/form-group";
 import Input from "@/components/ui/input";
 import BMICard from "@/components/ui/onboarding/profile/bmi-card";
-import DateInput from "@/components/ui/date-input";
-import { Mars, Venus } from "lucide-react-native";
 import StepIndicator from "@/components/ui/onboarding/profile/step-indicator";
 import OptionSelector from "@/components/ui/option-selector";
-import ToggleRow from "@/components/ui/toggle-row";
+import Selector from "@/components/ui/selector";
 import UIText from "@/components/ui/text";
+import ToggleRow from "@/components/ui/toggle-row";
 import useThemeColor from "@/hooks/use-theme-color";
+import { Mars, Venus } from "lucide-react-native";
 
 export default function Profile() {
   const router = useRouter();
@@ -23,18 +23,37 @@ export default function Profile() {
 
   const [date, setDate] = useState<Date | null>(null);
   const [gender, setGender] = useState<"male" | "female">("male");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
   const [workoutFrequency, setWorkoutFrequency] = useState("");
   const [selectedDuration, setSelectedDuration] = useState("");
   const [workoutDays, setWorkoutDays] = useState<string[]>([]);
   const [reminderTime, setReminderTime] = useState("");
   const [reminderEnabled, setReminderEnabled] = useState(false);
 
+  // Kalkulasi nilai BMI dinamis berdasarkan height (cm) & weight (kg)
+  const calculateBMI = () => {
+    const hInMeters = parseFloat(height) / 100;
+    const wInKg = parseFloat(weight);
+    if (hInMeters > 0 && wInKg > 0) {
+      const bmi = wInKg / (hInMeters * hInMeters);
+      return bmi.toFixed(1);
+    }
+    return "0.0";
+  };
+
+  // Menentukan kategori BMI
+  const getBMIStatus = (bmiValue: string) => {
+    const val = parseFloat(bmiValue);
+    if (val <= 0) return "-";
+    if (val < 18.5) return "Underweight";
+    if (val < 25) return "Normal";
+    if (val < 30) return "Overweight";
+    return "Obese";
+  };
+
   const currentStep =
-    step === "profile" || step === "bmi"
-      ? 1
-      : step === "workout"
-        ? 2
-        : 3;
+    step === "profile" || step === "bmi" ? 1 : step === "workout" ? 2 : 3;
 
   const goToBMI = () => {
     setStep("bmi");
@@ -52,14 +71,10 @@ export default function Profile() {
     router.push("/result");
   };
 
-
   return (
     <View style={styles.container}>
       <View style={styles.stepContainer}>
-        <StepIndicator
-          currentStep={currentStep}
-          totalSteps={3}
-        />
+        <StepIndicator currentStep={currentStep} totalSteps={3} />
       </View>
 
       {step === "profile" && (
@@ -67,16 +82,12 @@ export default function Profile() {
           <UIText style={styles.title}>Tell Us About You</UIText>
 
           <UIText style={styles.subtitle}>
-            Enter your basic information to create a personalized workout
-            plan.
+            Enter your basic information to create a personalized workout plan.
           </UIText>
 
           <View style={styles.form}>
             <FormGroup label="Date of birth">
-              <DateInput
-                value={date}
-                onChange={setDate}
-              />
+              <DateInput value={date} onChange={setDate} />
             </FormGroup>
 
             <FormGroup label="Gender">
@@ -98,6 +109,8 @@ export default function Profile() {
                 style={styles.input}
                 placeholder="Enter the height"
                 keyboardType="numeric"
+                value={height}
+                onChangeText={setHeight}
               />
             </FormGroup>
 
@@ -106,6 +119,8 @@ export default function Profile() {
                 style={styles.input}
                 placeholder="Enter the weight"
                 keyboardType="numeric"
+                value={weight}
+                onChangeText={setWeight}
               />
             </FormGroup>
           </View>
@@ -123,7 +138,6 @@ export default function Profile() {
         </>
       )}
 
-
       {step === "bmi" && (
         <>
           <UIText style={styles.title}>Your BMI Result</UIText>
@@ -135,8 +149,8 @@ export default function Profile() {
           </UIText>
 
           <BMICard
-            value="23,4"
-            status="Normal"
+            value={calculateBMI()}
+            status={getBMIStatus(calculateBMI())}
           />
 
           <UIButton
@@ -151,7 +165,6 @@ export default function Profile() {
           />
         </>
       )}
-
 
       {step === "workout" && (
         <>
@@ -168,7 +181,14 @@ export default function Profile() {
           <View style={styles.form}>
             <FormGroup label="Workout frequency per week">
               <OptionSelector
-                options={["1 day", "2 days", "3 days", "4 days", "5 days", "6 days"]}
+                options={[
+                  "1 day",
+                  "2 days",
+                  "3 days",
+                  "4 days",
+                  "5 days",
+                  "6 days",
+                ]}
                 value={workoutFrequency}
                 onChange={setWorkoutFrequency}
               />
@@ -177,7 +197,12 @@ export default function Profile() {
             <FormGroup label="Workout duration per Session">
               <Selector
                 placeholder="Select duration"
-                options={["15 minutes", "30 minutes", "45 minutes", "60 minutes"]}
+                options={[
+                  "15 minutes",
+                  "30 minutes",
+                  "45 minutes",
+                  "60 minutes",
+                ]}
                 value={selectedDuration}
                 onChange={setSelectedDuration}
               />
@@ -196,7 +221,6 @@ export default function Profile() {
           />
         </>
       )}
-
 
       {step === "time" && (
         <>
