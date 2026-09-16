@@ -15,7 +15,7 @@ import { Borders } from "@/constant/theme";
 interface Props extends TouchableOpacityProps {
   label: string;
   labelStyle?: StyleProp<TextStyle>;
-  variant?: "default" | "destructive";
+  variant?: "default" | "primary";
   icon?: React.ReactNode;
 }
 
@@ -32,7 +32,7 @@ export default function UIButton({
 
   const color = {
     default: themeColor.primary,
-    destructive: themeColor.destructive,
+    primary: themeColor.primary,
   }[variant];
 
   return (

@@ -90,7 +90,7 @@ export default function Page() {
               styles.title,
               styles.youText,
               {
-                color: themeColor.destructive,
+                color: themeColor.primary,
               },
             ]}
           >
@@ -115,7 +115,7 @@ export default function Page() {
           style={[
             styles.startButton,
             {
-              backgroundColor: themeColor.destructive,
+              backgroundColor: themeColor.primary,
             },
           ]}
           label="Started"

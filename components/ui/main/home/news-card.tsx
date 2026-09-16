@@ -1,9 +1,4 @@
-import UIText from "@/components/ui/text";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import { useCallback, useEffect, useRef, useState } from "react";
-
 import {
   Dimensions,
   FlatList,
@@ -14,6 +9,9 @@ import {
   View,
   ViewToken,
 } from "react-native";
+
+import UIText from "@/components/ui/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsItem = {
   id: string;
@@ -32,12 +30,10 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
   const themeColor = useThemeColor();
 
   const [activeIndex, setActiveIndex] = useState(0);
-
   const activeIndexRef = useRef(0);
+  const listRef = useRef<FlatList<NewsItem>>(null);
 
-  const listRef = useRef<FlatList<NewsItem> | null>(null);
-
-  const cardWidth = width - 48;
+  const cardWidth = width - 40;
 
   const handleViewableItemsChanged = useCallback(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -64,32 +60,35 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
       activeIndexRef.current = nextIndex;
       setActiveIndex(nextIndex);
 
-      listRef.current?.scrollToOffset({
-        offset: nextIndex * cardWidth,
+      listRef.current?.scrollToIndex({
+        index: nextIndex,
         animated: true,
       });
-    }, 3000);
+    }, 5000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [data.length, cardWidth]);
+    return () => clearInterval(interval);
+  }, [data.length]);
 
   return (
     <View>
       <FlatList
         ref={listRef}
         data={data}
-        keyExtractor={(item) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
+        pagingEnabled
         snapToInterval={cardWidth}
         decelerationRate="fast"
-        scrollEventThrottle={16}
+        keyExtractor={(item) => item.id}
+        getItemLayout={(_, index) => ({
+          length: cardWidth,
+          offset: cardWidth * index,
+          index,
+        })}
+        onViewableItemsChanged={handleViewableItemsChanged}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 60,
         }}
-        onViewableItemsChanged={handleViewableItemsChanged}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => onPress?.(item)}
@@ -98,6 +97,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               {
                 width: cardWidth,
                 borderColor: themeColor.destructive,
+                backgroundColor: themeColor.card,
               },
             ]}
           >
@@ -105,6 +105,15 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               source={item.image}
               resizeMode="cover"
               style={styles.image}
+            />
+
+            <View
+              style={[
+                styles.overlay,
+                {
+                  backgroundColor: themeColor.overlay,
+                },
+              ]}
             />
 
             <View style={styles.content}>
@@ -116,17 +125,17 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
         )}
       />
 
-      <View style={styles.indicatorContainer}>
+      <View style={styles.indicator}>
         {data.map((item, index) => (
           <View
             key={item.id}
             style={[
-              styles.indicator,
+              styles.dot,
               {
                 backgroundColor:
                   index === activeIndex
                     ? themeColor.destructive
-                    : themeColor.border,
+                    : themeColor.mutedForeground,
               },
             ]}
           />
@@ -138,47 +147,58 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    height: 124,
+    height: 120,
+    borderWidth: 1,
     borderRadius: 7,
     overflow: "hidden",
-    borderWidth: 1,
-    flexDirection: "row",
+    position: "relative",
   },
 
   image: {
+    position: "absolute",
     width: "46%",
     height: "100%",
+    left: 0,
+    top: 0,
+  },
+
+  overlay: {
+    position: "absolute",
+    left: "30%",
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
 
   content: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    marginLeft: "45%",
+    paddingHorizontal: 12,
+    paddingVertical: 9,
     justifyContent: "space-between",
   },
 
   title: {
-    fontSize: 17,
-    fontWeight: "bold",
-    lineHeight: 19,
+    maxWidth: 150,
+    fontSize: 15,
+    fontWeight: "600",
+    lineHeight: 18,
   },
 
   readMore: {
-    fontSize: 13,
-    color: "#999999",
+    fontSize: 11,
   },
 
-  indicatorContainer: {
+  indicator: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
     gap: 8,
     marginTop: 10,
   },
 
-  indicator: {
-    width: 9,
-    height: 9,
-    borderRadius: 5,
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
 });

@@ -18,8 +18,8 @@ export default function Result() {
   const [isComplete, setIsComplete] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const goToDashboard = () => {
-    router.replace("/dashboard");
+  const goToHome = () => {
+    router.replace("/home");
   };
 
   useEffect(() => {
@@ -67,10 +67,9 @@ export default function Result() {
     >
       {!isComplete ? (
         <>
-          <AILoader color={themeColor.destructive} />
+          <AILoader color={themeColor.primary} />
 
           <UIText style={styles.title}>Analyzing Your Data</UIText>
-
           <UIText style={styles.description}>
             Our AI is processing your information
             {"\n"}
@@ -83,31 +82,31 @@ export default function Result() {
             <ProgressItem
               completed={progress >= 25}
               text="Calculating your BMI"
-              color={themeColor.destructive}
+              color={themeColor.primary}
             />
 
             <ProgressItem
               completed={progress >= 50}
               text="Analyzing workout preferences"
-              color={themeColor.destructive}
+              color={themeColor.primary}
             />
 
             <ProgressItem
               completed={progress >= 75}
               text="Determining fitness level"
-              color={themeColor.destructive}
+              color={themeColor.primary}
             />
 
             <ProgressItem
               completed={progress >= 100}
               text="Generating recommendations"
-              color={themeColor.destructive}
+              color={themeColor.primary}
             />
           </View>
 
           <ProgressBar
             progress={progress}
-            color={themeColor.destructive}
+            color={themeColor.primary}
           />
 
           <UIText style={styles.progressText}>
@@ -116,10 +115,9 @@ export default function Result() {
         </>
       ) : (
         <>
-          <CompleteIllustration color={themeColor.destructive} />
+          <CompleteIllustration color={themeColor.primary} />
 
           <UIText style={styles.title}>You&apos;re All Set!</UIText>
-
           <UIText style={styles.description}>
             Your profile has been saved
             {"\n"}
@@ -139,11 +137,11 @@ export default function Result() {
             style={[
               styles.mainButton,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.primary,
               },
             ]}
-            label="Go to Dashboard"
-            onPress={goToDashboard}
+            label="Go to Home"
+            onPress={goToHome}
           />
         </>
       )}

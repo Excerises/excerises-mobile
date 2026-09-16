@@ -1,5 +1,5 @@
 import UIText from "@/components/ui/text";
 
 export default function Page() {
-  return <UIText>History</UIText>;
+  return <UIText>News</UIText>;
 }

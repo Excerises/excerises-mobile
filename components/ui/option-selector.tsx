@@ -59,7 +59,7 @@ export default function OptionSelector(props: OptionSelectorProps) {
               props.options.length === 2 && styles.genderButton,
               {
                 backgroundColor: selected
-                  ? themeColor.destructive
+                  ? themeColor.primary
                   : themeColor.card,
               },
             ]}

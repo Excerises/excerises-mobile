@@ -49,14 +49,16 @@ export default function Login() {
         </FormGroup>
 
         <Pressable>
-          <UIText style={styles.redText}>Lupa password</UIText>
+          <UIText style={{ color: themeColor.primary }}>
+            Lupa password
+          </UIText>
         </Pressable>
       </View>
 
       <UIButton
         style={styles.loginButton}
         label="Login"
-        variant="destructive"
+        variant="default"
         onPress={goToProfile}
       />
 
@@ -133,9 +135,6 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 28,
-  },
-  redText: {
-    color: "#d00000",
   },
   divider: {
     flexDirection: "row",

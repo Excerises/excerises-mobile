@@ -1,8 +1,7 @@
-import UIText from "@/components/ui/text";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import { StyleSheet, View } from "react-native";
+
+import UIText from "@/components/ui/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type StatCardProps = {
   icon: React.ReactNode;
@@ -24,9 +23,10 @@ export default function StatCard({
   return (
     <View
       style={[
-        styles.card,
+        styles.container,
         {
           backgroundColor: themeColor.card,
+          borderColor: themeColor.destructive,
         },
       ]}
     >
@@ -45,38 +45,44 @@ export default function StatCard({
         {unit}
       </UIText>
 
-      <UIText style={styles.label}>{label}</UIText>
+      <UIText style={styles.label}>
+        {label}
+      </UIText>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    height: 91,
+  container: {
+    width: 110,
+    height: 125,
+    paddingVertical: 14,
     borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    justifyContent: "space-between",
+    borderWidth: 1,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 3,
   },
 
   icon: {
-    height: 21,
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: "flex-start",
   },
 
   value: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
   },
 
   unit: {
-    fontSize: 10,
-    marginTop: -6,
+    fontSize: 16,
+    textAlign: "center",
   },
 
   label: {
-    fontSize: 10,
+    fontSize: 16,
+    textAlign: "center",
   },
 });

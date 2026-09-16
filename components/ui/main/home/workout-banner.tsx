@@ -1,9 +1,8 @@
+import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+
 import UIButton from "@/components/ui/button";
 import UIText from "@/components/ui/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
-
-import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
 type WorkoutBannerProps = {
   image: ImageSourcePropType;
@@ -24,22 +23,26 @@ export default function WorkoutBanner({
     <View
       style={[
         styles.container,
-        {
-          borderColor: themeColor.destructive,
-        },
+        { borderColor: themeColor.destructive },
       ]}
     >
-      <Image source={image} resizeMode="cover" style={styles.image} />
+      <Image
+        source={image}
+        resizeMode="cover"
+        style={styles.image}
+      />
 
       <View style={styles.content}>
         <UIText style={styles.title}>{title}</UIText>
 
-        <UIText style={styles.description}>{description}</UIText>
+        <UIText style={styles.description}>
+          {description}
+        </UIText>
 
         <UIButton
           style={styles.button}
-          label="Start Workout"
-          variant="destructive"
+          label="Start Workout →"
+          variant="primary"
           onPress={onPress}
         />
       </View>
@@ -49,11 +52,11 @@ export default function WorkoutBanner({
 
 const styles = StyleSheet.create({
   container: {
-    height: 205,
+    height: 170,
+    marginTop: 20,
+    borderWidth: 1,
     borderRadius: 7,
     overflow: "hidden",
-    borderWidth: 1,
-    position: "relative",
   },
 
   image: {
@@ -68,31 +71,31 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    paddingHorizontal: 21,
-    paddingTop: 18,
-    paddingBottom: 14,
+    paddingHorizontal: 18,
+    paddingTop: 14,
+    paddingBottom: 12,
   },
 
   title: {
-    fontSize: 27,
+    maxWidth: 170,
+    fontSize: 24,
     fontWeight: "bold",
     color: "#FFFFFF",
-    lineHeight: 28,
-    maxWidth: 220,
+    lineHeight: 27,
   },
 
   description: {
-    fontSize: 17,
+    maxWidth: 210,
+    marginTop: 4,
+    fontSize: 14,
+    lineHeight: 17,
     color: "#FFFFFF",
-    lineHeight: 21,
-    marginTop: 5,
-    maxWidth: 280,
   },
 
   button: {
-    width: "100%",
-    height: 51,
+    width: 230,
+    height: 40,
     marginTop: "auto",
-    borderRadius: 7,
+    borderRadius: 6,
   },
 });

@@ -26,20 +26,20 @@ export default function Layout() {
   const menus = [
     {
       label: "Home",
-      path: "/dashboard",
-      route: "/(main)/dashboard",
+      path: "/home",
+      route: "/(main)/home",
       icon: Home,
     },
     {
       label: "Workout",
-      path: "/type-workout",
-      route: "/(main)/type-workout",
+      path: "/workout",
+      route: "/(main)/workout",
       icon: Dumbbell,
     },
     {
-      label: "History",
-      path: "/history",
-      route: "/(main)/history",
+      label: "News",
+      path: "/news",
+      route: "/(main)/news",
       icon: Clock3,
     },
     {
@@ -89,7 +89,7 @@ export default function Layout() {
               <Icon
                 size={21}
                 color={
-                  isActive ? themeColor.destructive : themeColor.foreground
+                  isActive ? themeColor.primary : themeColor.foreground
                 }
               />
 
@@ -98,7 +98,7 @@ export default function Layout() {
                   styles.navLabel,
                   {
                     color: isActive
-                      ? themeColor.destructive
+                      ? themeColor.primary
                       : themeColor.foreground,
                   },
                 ]}

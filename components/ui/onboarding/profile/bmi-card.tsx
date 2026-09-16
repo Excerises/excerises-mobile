@@ -17,10 +17,7 @@ const categories = [
   { color: "#FF1717", range: "≥ 25,0", label: "Obesity" },
 ];
 
-export default function BMICard({
-  value,
-  status,
-}: BMICardProps) {
+export default function BMICard({ value, status }: BMICardProps) {
   const themeColor = useThemeColor();
 
   const bmi = parseFloat(value.replace(",", "."));
@@ -85,7 +82,7 @@ export default function BMICard({
           <Path
             d={arcPath}
             fill="none"
-            stroke={themeColor.destructive}
+            stroke={themeColor.primary}
             strokeWidth={14}
             strokeLinecap="round"
             strokeDasharray={arcLength}
@@ -96,9 +93,7 @@ export default function BMICard({
         <View style={styles.center}>
           <UIText style={styles.value}>{value}</UIText>
 
-          <UIText style={styles.status}>
-            {status}
-          </UIText>
+          <UIText style={styles.status}>{status}</UIText>
         </View>
       </View>
 
@@ -115,10 +110,7 @@ export default function BMICard({
         </UIText>
 
         {categories.map((category) => (
-          <View
-            key={category.label}
-            style={styles.categoryRow}
-          >
+          <View key={category.label} style={styles.categoryRow}>
             <View
               style={[
                 styles.dot,
@@ -128,13 +120,9 @@ export default function BMICard({
               ]}
             />
 
-            <UIText style={styles.range}>
-              {category.range}
-            </UIText>
+            <UIText style={styles.range}>{category.range}</UIText>
 
-            <UIText style={styles.label}>
-              {category.label}
-            </UIText>
+            <UIText style={styles.label}>{category.label}</UIText>
           </View>
         ))}
       </View>

@@ -63,7 +63,7 @@ export default function Register() {
         style={[
           styles.mainButton,
           {
-            backgroundColor: themeColor.destructive,
+            backgroundColor: themeColor.primary,
           },
         ]}
         label="Register"

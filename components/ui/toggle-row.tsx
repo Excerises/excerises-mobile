@@ -48,7 +48,7 @@ export default function ToggleRow({
         onValueChange={onChange}
         trackColor={{
           false: "#444444",
-          true: themeColor.destructive,
+          true: themeColor.primary,
         }}
         thumbColor="#FFFFFF"
       />

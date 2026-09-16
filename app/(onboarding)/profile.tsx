@@ -129,7 +129,7 @@ export default function Profile() {
             style={[
               styles.mainButton,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.primary,
               },
             ]}
             label="Continue"
@@ -157,7 +157,7 @@ export default function Profile() {
             style={[
               styles.mainButton,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.primary,
               },
             ]}
             label="Continue"
@@ -213,7 +213,7 @@ export default function Profile() {
             style={[
               styles.mainButton,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.primary,
               },
             ]}
             label="Continue"
@@ -266,7 +266,7 @@ export default function Profile() {
             style={[
               styles.mainButton,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.primary,
               },
             ]}
             label="Continue"

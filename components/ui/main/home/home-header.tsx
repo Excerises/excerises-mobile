@@ -1,12 +1,9 @@
-import UIText from "@/components/ui/text";
+import { Bell, User } from "lucide-react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import ThemeToggler from "@/components/theme-toggler";
-
+import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
-
-import { Bell, User } from "lucide-react-native";
-
-import { Pressable, StyleSheet, View } from "react-native";
 
 type DashboardHeaderProps = {
   name: string;
@@ -20,31 +17,30 @@ export default function DashboardHeader({
   const themeColor = useThemeColor();
 
   return (
-    <View style={styles.header}>
+    <View style={styles.container}>
       <View style={styles.userSection}>
         <View
           style={[
             styles.avatar,
-            {
-              borderColor: themeColor.destructive,
-            },
+            { borderColor: themeColor.destructive },
           ]}
         >
-          <User size={26} color={themeColor.destructive} />
+          <User size={22} color={themeColor.destructive} />
         </View>
 
         <View>
-          <UIText style={styles.greeting}>Good Morning.</UIText>
-
-          <UIText style={styles.userName}>{name} 👋</UIText>
+          <UIText style={styles.greeting}>Hi {name} 👋</UIText>
+          <UIText style={styles.subtitle}>
+            Ready for a workout?
+          </UIText>
         </View>
       </View>
 
       <View style={styles.actions}>
-        <ThemeToggler color={themeColor.foreground} />
+        <ThemeToggler />
 
-        <Pressable onPress={onNotificationPress} style={styles.notification}>
-          <Bell size={21} color={themeColor.foreground} />
+        <Pressable onPress={onNotificationPress}>
+          <Bell size={22} color={themeColor.foreground} />
         </Pressable>
       </View>
     </View>
@@ -52,11 +48,10 @@ export default function DashboardHeader({
 }
 
 const styles = StyleSheet.create({
-  header: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 18,
   },
 
   userSection: {
@@ -66,21 +61,21 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
   },
 
   greeting: {
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: "600",
   },
 
-  userName: {
-    fontSize: 18,
-    fontWeight: "bold",
+  subtitle: {
+    fontSize: 13,
     marginTop: 2,
   },
 
@@ -88,9 +83,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
-  },
-
-  notification: {
-    padding: 4,
   },
 });
