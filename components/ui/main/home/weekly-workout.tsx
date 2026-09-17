@@ -3,27 +3,63 @@ import { StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-const days = [
-  { day: "Mon", date: "15", completed: true },
-  { day: "Tue", date: "16", completed: false },
-  { day: "Wed", date: "17", completed: true },
-  { day: "Thu", date: "18", completed: false },
-  { day: "Fri", date: "19", completed: false },
-  { day: "Sat", date: "20", completed: false },
-  { day: "Sun", date: "21", completed: false },
-];
+type WeeklyWorkoutProps = {
+  completedDates: Date[];
+  weeklyTarget?: number;
+};
 
-export default function WeeklyWorkout() {
+const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+export default function WeeklyWorkout({
+  completedDates,
+  weeklyTarget = 4,
+}: WeeklyWorkoutProps) {
   const themeColor = useThemeColor();
 
-  const completedCount = days.filter((item) => item.completed).length;
+  const today = new Date();
+
+  const currentDay = today.getDay();
+
+  const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
+
+  const monday = new Date(today);
+  monday.setDate(today.getDate() + mondayOffset);
+
+  const weekDays = dayNames.map((day, index) => {
+    const date = new Date(monday);
+
+    date.setDate(monday.getDate() + index);
+
+    const completed = completedDates.some(
+      (completedDate) =>
+        completedDate.getFullYear() === date.getFullYear() &&
+        completedDate.getMonth() === date.getMonth() &&
+        completedDate.getDate() === date.getDate(),
+    );
+
+    const isToday =
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate();
+
+    return {
+      day,
+      date,
+      completed,
+      isToday,
+    };
+  });
+
+  const completedCount = weekDays.filter((item) => item.completed).length;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <UIText style={styles.title}>Weekly Workout</UIText>
 
-        <UIText style={styles.count}>{completedCount}/4</UIText>
+        <UIText variant="muted" style={styles.count}>
+          {completedCount}/{weeklyTarget}
+        </UIText>
       </View>
 
       <View
@@ -35,7 +71,7 @@ export default function WeeklyWorkout() {
           },
         ]}
       >
-        {days.map((item) => (
+        {weekDays.map((item) => (
           <View
             key={item.day}
             style={[
@@ -52,9 +88,16 @@ export default function WeeklyWorkout() {
             </UIText>
 
             <UIText
-              style={[styles.dateText, item.completed && styles.activeText]}
+              style={[
+                styles.dateText,
+                item.completed && styles.activeText,
+                item.isToday &&
+                  !item.completed && {
+                    color: themeColor.primary,
+                  },
+              ]}
             >
-              {item.date}
+              {item.date.getDate()}
             </UIText>
           </View>
         ))}

@@ -62,6 +62,8 @@ const recentWorkouts = [
   },
 ];
 
+const completedDates = recentWorkouts.map((item) => item.completedAt);
+
 export default function Home() {
   const router = useRouter();
   const themeColor = useThemeColor();
@@ -107,7 +109,7 @@ export default function Home() {
           />
         ) : (
           <>
-            <WeeklyWorkout />
+            <WeeklyWorkout completedDates={completedDates} weeklyTarget={4} />
 
             <TodaysWorkout workouts={todayWorkouts} onSelect={goToDetail} />
 
