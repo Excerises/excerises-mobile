@@ -106,13 +106,9 @@ export default function Page() {
         </UIText>
 
         <UIButton
-          style={[
-            styles.startButton,
-            {
-              backgroundColor: themeColor.primary,
-            },
-          ]}
+          style={[styles.startButton]}
           label="Started"
+          variant="primary"
           labelStyle={styles.startButtonText}
           onPress={() => router.push("/login")}
         />
