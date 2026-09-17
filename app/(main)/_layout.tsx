@@ -1,12 +1,16 @@
 import { NavigationBar } from "expo-navigation-bar";
 import { Slot, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
+import {
+  Clock3,
+  Dumbbell,
+  Home,
+  User,
+} from "lucide-react-native";
 import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -16,15 +20,17 @@ import {
 } from "react-native-safe-area-context";
 
 import { useThemeContext } from "@/components/provider/theme-provider";
+import WorkoutProvider from "@/components/provider/workout-provider";
 import ThemeToggler from "@/components/theme-toggler";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-export default function Layout() {
+function MainLayout() {
   const { height } = useWindowDimensions();
   const themeColor = useThemeColor();
   const { theme } = useThemeContext();
   const insets = useSafeAreaInsets();
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -66,15 +72,23 @@ export default function Layout() {
         },
       ]}
     >
-      <StatusBar style={theme === "dark" ? "light" : "dark"} />
+      <StatusBar
+        style={theme === "dark" ? "light" : "dark"}
+      />
 
-      <NavigationBar style={theme === "dark" ? "dark" : "light"} />
+      <NavigationBar
+        style={theme === "dark" ? "dark" : "light"}
+      />
 
       {isWorkoutFlow && (
         <SafeAreaView edges={["top"]}>
           <View style={styles.header}>
-            <Pressable onPress={() => router.back()} style={styles.backButton}>
-              <Text
+            <Pressable
+              onPress={() => router.back()}
+              style={styles.backButton}
+              hitSlop={8}
+            >
+              <UIText
                 style={[
                   styles.backText,
                   {
@@ -83,22 +97,27 @@ export default function Layout() {
                 ]}
               >
                 ←
-              </Text>
+              </UIText>
             </Pressable>
 
-            <ThemeToggler color={themeColor.foreground} />
+            <ThemeToggler
+              color={themeColor.foreground}
+            />
           </View>
         </SafeAreaView>
       )}
 
-      {!isWorkoutFlow && <SafeAreaView edges={["top"]} />}
+      {!isWorkoutFlow && (
+        <SafeAreaView edges={["top"]} />
+      )}
 
       <View style={styles.keyboardContainer}>
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={[
             styles.scrollContent,
-            !isWorkoutFlow && styles.scrollContentWithNavigation,
+            !isWorkoutFlow &&
+              styles.scrollContentWithNavigation,
           ]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -106,11 +125,17 @@ export default function Layout() {
           <View
             style={[
               styles.pageContainer,
-              isWorkoutFlow && styles.workoutFlowPageContainer,
+              isWorkoutFlow &&
+                styles.workoutFlowPageContainer,
               {
                 minHeight: isWorkoutFlow
-                  ? height - insets.top - styles.header.height
-                  : height - insets.top - insets.bottom - 56,
+                  ? height -
+                    insets.top -
+                    styles.header.height
+                  : height -
+                    insets.top -
+                    insets.bottom -
+                    56,
               },
             ]}
           >
@@ -130,19 +155,25 @@ export default function Layout() {
             ]}
           >
             {menus.map((menu) => {
-              const isActive = pathname === menu.path;
+              const isActive =
+                pathname === menu.path;
+
               const Icon = menu.icon;
 
               return (
                 <Pressable
                   key={menu.route}
                   style={styles.navItem}
-                  onPress={() => router.replace(menu.route)}
+                  onPress={() =>
+                    router.replace(menu.route)
+                  }
                 >
                   <Icon
                     size={21}
                     color={
-                      isActive ? themeColor.primary : themeColor.foreground
+                      isActive
+                        ? themeColor.primary
+                        : themeColor.foreground
                     }
                   />
 
@@ -167,6 +198,14 @@ export default function Layout() {
         </>
       )}
     </View>
+  );
+}
+
+export default function Layout() {
+  return (
+    <WorkoutProvider>
+      <MainLayout />
+    </WorkoutProvider>
   );
 }
 

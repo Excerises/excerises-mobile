@@ -1,7 +1,8 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
+import { useWorkoutContext } from "@/components/provider/workout-provider";
 import useThemeColor from "@/hooks/use-theme-color";
 
 import WorkoutCompleteStep from "@/components/ui/main/workout-flow/components/workout-complete-step";
@@ -9,6 +10,7 @@ import WorkoutDetailStep from "@/components/ui/main/workout-flow/components/work
 import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/components/workout-preference-step";
 import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/components/workout-recommendation-step";
 import WorkoutSessionStep from "@/components/ui/main/workout-flow/components/workout-session-step";
+
 import {
   workouts,
   type Workout,
@@ -20,16 +22,29 @@ export default function WorkoutFlow() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
-  const [step, setStep] = useState<WorkoutStep>("type");
+  const { workoutId } = useLocalSearchParams<{
+    workoutId?: string;
+  }>();
+
+  const { setHasCompletedWorkout } = useWorkoutContext();
+
+  const initialWorkout = workouts.find((workout) => workout.id === workoutId);
+
+  const [step, setStep] = useState<WorkoutStep>(
+    initialWorkout ? "detail" : "type",
+  );
 
   const [bodyPart, setBodyPart] = useState("");
   const [equipment, setEquipment] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [target, setTarget] = useState("");
 
-  const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
+  const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(
+    initialWorkout ?? null,
+  );
 
   const [isPaused, setIsPaused] = useState(false);
+
   const [elapsedTime, setElapsedTime] = useState(0);
 
   const recommendedWorkouts = workouts.filter((workout) => {
@@ -75,6 +90,7 @@ export default function WorkoutFlow() {
   };
 
   const goToComplete = () => {
+    setHasCompletedWorkout(true);
     setStep("complete");
   };
 

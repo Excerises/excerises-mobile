@@ -2,13 +2,23 @@ import { useRouter } from "expo-router";
 import { Gauge, Ruler, Scale } from "lucide-react-native";
 import { ScrollView, StyleSheet, View } from "react-native";
 
+import { useWorkoutContext } from "@/components/provider/workout-provider";
 import useThemeColor from "@/hooks/use-theme-color";
 
 import UIText from "@/components/ui/common/text";
 import HomeHeader from "@/components/ui/main/home/home-header";
 import NewsCard from "@/components/ui/main/home/news-card";
+import RecentWorkouts from "@/components/ui/main/home/recent-workouts";
+import RecommendedWorkouts from "@/components/ui/main/home/recommended-workouts";
 import StatCard from "@/components/ui/main/home/stat-card";
+import TodaysWorkout from "@/components/ui/main/home/todays-workout";
+import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
+
+import {
+  workouts,
+  type Workout,
+} from "@/components/ui/main/workout-flow/workout-data";
 
 const newsData = [
   {
@@ -28,12 +38,47 @@ const newsData = [
   },
 ];
 
+const todayWorkouts = [
+  {
+    workout: workouts[0],
+    completed: true,
+  },
+  {
+    workout: workouts[1],
+    completed: false,
+  },
+];
+
+const recentWorkouts = [
+  {
+    workout: workouts[0],
+    duration: 332,
+    completedAt: new Date("2026-09-17T10:00:00"),
+  },
+  {
+    workout: workouts[0],
+    duration: 332,
+    completedAt: new Date("2026-09-15T10:00:00"),
+  },
+];
+
 export default function Home() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
+  const { hasCompletedWorkout } = useWorkoutContext();
+
   const goToWorkout = () => {
     router.push("/(main)/workout-flow");
+  };
+
+  const goToDetail = (workout: Workout) => {
+    router.push({
+      pathname: "/(main)/workout-flow",
+      params: {
+        workoutId: workout.id,
+      },
+    });
   };
 
   return (
@@ -53,12 +98,22 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <WorkoutBanner
-          image={require("@/assets/images/workout-banner.jpeg")}
-          title="Ready to Workout?"
-          description="Choose your workout type and get personalized exercises."
-          onPress={goToWorkout}
-        />
+        {!hasCompletedWorkout ? (
+          <WorkoutBanner
+            image={require("@/assets/images/workout-banner.jpeg")}
+            title="Ready to Workout?"
+            description="Choose your workout type and get personalized exercises."
+            onPress={goToWorkout}
+          />
+        ) : (
+          <>
+            <WeeklyWorkout />
+
+            <TodaysWorkout workouts={todayWorkouts} onSelect={goToDetail} />
+
+            <RecommendedWorkouts workouts={workouts} onSelect={goToDetail} />
+          </>
+        )}
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -93,6 +148,8 @@ export default function Home() {
             />
           </View>
         </View>
+
+        {hasCompletedWorkout && <RecentWorkouts workouts={recentWorkouts} />}
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
