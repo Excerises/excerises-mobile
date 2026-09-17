@@ -1,8 +1,8 @@
-import UIText from "@/components/ui/text";
-
 import { Check, Circle } from "lucide-react-native";
-
 import { StyleSheet, View } from "react-native";
+
+import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type ProgressItemProps = {
   completed: boolean;
@@ -15,6 +15,8 @@ export default function ProgressItem({
   text,
   color,
 }: ProgressItemProps) {
+  const themeColor = useThemeColor();
+
   return (
     <View style={styles.container}>
       {completed ? (
@@ -29,7 +31,7 @@ export default function ProgressItem({
           <Check size={13} color="#FFFFFF" strokeWidth={3} />
         </View>
       ) : (
-        <Circle size={20} color="#333333" strokeWidth={2} />
+        <Circle size={20} color={themeColor.border} strokeWidth={2} />
       )}
 
       <UIText style={styles.text}>{text}</UIText>

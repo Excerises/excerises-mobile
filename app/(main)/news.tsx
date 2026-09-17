@@ -1,5 +1,5 @@
-import UIText from "@/components/ui/text";
+import UIText from "@/components/ui/common/text";
 
-export default function Page() {
+export default function News() {
   return <UIText>News</UIText>;
 }

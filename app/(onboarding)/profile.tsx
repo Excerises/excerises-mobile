@@ -3,57 +3,74 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { useOnboardingContext } from "@/components/provider/onboarding-provider";
-import UIButton from "@/components/ui/button";
-import DateInput from "@/components/ui/date-input";
-import FormGroup from "@/components/ui/form-group";
-import Input from "@/components/ui/input";
-import BMICard from "@/components/ui/onboarding/profile/bmi-card";
+
+import BMIStep from "@/components/ui/onboarding/profile/components/bmi-step";
+import ProfileStep from "@/components/ui/onboarding/profile/components/profile-step";
+import WorkoutRoutineStep from "@/components/ui/onboarding/profile/components/workout-routine-step";
+import WorkoutTimeStep from "@/components/ui/onboarding/profile/components/workout-time-step";
 import StepIndicator from "@/components/ui/onboarding/profile/step-indicator";
-import OptionSelector from "@/components/ui/option-selector";
-import Selector from "@/components/ui/selector";
-import UIText from "@/components/ui/text";
-import ToggleRow from "@/components/ui/toggle-row";
-import useThemeColor from "@/hooks/use-theme-color";
-import { Mars, Venus } from "lucide-react-native";
 
 export default function Profile() {
   const router = useRouter();
-  const themeColor = useThemeColor();
   const { step, setStep } = useOnboardingContext();
 
   const [date, setDate] = useState<Date | null>(null);
   const [gender, setGender] = useState<"male" | "female">("male");
+
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
+
   const [workoutFrequency, setWorkoutFrequency] = useState("");
+
   const [selectedDuration, setSelectedDuration] = useState("");
+
   const [workoutDays, setWorkoutDays] = useState<string[]>([]);
+
   const [reminderTime, setReminderTime] = useState("");
+
   const [reminderEnabled, setReminderEnabled] = useState(false);
 
-  // Kalkulasi nilai BMI dinamis berdasarkan height (cm) & weight (kg)
   const calculateBMI = () => {
-    const hInMeters = parseFloat(height) / 100;
-    const wInKg = parseFloat(weight);
-    if (hInMeters > 0 && wInKg > 0) {
-      const bmi = wInKg / (hInMeters * hInMeters);
+    const heightInMeters = parseFloat(height) / 100;
+
+    const weightInKg = parseFloat(weight);
+
+    if (heightInMeters > 0 && weightInKg > 0) {
+      const bmi = weightInKg / (heightInMeters * heightInMeters);
+
       return bmi.toFixed(1);
     }
+
     return "0.0";
   };
 
-  // Menentukan kategori BMI
   const getBMIStatus = (bmiValue: string) => {
-    const val = parseFloat(bmiValue);
-    if (val <= 0) return "-";
-    if (val < 18.5) return "Underweight";
-    if (val < 25) return "Normal";
-    if (val < 30) return "Overweight";
+    const value = parseFloat(bmiValue);
+
+    if (value <= 0) {
+      return "-";
+    }
+
+    if (value < 18.5) {
+      return "Underweight";
+    }
+
+    if (value < 25) {
+      return "Normal";
+    }
+
+    if (value < 30) {
+      return "Overweight";
+    }
+
     return "Obese";
   };
 
   const currentStep =
     step === "profile" || step === "bmi" ? 1 : step === "workout" ? 2 : 3;
+
+  const bmi = calculateBMI();
+  const bmiStatus = getBMIStatus(bmi);
 
   const goToBMI = () => {
     setStep("bmi");
@@ -78,201 +95,43 @@ export default function Profile() {
       </View>
 
       {step === "profile" && (
-        <>
-          <UIText style={styles.title}>Tell Us About You</UIText>
-
-          <UIText style={styles.subtitle}>
-            Enter your basic information to create a personalized workout plan.
-          </UIText>
-
-          <View style={styles.form}>
-            <FormGroup label="Date of birth">
-              <DateInput value={date} onChange={setDate} />
-            </FormGroup>
-
-            <FormGroup label="Gender">
-              <OptionSelector
-                options={["Male", "Female"]}
-                value={gender === "male" ? "Male" : "Female"}
-                onChange={(value) =>
-                  setGender(value === "Male" ? "male" : "female")
-                }
-                icons={[
-                  <Mars key="male" size={20} color="#FFFFFF" />,
-                  <Venus key="female" size={20} color="#FFFFFF" />,
-                ]}
-              />
-            </FormGroup>
-
-            <FormGroup label="Height (cm)">
-              <Input
-                style={styles.input}
-                placeholder="Enter the height"
-                keyboardType="numeric"
-                value={height}
-                onChangeText={setHeight}
-              />
-            </FormGroup>
-
-            <FormGroup label="Weight (kg)">
-              <Input
-                style={styles.input}
-                placeholder="Enter the weight"
-                keyboardType="numeric"
-                value={weight}
-                onChangeText={setWeight}
-              />
-            </FormGroup>
-          </View>
-
-          <UIButton
-            style={[
-              styles.mainButton,
-              {
-                backgroundColor: themeColor.primary,
-              },
-            ]}
-            label="Continue"
-            onPress={goToBMI}
-          />
-        </>
+        <ProfileStep
+          date={date}
+          gender={gender}
+          height={height}
+          weight={weight}
+          onDateChange={setDate}
+          onGenderChange={setGender}
+          onHeightChange={setHeight}
+          onWeightChange={setWeight}
+          onNext={goToBMI}
+        />
       )}
 
       {step === "bmi" && (
-        <>
-          <UIText style={styles.title}>Your BMI Result</UIText>
-
-          <UIText style={styles.subtitle}>
-            Based on your height and weight,
-            {"\n"}
-            here is your body mass index (BMI).
-          </UIText>
-
-          <BMICard
-            value={calculateBMI()}
-            status={getBMIStatus(calculateBMI())}
-          />
-
-          <UIButton
-            style={[
-              styles.mainButton,
-              {
-                backgroundColor: themeColor.primary,
-              },
-            ]}
-            label="Continue"
-            onPress={goToWorkout}
-          />
-        </>
+        <BMIStep value={bmi} status={bmiStatus} onNext={goToWorkout} />
       )}
 
       {step === "workout" && (
-        <>
-          <UIText style={styles.title}>Set Your Workout Routine</UIText>
-
-          <UIText style={styles.subtitle}>
-            Choose how often you want to
-            {"\n"}
-            work out and how long each session
-            {"\n"}
-            will be.
-          </UIText>
-
-          <View style={styles.form}>
-            <FormGroup label="Workout frequency per week">
-              <OptionSelector
-                options={[
-                  "1 day",
-                  "2 days",
-                  "3 days",
-                  "4 days",
-                  "5 days",
-                  "6 days",
-                ]}
-                value={workoutFrequency}
-                onChange={setWorkoutFrequency}
-              />
-            </FormGroup>
-
-            <FormGroup label="Workout duration per Session">
-              <Selector
-                placeholder="Select duration"
-                options={[
-                  "15 minutes",
-                  "30 minutes",
-                  "45 minutes",
-                  "60 minutes",
-                ]}
-                value={selectedDuration}
-                onChange={setSelectedDuration}
-              />
-            </FormGroup>
-          </View>
-
-          <UIButton
-            style={[
-              styles.mainButton,
-              {
-                backgroundColor: themeColor.primary,
-              },
-            ]}
-            label="Continue"
-            onPress={goToTime}
-          />
-        </>
+        <WorkoutRoutineStep
+          workoutFrequency={workoutFrequency}
+          selectedDuration={selectedDuration}
+          onWorkoutFrequencyChange={setWorkoutFrequency}
+          onDurationChange={setSelectedDuration}
+          onNext={goToTime}
+        />
       )}
 
       {step === "time" && (
-        <>
-          <UIText style={styles.title}>Set Your Time</UIText>
-
-          <UIText style={styles.subtitle}>
-            Help us personalize your workout plan.
-          </UIText>
-
-          <View style={styles.form}>
-            <FormGroup label="Preferred workout days">
-              <OptionSelector
-                options={["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-                value={workoutDays}
-                onChange={setWorkoutDays}
-                multiple
-              />
-            </FormGroup>
-
-            <FormGroup label="Reminder Time">
-              <UIText style={styles.reminderDescription}>
-                We&apos;ll remind you to work out at
-                {"\n"}
-                your preferred time.
-              </UIText>
-
-              <Selector
-                placeholder="Select time"
-                options={["07:00", "09:00", "12:00", "16:00", "19:00", "21:00"]}
-                value={reminderTime}
-                onChange={setReminderTime}
-              />
-            </FormGroup>
-
-            <ToggleRow
-              label="Enable workout reminders"
-              value={reminderEnabled}
-              onChange={setReminderEnabled}
-            />
-          </View>
-
-          <UIButton
-            style={[
-              styles.mainButton,
-              {
-                backgroundColor: themeColor.primary,
-              },
-            ]}
-            label="Continue"
-            onPress={goToResult}
-          />
-        </>
+        <WorkoutTimeStep
+          workoutDays={workoutDays}
+          reminderTime={reminderTime}
+          reminderEnabled={reminderEnabled}
+          onWorkoutDaysChange={setWorkoutDays}
+          onReminderTimeChange={setReminderTime}
+          onReminderEnabledChange={setReminderEnabled}
+          onNext={goToResult}
+        />
       )}
     </View>
   );
@@ -282,33 +141,8 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
   },
+
   stepContainer: {
     marginBottom: 18,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 16,
-    marginTop: 4,
-  },
-  form: {
-    marginTop: 26,
-    gap: 14,
-  },
-  input: {
-    height: 48,
-    borderRadius: 6,
-  },
-  reminderDescription: {
-    fontSize: 12,
-    color: "#999999",
-  },
-  mainButton: {
-    width: "100%",
-    height: 48,
-    marginTop: 30,
-    borderRadius: 6,
   },
 });

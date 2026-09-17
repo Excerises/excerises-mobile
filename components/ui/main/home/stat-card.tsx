@@ -1,7 +1,8 @@
 import { StyleSheet, View } from "react-native";
 
-import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
+
+import UIText from "@/components/ui/common/text";
 
 type StatCardProps = {
   icon: React.ReactNode;
@@ -45,9 +46,7 @@ export default function StatCard({
         {unit}
       </UIText>
 
-      <UIText style={styles.label}>
-        {label}
-      </UIText>
+      <UIText style={styles.label}>{label}</UIText>
     </View>
   );
 }
@@ -57,8 +56,8 @@ const styles = StyleSheet.create({
     width: 110,
     height: 125,
     paddingVertical: 14,
-    borderRadius: 6,
     borderWidth: 1,
+    borderRadius: 6,
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",

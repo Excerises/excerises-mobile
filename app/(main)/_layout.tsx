@@ -1,27 +1,34 @@
+import { NavigationBar } from "expo-navigation-bar";
+import { Slot, usePathname, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+
 import { useThemeContext } from "@/components/provider/theme-provider";
+import ThemeToggler from "@/components/theme-toggler";
+import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import { Slot, usePathname, useRouter } from "expo-router";
-
-import { NavigationBar } from "expo-navigation-bar";
-import { StatusBar } from "expo-status-bar";
-
-import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
-
-import { Pressable, StyleSheet, View } from "react-native";
-
-import UIText from "@/components/ui/text";
-
 export default function Layout() {
+  const { height } = useWindowDimensions();
   const themeColor = useThemeColor();
-
   const { theme } = useThemeContext();
-
+  const insets = useSafeAreaInsets();
   const pathname = usePathname();
-
   const router = useRouter();
 
-  const systemBarStyle = theme === "dark" ? "light" : "dark";
+  const isWorkoutFlow = pathname === "/workout-flow";
 
   const menus = [
     {
@@ -59,56 +66,106 @@ export default function Layout() {
         },
       ]}
     >
-      <StatusBar style={systemBarStyle} />
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
 
       <NavigationBar style={theme === "dark" ? "dark" : "light"} />
 
-      <View style={styles.content}>
-        <Slot />
-      </View>
-
-      <View
-        style={[
-          styles.bottomNavigation,
-          {
-            backgroundColor: themeColor.card,
-          },
-        ]}
-      >
-        {menus.map((menu) => {
-          const isActive = pathname === menu.path;
-
-          const Icon = menu.icon;
-
-          return (
-            <Pressable
-              key={menu.route}
-              style={styles.navItem}
-              onPress={() => router.replace(menu.route)}
-            >
-              <Icon
-                size={21}
-                color={
-                  isActive ? themeColor.primary : themeColor.foreground
-                }
-              />
-
-              <UIText
+      {isWorkoutFlow && (
+        <SafeAreaView edges={["top"]}>
+          <View style={styles.header}>
+            <Pressable onPress={() => router.back()} style={styles.backButton}>
+              <Text
                 style={[
-                  styles.navLabel,
+                  styles.backText,
                   {
-                    color: isActive
-                      ? themeColor.primary
-                      : themeColor.foreground,
+                    color: themeColor.foreground,
                   },
                 ]}
               >
-                {menu.label}
-              </UIText>
+                ←
+              </Text>
             </Pressable>
-          );
-        })}
+
+            <ThemeToggler color={themeColor.foreground} />
+          </View>
+        </SafeAreaView>
+      )}
+
+      {!isWorkoutFlow && <SafeAreaView edges={["top"]} />}
+
+      <View style={styles.keyboardContainer}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={[
+            styles.scrollContent,
+            !isWorkoutFlow && styles.scrollContentWithNavigation,
+          ]}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View
+            style={[
+              styles.pageContainer,
+              isWorkoutFlow && styles.workoutFlowPageContainer,
+              {
+                minHeight: isWorkoutFlow
+                  ? height - insets.top - styles.header.height
+                  : height - insets.top - insets.bottom - 56,
+              },
+            ]}
+          >
+            <Slot />
+          </View>
+        </ScrollView>
       </View>
+
+      {!isWorkoutFlow && (
+        <>
+          <View
+            style={[
+              styles.bottomNavigation,
+              {
+                backgroundColor: themeColor.card,
+              },
+            ]}
+          >
+            {menus.map((menu) => {
+              const isActive = pathname === menu.path;
+              const Icon = menu.icon;
+
+              return (
+                <Pressable
+                  key={menu.route}
+                  style={styles.navItem}
+                  onPress={() => router.replace(menu.route)}
+                >
+                  <Icon
+                    size={21}
+                    color={
+                      isActive ? themeColor.primary : themeColor.foreground
+                    }
+                  />
+
+                  <UIText
+                    style={[
+                      styles.navLabel,
+                      {
+                        color: isActive
+                          ? themeColor.primary
+                          : themeColor.foreground,
+                      },
+                    ]}
+                  >
+                    {menu.label}
+                  </UIText>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          <SafeAreaView edges={["bottom"]} />
+        </>
+      )}
     </View>
   );
 }
@@ -118,9 +175,48 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  content: {
+  header: {
+    height: 60,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 18,
+  },
+
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+
+  backText: {
+    fontSize: 32,
+    fontWeight: "300",
+  },
+
+  keyboardContainer: {
     flex: 1,
-    paddingBottom: 62,
+  },
+
+  scrollView: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+  },
+
+  scrollContentWithNavigation: {
+    paddingBottom: 56,
+  },
+
+  pageContainer: {
+    flex: 1,
+  },
+
+  workoutFlowPageContainer: {
+    paddingHorizontal: 18,
   },
 
   bottomNavigation: {

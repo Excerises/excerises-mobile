@@ -10,8 +10,9 @@ import {
   ViewToken,
 } from "react-native";
 
-import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
+
+import UIText from "@/components/ui/common/text";
 
 type NewsItem = {
   id: string;
@@ -30,6 +31,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
   const themeColor = useThemeColor();
 
   const [activeIndex, setActiveIndex] = useState(0);
+
   const activeIndexRef = useRef(0);
   const listRef = useRef<FlatList<NewsItem>>(null);
 
@@ -39,10 +41,12 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
       const index = viewableItems[0]?.index;
 
-      if (index !== null && index !== undefined) {
-        activeIndexRef.current = index;
-        setActiveIndex(index);
+      if (index === null || index === undefined) {
+        return;
       }
+
+      activeIndexRef.current = index;
+      setActiveIndex(index);
     },
     [],
   );
@@ -54,7 +58,6 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
 
     const interval = setInterval(() => {
       const currentIndex = activeIndexRef.current;
-
       const nextIndex = currentIndex + 1 >= data.length ? 0 : currentIndex + 1;
 
       activeIndexRef.current = nextIndex;
@@ -119,28 +122,32 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
             <View style={styles.content}>
               <UIText style={styles.title}>{item.title}</UIText>
 
-              <UIText style={styles.readMore}>Read More →</UIText>
+              <UIText variant="muted" style={styles.readMore}>
+                Read More →
+              </UIText>
             </View>
           </Pressable>
         )}
       />
 
-      <View style={styles.indicator}>
-        {data.map((item, index) => (
-          <View
-            key={item.id}
-            style={[
-              styles.dot,
-              {
-                backgroundColor:
-                  index === activeIndex
-                    ? themeColor.destructive
-                    : themeColor.mutedForeground,
-              },
-            ]}
-          />
-        ))}
-      </View>
+      {data.length > 1 && (
+        <View style={styles.indicator}>
+          {data.map((item, index) => (
+            <View
+              key={item.id}
+              style={[
+                styles.dot,
+                {
+                  backgroundColor:
+                    index === activeIndex
+                      ? themeColor.destructive
+                      : themeColor.mutedForeground,
+                },
+              ]}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 }

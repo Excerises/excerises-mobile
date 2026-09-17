@@ -2,13 +2,13 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import UIButton from "@/components/ui/button";
+import UIButton from "@/components/ui/common/button";
+import UIText from "@/components/ui/common/text";
 import AILoader from "@/components/ui/onboarding/result/ai-loader";
 import CompleteIllustration from "@/components/ui/onboarding/result/complete-illustration";
 import FitnessLevelCard from "@/components/ui/onboarding/result/fitness-level-card";
 import ProgressBar from "@/components/ui/onboarding/result/progress-bar";
 import ProgressItem from "@/components/ui/onboarding/result/progress-item";
-import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Result() {
@@ -70,6 +70,7 @@ export default function Result() {
           <AILoader color={themeColor.primary} />
 
           <UIText style={styles.title}>Analyzing Your Data</UIText>
+
           <UIText style={styles.description}>
             Our AI is processing your information
             {"\n"}
@@ -104,10 +105,7 @@ export default function Result() {
             />
           </View>
 
-          <ProgressBar
-            progress={progress}
-            color={themeColor.primary}
-          />
+          <ProgressBar progress={progress} color={themeColor.primary} />
 
           <UIText style={styles.progressText}>
             {progress >= 100 ? "Complete!" : "Almost there..."}
@@ -118,6 +116,7 @@ export default function Result() {
           <CompleteIllustration color={themeColor.primary} />
 
           <UIText style={styles.title}>You&apos;re All Set!</UIText>
+
           <UIText style={styles.description}>
             Your profile has been saved
             {"\n"}
@@ -134,13 +133,9 @@ export default function Result() {
           />
 
           <UIButton
-            style={[
-              styles.mainButton,
-              {
-                backgroundColor: themeColor.primary,
-              },
-            ]}
+            style={styles.mainButton}
             label="Go to Home"
+            variant="primary"
             onPress={goToHome}
           />
         </>
@@ -156,27 +151,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingTop: 20,
   },
+
   progressContainer: {
     width: "100%",
     marginTop: 22,
     gap: 10,
   },
+
   title: {
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
   },
+
   description: {
     fontSize: 13,
     textAlign: "center",
     lineHeight: 16,
     marginTop: 8,
   },
+
   progressText: {
     fontSize: 13,
     marginTop: 10,
     opacity: 0.7,
   },
+
   mainButton: {
     width: "100%",
     height: 48,

@@ -2,18 +2,19 @@ import { Bell, User } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import ThemeToggler from "@/components/theme-toggler";
-import UIText from "@/components/ui/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-type DashboardHeaderProps = {
+import UIText from "@/components/ui/common/text";
+
+type HomeHeaderProps = {
   name: string;
   onNotificationPress?: () => void;
 };
 
-export default function DashboardHeader({
+export default function HomeHeader({
   name,
   onNotificationPress,
-}: DashboardHeaderProps) {
+}: HomeHeaderProps) {
   const themeColor = useThemeColor();
 
   return (
@@ -22,7 +23,9 @@ export default function DashboardHeader({
         <View
           style={[
             styles.avatar,
-            { borderColor: themeColor.destructive },
+            {
+              borderColor: themeColor.destructive,
+            },
           ]}
         >
           <User size={22} color={themeColor.destructive} />
@@ -30,16 +33,19 @@ export default function DashboardHeader({
 
         <View>
           <UIText style={styles.greeting}>Hi {name} 👋</UIText>
-          <UIText style={styles.subtitle}>
-            Ready for a workout?
-          </UIText>
+
+          <UIText style={styles.subtitle}>Ready for a workout?</UIText>
         </View>
       </View>
 
       <View style={styles.actions}>
         <ThemeToggler />
 
-        <Pressable onPress={onNotificationPress}>
+        <Pressable
+          style={styles.notificationButton}
+          onPress={onNotificationPress}
+          hitSlop={8}
+        >
           <Bell size={22} color={themeColor.foreground} />
         </Pressable>
       </View>
@@ -83,5 +89,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
+  },
+
+  notificationButton: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

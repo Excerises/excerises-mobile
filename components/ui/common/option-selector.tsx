@@ -1,7 +1,8 @@
-import useThemeColor from "@/hooks/use-theme-color";
 import { StyleSheet, View } from "react-native";
 
-import UIButton from "@/components/ui/button";
+import useThemeColor from "@/hooks/use-theme-color";
+
+import UIButton from "./button";
 
 type SingleProps = {
   options: string[];
@@ -35,13 +36,17 @@ export default function OptionSelector(props: OptionSelectorProps) {
   const handlePress = (option: string) => {
     if (props.multiple) {
       if (props.value.includes(option)) {
-        props.onChange(props.value.filter((item) => item !== option));
+        props.onChange(
+          props.value.filter((item) => item !== option),
+        );
       } else {
         props.onChange([...props.value, option]);
       }
-    } else {
-      props.onChange(option);
+
+      return;
     }
+
+    props.onChange(option);
   };
 
   return (
@@ -56,15 +61,20 @@ export default function OptionSelector(props: OptionSelectorProps) {
             icon={props.icons?.[index]}
             style={[
               styles.button,
-              props.options.length === 2 && styles.genderButton,
+              props.options.length === 2 && styles.twoColumnButton,
               {
                 backgroundColor: selected
                   ? themeColor.primary
                   : themeColor.card,
+                borderColor: selected
+                  ? themeColor.primary
+                  : themeColor.border,
               },
             ]}
             labelStyle={{
-              color: selected ? "#FFFFFF" : themeColor.foreground,
+              color: selected
+                ? "#FFFFFF"
+                : themeColor.foreground,
             }}
             onPress={() => handlePress(option)}
           />
@@ -80,14 +90,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 8,
   },
+
   button: {
     width: "31.5%",
     height: 48,
-    borderRadius: 6,
   },
-  genderButton: {
+
+  twoColumnButton: {
     flex: 1,
+    width: undefined,
     flexDirection: "row",
-    gap: 8,
   },
 });

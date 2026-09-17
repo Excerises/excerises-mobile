@@ -1,0 +1,158 @@
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+
+import useThemeColor from "@/hooks/use-theme-color";
+
+import WorkoutCompleteStep from "@/components/ui/main/workout-flow/components/workout-complete-step";
+import WorkoutDetailStep from "@/components/ui/main/workout-flow/components/workout-detail-step";
+import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/components/workout-preference-step";
+import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/components/workout-recommendation-step";
+import WorkoutSessionStep from "@/components/ui/main/workout-flow/components/workout-session-step";
+import {
+  workouts,
+  type Workout,
+} from "@/components/ui/main/workout-flow/workout-data";
+
+type WorkoutStep = "type" | "recommend" | "detail" | "session" | "complete";
+
+export default function WorkoutFlow() {
+  const router = useRouter();
+  const themeColor = useThemeColor();
+
+  const [step, setStep] = useState<WorkoutStep>("type");
+
+  const [bodyPart, setBodyPart] = useState("");
+  const [equipment, setEquipment] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [target, setTarget] = useState("");
+
+  const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
+
+  const [isPaused, setIsPaused] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  const recommendedWorkouts = workouts.filter((workout) => {
+    const bodyPartMatch = !bodyPart || workout.bodyPart === bodyPart;
+
+    const equipmentMatch = !equipment || workout.equipment === equipment;
+
+    const difficultyMatch = !difficulty || workout.difficulty === difficulty;
+
+    const targetMatch = !target || workout.target === target;
+
+    return bodyPartMatch && equipmentMatch && difficultyMatch && targetMatch;
+  });
+
+  const displayedWorkouts =
+    recommendedWorkouts.length > 0 ? recommendedWorkouts : workouts;
+
+  useEffect(() => {
+    if (step !== "session" || isPaused) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setElapsedTime((previous) => previous + 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [step, isPaused]);
+
+  const goToRecommend = () => {
+    setStep("recommend");
+  };
+
+  const goToDetail = (workout: Workout) => {
+    setSelectedWorkout(workout);
+    setStep("detail");
+  };
+
+  const goToSession = () => {
+    setElapsedTime(0);
+    setIsPaused(false);
+    setStep("session");
+  };
+
+  const goToComplete = () => {
+    setStep("complete");
+  };
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds,
+    ).padStart(2, "0")}`;
+  };
+
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: themeColor.background,
+        },
+      ]}
+    >
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {step === "type" && (
+          <WorkoutPreferenceStep
+            bodyPart={bodyPart}
+            equipment={equipment}
+            difficulty={difficulty}
+            target={target}
+            onBodyPartChange={setBodyPart}
+            onEquipmentChange={setEquipment}
+            onDifficultyChange={setDifficulty}
+            onTargetChange={setTarget}
+            onNext={goToRecommend}
+          />
+        )}
+
+        {step === "recommend" && (
+          <WorkoutRecommendationStep
+            workouts={displayedWorkouts}
+            onSelect={goToDetail}
+          />
+        )}
+
+        {step === "detail" && selectedWorkout && (
+          <WorkoutDetailStep workout={selectedWorkout} onStart={goToSession} />
+        )}
+
+        {step === "session" && selectedWorkout && (
+          <WorkoutSessionStep
+            workout={selectedWorkout}
+            elapsedTime={formatTime(elapsedTime)}
+            isPaused={isPaused}
+            onTogglePause={() => setIsPaused((current) => !current)}
+            onFinish={goToComplete}
+          />
+        )}
+
+        {step === "complete" && (
+          <WorkoutCompleteStep
+            workout={selectedWorkout}
+            elapsedTime={formatTime(elapsedTime)}
+            onDone={() => router.replace("/(main)/home")}
+          />
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    paddingBottom: 30,
+  },
+});

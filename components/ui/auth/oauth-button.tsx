@@ -1,8 +1,8 @@
-import UIText from "@/components/ui/text";
+import { Pressable, StyleSheet, ViewStyle } from "react-native";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import { Pressable, StyleSheet, ViewStyle } from "react-native";
+import UIText from "@/components/ui/common/text";
 
 interface OAuthButtonProps {
   icon: React.ReactNode;

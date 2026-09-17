@@ -1,8 +1,7 @@
-import UIText from "@/components/ui/text";
-
 import { BarChart3 } from "lucide-react-native";
-
 import { StyleSheet, View } from "react-native";
+
+import UIText from "@/components/ui/common/text";
 
 type FitnessLevelCardProps = {
   level: string;

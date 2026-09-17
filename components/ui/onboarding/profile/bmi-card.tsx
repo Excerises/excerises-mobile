@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-import UIText from "@/components/ui/text";
+import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
 type BMICardProps = {
@@ -11,10 +11,26 @@ type BMICardProps = {
 };
 
 const categories = [
-  { color: "#55E36A", range: "< 18,5", label: "Underweight" },
-  { color: "#55E36A", range: "18,5 - 22,9", label: "Normal" },
-  { color: "#FFC107", range: "23,0 - 24,9", label: "Overweight" },
-  { color: "#FF1717", range: "≥ 25,0", label: "Obesity" },
+  {
+    color: "#55E36A",
+    range: "< 18,5",
+    label: "Underweight",
+  },
+  {
+    color: "#55E36A",
+    range: "18,5 - 22,9",
+    label: "Normal",
+  },
+  {
+    color: "#FFC107",
+    range: "23,0 - 24,9",
+    label: "Overweight",
+  },
+  {
+    color: "#FF1717",
+    range: "≥ 25,0",
+    label: "Obesity",
+  },
 ];
 
 export default function BMICard({ value, status }: BMICardProps) {
@@ -93,7 +109,16 @@ export default function BMICard({ value, status }: BMICardProps) {
         <View style={styles.center}>
           <UIText style={styles.value}>{value}</UIText>
 
-          <UIText style={styles.status}>{status}</UIText>
+          <UIText
+            style={[
+              styles.status,
+              {
+                color: themeColor.primary,
+              },
+            ]}
+          >
+            {status}
+          </UIText>
         </View>
       </View>
 
@@ -135,52 +160,61 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
+
   chart: {
     width: 190,
     height: 190,
     justifyContent: "center",
     alignItems: "center",
   },
+
   center: {
     position: "absolute",
     alignItems: "center",
   },
+
   value: {
     fontSize: 42,
     fontWeight: "bold",
   },
+
   status: {
     fontSize: 22,
     fontWeight: "600",
     marginTop: 2,
-    color: "#16C84E",
   },
+
   categories: {
     width: "100%",
     marginTop: 22,
     padding: 10,
     borderRadius: 6,
   },
+
   categoryTitle: {
     fontSize: 12,
     fontWeight: "500",
     marginBottom: 10,
   },
+
   categoryRow: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 4,
   },
+
   dot: {
     width: 9,
     height: 9,
     borderRadius: 5,
     marginRight: 10,
   },
+
   range: {
     width: 90,
     fontSize: 12,
   },
+
   label: {
     fontSize: 12,
   },

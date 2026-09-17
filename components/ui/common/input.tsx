@@ -1,16 +1,7 @@
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import { useState } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
-import type {
-  StyleProp,
-  TextInputProps,
-  ViewStyle,
-} from "react-native";
+import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
@@ -21,7 +12,7 @@ type InputProps = Omit<TextInputProps, "style"> & {
 };
 
 export default function Input({
-  isPassword,
+  isPassword = false,
   prefix,
   style,
   ...props
@@ -49,25 +40,20 @@ export default function Input({
           },
         ]}
         {...props}
-        secureTextEntry={isPassword ? !showPassword : false}
+        secureTextEntry={isPassword && !showPassword}
         placeholderTextColor={themeColor.mutedForeground}
       />
 
       {isPassword && (
         <Pressable
-          onPress={() => setShowPassword(!showPassword)}
           style={styles.eyeButton}
+          onPress={() => setShowPassword((current) => !current)}
+          hitSlop={8}
         >
           {showPassword ? (
-            <EyeIcon
-              color={themeColor.mutedForeground}
-              size={20}
-            />
+            <EyeIcon size={20} color={themeColor.mutedForeground} />
           ) : (
-            <EyeOffIcon
-              color={themeColor.mutedForeground}
-              size={20}
-            />
+            <EyeOffIcon size={20} color={themeColor.mutedForeground} />
           )}
         </Pressable>
       )}
@@ -77,21 +63,23 @@ export default function Input({
 
 const styles = StyleSheet.create({
   container: {
+    height: 48,
+    paddingHorizontal: 18,
+    borderRadius: 6,
     flexDirection: "row",
     alignItems: "center",
-    height: 48,
-    borderRadius: 6,
-    paddingHorizontal: 18,
   },
+
   input: {
     flex: 1,
     fontSize: 16,
     paddingVertical: 0,
     paddingHorizontal: 0,
   },
+
   eyeButton: {
-    justifyContent: "center",
-    alignItems: "center",
     marginLeft: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

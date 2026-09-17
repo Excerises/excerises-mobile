@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, Switch, View } from "react-native";
 
-import UIText from "@/components/ui/text";
-
+import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
 type ToggleRowProps = {
@@ -38,7 +37,16 @@ export default function ToggleRow({
           <UIText style={styles.label}>{label}</UIText>
 
           {description && (
-            <UIText style={styles.description}>{description}</UIText>
+            <UIText
+              style={[
+                styles.description,
+                {
+                  color: themeColor.mutedForeground,
+                },
+              ]}
+            >
+              {description}
+            </UIText>
           )}
         </View>
       </View>
@@ -47,7 +55,7 @@ export default function ToggleRow({
         value={value}
         onValueChange={onChange}
         trackColor={{
-          false: "#444444",
+          false: themeColor.border,
           true: themeColor.primary,
         }}
         thumbColor="#FFFFFF"
@@ -59,9 +67,9 @@ export default function ToggleRow({
 const styles = StyleSheet.create({
   container: {
     minHeight: 48,
-    borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    borderRadius: 6,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -69,9 +77,9 @@ const styles = StyleSheet.create({
 
   leftSection: {
     flex: 1,
+    marginRight: 10,
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 10,
   },
 
   iconContainer: {

@@ -2,14 +2,15 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 
+import useThemeColor from "@/hooks/use-theme-color";
+
 import AuthFooter from "@/components/ui/auth/auth-footer";
 import OAuthButton from "@/components/ui/auth/oauth-button";
-import UIButton from "@/components/ui/button";
-import FormGroup from "@/components/ui/form-group";
-import Input from "@/components/ui/input";
-import Separator from "@/components/ui/separator";
-import UIText from "@/components/ui/text";
-import useThemeColor from "@/hooks/use-theme-color";
+import UIButton from "@/components/ui/common/button";
+import FormGroup from "@/components/ui/common/form-group";
+import Input from "@/components/ui/common/input";
+import Separator from "@/components/ui/common/separator";
+import UIText from "@/components/ui/common/text";
 
 export default function Login() {
   const router = useRouter();
@@ -32,7 +33,6 @@ export default function Login() {
       <View style={styles.form}>
         <FormGroup label="Email">
           <Input
-            style={styles.input}
             placeholder="example@email.com"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -41,38 +41,25 @@ export default function Login() {
         </FormGroup>
 
         <FormGroup label="Password">
-          <Input
-            style={styles.input}
-            placeholder="Enter password"
-            isPassword
-          />
+          <Input placeholder="Enter password" isPassword />
         </FormGroup>
 
         <Pressable>
-          <UIText style={{ color: themeColor.primary }}>
-            Lupa password
-          </UIText>
+          <UIText variant="link">Lupa password</UIText>
         </Pressable>
       </View>
 
       <UIButton
         style={styles.loginButton}
         label="Login"
-        variant="default"
+        variant="primary"
         onPress={goToProfile}
       />
 
       <View style={styles.divider}>
         <Separator />
 
-        <UIText
-          style={[
-            styles.orText,
-            {
-              color: themeColor.mutedForeground,
-            },
-          ]}
-        >
+        <UIText variant="muted" style={styles.orText}>
           or login with
         </UIText>
 
@@ -117,34 +104,37 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 10,
   },
+
   title: {
     fontSize: 30,
     fontWeight: "bold",
   },
+
   subtitle: {
     fontSize: 16,
     marginTop: 4,
   },
+
   form: {
     marginTop: 26,
     gap: 14,
   },
-  input: {
-    height: 48,
-    borderRadius: 6,
-  },
+
   loginButton: {
     marginTop: 28,
   },
+
   divider: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 18,
   },
+
   orText: {
     marginHorizontal: 8,
     fontSize: 16,
   },
+
   socialRow: {
     flexDirection: "row",
     gap: 16,

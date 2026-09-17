@@ -1,5 +1,5 @@
-import { StyleSheet, View } from "react-native";
 import type { ReactNode } from "react";
+import { StyleSheet, View } from "react-native";
 
 import UIText from "./text";
 
@@ -8,7 +8,7 @@ type FormGroupProps = {
   children: ReactNode;
 };
 
-export default function FormGroup({ 
+export default function FormGroup({
   label,
   children,
 }: FormGroupProps) {
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   field: {
     gap: 6,
   },
+
   label: {
     fontSize: 14,
   },

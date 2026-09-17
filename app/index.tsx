@@ -1,15 +1,9 @@
 import { useThemeContext } from "@/components/provider/theme-provider";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import ThemeToggler from "@/components/theme-toggler";
-
-import UIButton from "@/components/ui/button";
-
-import UIText from "@/components/ui/text";
-
+import UIButton from "@/components/ui/common/button";
+import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
 import { useRouter } from "expo-router";
-
 import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
 
 export default function Page() {

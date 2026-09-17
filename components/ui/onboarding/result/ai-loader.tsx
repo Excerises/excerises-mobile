@@ -1,7 +1,5 @@
 import { BrainCircuit } from "lucide-react-native";
-
 import { useEffect, useState } from "react";
-
 import { Animated, Easing, StyleSheet, View } from "react-native";
 
 type AILoaderProps = {

@@ -1,6 +1,8 @@
-import UIText from "@/components/ui/text";
-import useThemeColor from "@/hooks/use-theme-color";
 import { StyleSheet, View } from "react-native";
+
+import useThemeColor from "@/hooks/use-theme-color";
+
+import UIText from "./text";
 
 type InfoCardProps = {
   title: string;
@@ -49,14 +51,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   content: {
     width: "100%",
   },
+
   title: {
     fontSize: 13,
     fontWeight: "600",
     textAlign: "center",
   },
+
   description: {
     fontSize: 11,
     marginTop: 3,
