@@ -110,14 +110,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               style={styles.image}
             />
 
-            <View
-              style={[
-                styles.overlay,
-                {
-                  backgroundColor: themeColor.overlay,
-                },
-              ]}
-            />
+            <View style={[styles.overlay]}/>
 
             <View style={styles.content}>
               <UIText style={styles.title}>{item.title}</UIText>
