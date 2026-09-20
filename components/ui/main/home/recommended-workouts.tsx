@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -6,13 +6,12 @@ import {
   Pressable,
   StyleSheet,
   View,
-  ViewToken,
 } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/ui/main/workout-flow/workout-data";
+import type { Workout } from "@/components/data/workout-data";
 
 type RecommendedWorkoutsProps = {
   workouts: Workout[];
@@ -26,22 +25,11 @@ export default function RecommendedWorkouts({
   onSelect,
 }: RecommendedWorkoutsProps) {
   const themeColor = useThemeColor();
+
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const cardWidth = width - 40;
-
-  const handleViewableItemsChanged = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      const index = viewableItems[0]?.index;
-
-      if (index === null || index === undefined) {
-        return;
-      }
-
-      setActiveIndex(index);
-    },
-    [],
-  );
+  const cardWidth = Math.min(112, (width - 52) / 3);
+  const snapDistance = cardWidth + 8;
 
   return (
     <View style={styles.container}>
@@ -56,19 +44,18 @@ export default function RecommendedWorkouts({
       <FlatList
         data={workouts}
         horizontal
-        pagingEnabled
         showsHorizontalScrollIndicator={false}
-        snapToInterval={cardWidth}
-        decelerationRate="fast"
+        contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={() => <View style={{ width: 8 }} />}
         keyExtractor={(item) => item.id}
-        getItemLayout={(_, index) => ({
-          length: cardWidth,
-          offset: cardWidth * index,
-          index,
-        })}
-        onViewableItemsChanged={handleViewableItemsChanged}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 60,
+        snapToInterval={snapDistance}
+        decelerationRate="fast"
+        onMomentumScrollEnd={(event) => {
+          const index = Math.round(
+            event.nativeEvent.contentOffset.x / snapDistance,
+          );
+
+          setActiveIndex(index);
         }}
         renderItem={({ item }) => (
           <Pressable
@@ -85,9 +72,11 @@ export default function RecommendedWorkouts({
             <Image source={item.image} style={styles.image} />
 
             <View style={styles.content}>
-              <UIText style={styles.workoutTitle}>{item.title}</UIText>
+              <UIText style={styles.workoutTitle} numberOfLines={2}>
+                {item.title}
+              </UIText>
 
-              <UIText variant="muted" style={styles.meta}>
+              <UIText variant="muted" style={styles.meta} numberOfLines={1}>
                 {item.bodyPart} • {item.equipment}
               </UIText>
 
@@ -108,7 +97,7 @@ export default function RecommendedWorkouts({
 
       {workouts.length > 1 && (
         <View style={styles.indicator}>
-          {workouts.map((item, index) => (
+          {workouts.slice(0, 4).map((item, index) => (
             <View
               key={item.id}
               style={[
@@ -116,7 +105,7 @@ export default function RecommendedWorkouts({
                 {
                   backgroundColor:
                     index === activeIndex
-                      ? themeColor.destructive
+                      ? themeColor.primary
                       : themeColor.mutedForeground,
                 },
               ]}
@@ -149,51 +138,55 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 
+  listContent: {
+    paddingRight: 4,
+  },
+
   card: {
-    height: 120,
-    flexDirection: "row",
+    height: 140,
     borderWidth: 1,
     borderRadius: 7,
     overflow: "hidden",
   },
 
   image: {
-    width: "45%",
-    height: "100%",
+    width: "100%",
+    height: 68,
+    resizeMode: "cover",
   },
 
   content: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 12,
+    paddingHorizontal: 7,
+    paddingVertical: 6,
+    justifyContent: "space-between",
   },
 
   workoutTitle: {
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: "600",
   },
 
   meta: {
-    fontSize: 11,
-    marginTop: 4,
+    fontSize: 9,
+    marginTop: 2,
   },
 
   tryText: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "600",
-    marginTop: 8,
   },
 
   indicator: {
     flexDirection: "row",
     justifyContent: "center",
     gap: 8,
-    marginTop: 10,
+    marginTop: 8,
   },
 
   dot: {
-    width: 8,
-    height: 8,
+    width: 7,
+    height: 7,
     borderRadius: 4,
   },
 });

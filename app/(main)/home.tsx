@@ -15,10 +15,7 @@ import TodaysWorkout from "@/components/ui/main/home/todays-workout";
 import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
-import {
-  workouts,
-  type Workout,
-} from "@/components/ui/main/workout-flow/workout-data";
+import { workouts, type Workout } from "@/components/data/workout-data";
 
 const newsData = [
   {
@@ -93,7 +90,11 @@ export default function Home() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <HomeHeader name="User" onNotificationPress={() => {}} />
+        <HomeHeader
+          name="User"
+          onSearchPress={() => {}}
+          onNotificationPress={() => {}}
+        />
       </View>
 
       <ScrollView

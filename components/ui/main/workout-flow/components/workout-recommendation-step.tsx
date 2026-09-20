@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/common/text";
 import WorkoutCard from "@/components/ui/main/workout-flow/workout-card";
 
-import type { Workout } from "@/components/ui/main/workout-flow/workout-data";
+import type { Workout } from "@/components/data/workout-data";
 
 type WorkoutRecommendationStepProps = {
   workouts: Workout[];

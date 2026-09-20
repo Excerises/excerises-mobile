@@ -1,43 +1,27 @@
-import { Bell, Search, User } from "lucide-react-native";
+import { Bell, Search } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import ThemeToggler from "@/components/theme-toggler";
+import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import UIText from "@/components/ui/common/text";
-
-type HomeHeaderProps = {
-  name: string;
+type NewsHeaderProps = {
   onSearchPress?: () => void;
   onNotificationPress?: () => void;
 };
 
-export default function HomeHeader({
-  name,
+export default function NewsHeader({
   onSearchPress,
   onNotificationPress,
-}: HomeHeaderProps) {
+}: NewsHeaderProps) {
   const themeColor = useThemeColor();
 
   return (
     <View style={styles.container}>
-      <View style={styles.userSection}>
-        <View
-          style={[
-            styles.avatar,
-            {
-              borderColor: themeColor.destructive,
-            },
-          ]}
-        >
-          <User size={22} color={themeColor.destructive} />
-        </View>
+      <View>
+        <UIText style={styles.title}>NEWS</UIText>
 
-        <View>
-          <UIText style={styles.greeting}>Hi {name} 👋</UIText>
-
-          <UIText style={styles.subtitle}>Ready for a workout?</UIText>
-        </View>
+        <UIText style={styles.subtitle}>Learn Today, Stronger Tomorrow</UIText>
       </View>
 
       <View style={styles.actions}>
@@ -70,28 +54,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  userSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  greeting: {
-    fontSize: 16,
-    fontWeight: "600",
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
   },
 
   subtitle: {
-    fontSize: 13,
+    fontSize: 10,
     marginTop: 2,
   },
 

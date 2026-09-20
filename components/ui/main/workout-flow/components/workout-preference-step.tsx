@@ -2,18 +2,17 @@ import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
 import FormGroup from "@/components/ui/common/form-group";
-import OptionSelector from "@/components/ui/common/option-selector";
 import Selector from "@/components/ui/common/selector";
 import UIText from "@/components/ui/common/text";
 
 type WorkoutPreferenceStepProps = {
   bodyPart: string;
   equipment: string;
-  difficulty: string;
+  category: string;
   target: string;
   onBodyPartChange: (value: string) => void;
   onEquipmentChange: (value: string) => void;
-  onDifficultyChange: (value: string) => void;
+  onCategoryChange: (value: string) => void;
   onTargetChange: (value: string) => void;
   onNext: () => void;
 };
@@ -22,18 +21,18 @@ const bodyPartOptions = ["Chest", "Back", "Shoulders", "Arms", "Legs", "Core"];
 
 const equipmentOptions = ["Bodyweight", "Dumbbell", "Barbell", "Machine"];
 
-const difficultyOptions = ["Beginner", "Intermediate", "Advanced"];
+const categoryOptions = ["Upper Body", "Lower Body", "Core"];
 
 const targetOptions = ["Strength", "Endurance", "Flexibility", "Balance"];
 
 export default function WorkoutPreferenceStep({
   bodyPart,
   equipment,
-  difficulty,
+  category,
   target,
   onBodyPartChange,
   onEquipmentChange,
-  onDifficultyChange,
+  onCategoryChange,
   onTargetChange,
   onNext,
 }: WorkoutPreferenceStepProps) {
@@ -64,20 +63,21 @@ export default function WorkoutPreferenceStep({
           />
         </FormGroup>
 
-        <FormGroup label="Difficulty">
-          <OptionSelector
-            options={difficultyOptions}
-            value={difficulty}
-            onChange={onDifficultyChange}
-          />
-        </FormGroup>
-
         <FormGroup label="Target">
           <Selector
             placeholder="Select target"
             options={targetOptions}
             value={target}
             onChange={onTargetChange}
+          />
+        </FormGroup>
+
+        <FormGroup label="Category">
+          <Selector
+            placeholder="Select category"
+            options={categoryOptions}
+            value={category}
+            onChange={onCategoryChange}
           />
         </FormGroup>
       </View>

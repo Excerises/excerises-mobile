@@ -5,7 +5,7 @@ import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/ui/main/workout-flow/workout-data";
+import type { Workout } from "@/components/data/workout-data";
 
 type WorkoutCompleteStepProps = {
   workout: Workout | null;

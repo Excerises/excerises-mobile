@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
@@ -10,6 +11,9 @@ type WeeklyWorkoutProps = {
 
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+const sameDate = (date1: Date, date2: Date) =>
+  date1.toDateString() === date2.toDateString();
+
 export default function WeeklyWorkout({
   completedDates,
   weeklyTarget = 4,
@@ -17,12 +21,12 @@ export default function WeeklyWorkout({
   const themeColor = useThemeColor();
 
   const today = new Date();
-
   const currentDay = today.getDay();
 
   const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
 
   const monday = new Date(today);
+
   monday.setDate(today.getDate() + mondayOffset);
 
   const weekDays = dayNames.map((day, index) => {
@@ -30,17 +34,11 @@ export default function WeeklyWorkout({
 
     date.setDate(monday.getDate() + index);
 
-    const completed = completedDates.some(
-      (completedDate) =>
-        completedDate.getFullYear() === date.getFullYear() &&
-        completedDate.getMonth() === date.getMonth() &&
-        completedDate.getDate() === date.getDate(),
+    const completed = completedDates.some((completedDate) =>
+      sameDate(completedDate, date),
     );
 
-    const isToday =
-      date.getFullYear() === today.getFullYear() &&
-      date.getMonth() === today.getMonth() &&
-      date.getDate() === today.getDate();
+    const isToday = sameDate(date, today);
 
     return {
       day,
@@ -57,9 +55,33 @@ export default function WeeklyWorkout({
       <View style={styles.header}>
         <UIText style={styles.title}>Weekly Workout</UIText>
 
-        <UIText variant="muted" style={styles.count}>
-          {completedCount}/{weeklyTarget}
-        </UIText>
+        <View style={styles.headerRight}>
+          <UIText variant="muted" style={styles.count}>
+            {completedCount}/{weeklyTarget}
+          </UIText>
+
+          <Pressable
+            style={[
+              styles.arrowButton,
+              {
+                backgroundColor: themeColor.surfaceDark,
+              },
+            ]}
+          >
+            <ChevronLeft size={15} color={themeColor.foreground} />
+          </Pressable>
+
+          <Pressable
+            style={[
+              styles.arrowButton,
+              {
+                backgroundColor: themeColor.surfaceDark,
+              },
+            ]}
+          >
+            <ChevronRight size={15} color={themeColor.foreground} />
+          </Pressable>
+        </View>
       </View>
 
       <View
@@ -79,10 +101,20 @@ export default function WeeklyWorkout({
               item.completed && {
                 backgroundColor: themeColor.primary,
               },
+              item.isToday &&
+                !item.completed && {
+                  borderWidth: 1,
+                  borderColor: themeColor.primary,
+                },
             ]}
           >
             <UIText
-              style={[styles.dayText, item.completed && styles.activeText]}
+              style={[
+                styles.dayText,
+                item.completed && {
+                  color: themeColor.white,
+                },
+              ]}
             >
               {item.day}
             </UIText>
@@ -90,7 +122,9 @@ export default function WeeklyWorkout({
             <UIText
               style={[
                 styles.dateText,
-                item.completed && styles.activeText,
+                item.completed && {
+                  color: themeColor.white,
+                },
                 item.isToday &&
                   !item.completed && {
                     color: themeColor.primary,
@@ -113,8 +147,8 @@ const styles = StyleSheet.create({
 
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 8,
   },
 
@@ -123,22 +157,38 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+
   count: {
-    fontSize: 11,
+    fontSize: 10,
+    marginRight: 2,
+  },
+
+  arrowButton: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   card: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 5,
+    padding: 6,
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: 8,
   },
 
   day: {
-    width: 31,
-    height: 64,
-    borderRadius: 16,
+    flex: 1,
+    height: 58,
+    marginHorizontal: 2,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     gap: 2,
@@ -152,9 +202,5 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 11,
     fontWeight: "600",
-  },
-
-  activeText: {
-    color: "#FFFFFF",
   },
 });

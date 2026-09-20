@@ -1,10 +1,10 @@
-import { Check } from "lucide-react-native";
-import { Image, StyleSheet, View } from "react-native";
+import { Check, ChevronRight } from "lucide-react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/ui/main/workout-flow/workout-data";
+import type { Workout } from "@/components/data/workout-data";
 
 type WorkoutHistory = {
   workout: Workout;
@@ -23,6 +23,7 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
+
     const remainingSeconds = seconds % 60;
 
     return `${String(minutes).padStart(2, "0")}:${String(
@@ -32,7 +33,9 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
 
   const formatDate = (date: Date) => {
     const day = String(date.getDate()).padStart(2, "0");
+
     const month = String(date.getMonth() + 1).padStart(2, "0");
+
     const year = String(date.getFullYear()).slice(-2);
 
     return `${day}/${month}/${year}`;
@@ -50,7 +53,7 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
 
       <View style={styles.list}>
         {displayedWorkouts.map((item, index) => (
-          <View
+          <Pressable
             key={`${item.completedAt.getTime()}-${index}`}
             style={[
               styles.card,
@@ -63,7 +66,9 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
             <Image source={item.workout.image} style={styles.image} />
 
             <View style={styles.content}>
-              <UIText style={styles.workoutTitle}>{item.workout.title}</UIText>
+              <UIText style={styles.workoutTitle} numberOfLines={1}>
+                {item.workout.title}
+              </UIText>
 
               <View style={styles.metaRow}>
                 <UIText variant="muted" style={styles.meta}>
@@ -71,13 +76,13 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
                   {formatTime(item.duration)}
                 </UIText>
 
-                <Check size={11} color="#16C84E" strokeWidth={3} />
+                <Check size={11} color={themeColor.success} strokeWidth={3} />
 
                 <UIText
                   style={[
                     styles.completed,
                     {
-                      color: "#16C84E",
+                      color: themeColor.success,
                     },
                   ]}
                 >
@@ -85,7 +90,9 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
                 </UIText>
               </View>
             </View>
-          </View>
+
+            <ChevronRight size={18} color={themeColor.foreground} />
+          </Pressable>
         ))}
       </View>
     </View>
@@ -118,11 +125,13 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    height: 58,
+    minHeight: 58,
     flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: 7,
     overflow: "hidden",
+    paddingRight: 8,
   },
 
   image: {

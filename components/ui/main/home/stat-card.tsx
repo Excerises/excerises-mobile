@@ -9,7 +9,7 @@ type StatCardProps = {
   value: string;
   unit: string;
   label: string;
-  unitColor?: string;
+  unitColor?: "success" | "muted";
 };
 
 export default function StatCard({
@@ -17,7 +17,7 @@ export default function StatCard({
   value,
   unit,
   label,
-  unitColor,
+  unitColor = "muted",
 }: StatCardProps) {
   const themeColor = useThemeColor();
 
@@ -39,7 +39,10 @@ export default function StatCard({
         style={[
           styles.unit,
           {
-            color: unitColor ?? themeColor.mutedForeground,
+            color:
+              unitColor === "success"
+                ? themeColor.success
+                : themeColor.mutedForeground,
           },
         ]}
       >
@@ -53,9 +56,9 @@ export default function StatCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 110,
-    height: 125,
-    paddingVertical: 14,
+    flex: 1,
+    height: 118,
+    paddingVertical: 12,
     borderWidth: 1,
     borderRadius: 6,
     overflow: "hidden",
@@ -67,6 +70,7 @@ const styles = StyleSheet.create({
   icon: {
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 2,
   },
 
   value: {

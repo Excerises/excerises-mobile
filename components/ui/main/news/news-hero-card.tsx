@@ -1,23 +1,19 @@
 import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
 
+import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import UIButton from "@/components/ui/common/button";
-import UIText from "@/components/ui/common/text";
-
-type WorkoutBannerProps = {
+type NewsHeroCardProps = {
   image: ImageSourcePropType;
   title: string;
   description: string;
-  onPress?: () => void;
 };
 
-export default function WorkoutBanner({
+export default function NewsHeroCard({
   image,
   title,
   description,
-  onPress,
-}: WorkoutBannerProps) {
+}: NewsHeroCardProps) {
   const themeColor = useThemeColor();
 
   return (
@@ -25,11 +21,20 @@ export default function WorkoutBanner({
       style={[
         styles.container,
         {
-          borderColor: themeColor.destructive,
+          borderColor: themeColor.border,
         },
       ]}
     >
-      <Image source={image} resizeMode="cover" style={styles.image} />
+      <Image source={image} style={styles.image} />
+
+      <View
+        style={[
+          styles.overlay,
+          {
+            backgroundColor: themeColor.overlayStrong,
+          },
+        ]}
+      />
 
       <View style={styles.content}>
         <UIText
@@ -53,13 +58,6 @@ export default function WorkoutBanner({
         >
           {description}
         </UIText>
-
-        <UIButton
-          style={styles.button}
-          label="Start Workout →"
-          variant="primary"
-          onPress={onPress}
-        />
       </View>
     </View>
   );
@@ -67,48 +65,46 @@ export default function WorkoutBanner({
 
 const styles = StyleSheet.create({
   container: {
-    height: 170,
-    marginTop: 20,
+    width: "100%",
+    height: 145,
     borderWidth: 1,
     borderRadius: 7,
     overflow: "hidden",
+    position: "relative",
   },
 
   image: {
     position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
     width: "100%",
     height: "100%",
   },
 
+  overlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+
   content: {
     flex: 1,
+    justifyContent: "center",
     paddingHorizontal: 18,
-    paddingTop: 14,
-    paddingBottom: 12,
+    paddingVertical: 14,
   },
 
   title: {
-    maxWidth: 170,
+    width: 170,
     fontSize: 24,
     fontWeight: "bold",
     lineHeight: 27,
   },
 
   description: {
-    maxWidth: 210,
-    marginTop: 4,
-    fontSize: 14,
-    lineHeight: 17,
-  },
-
-  button: {
-    width: 230,
-    height: 40,
-    marginTop: "auto",
-    borderRadius: 6,
+    width: 150,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 10,
   },
 });

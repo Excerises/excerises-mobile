@@ -1,19 +1,8 @@
 import { NavigationBar } from "expo-navigation-bar";
 import { Slot, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import {
-  Clock3,
-  Dumbbell,
-  Home,
-  User,
-} from "lucide-react-native";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -26,7 +15,6 @@ import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
 function MainLayout() {
-  const { height } = useWindowDimensions();
   const themeColor = useThemeColor();
   const { theme } = useThemeContext();
   const insets = useSafeAreaInsets();
@@ -72,15 +60,11 @@ function MainLayout() {
         },
       ]}
     >
-      <StatusBar
-        style={theme === "dark" ? "light" : "dark"}
-      />
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
 
-      <NavigationBar
-        style={theme === "dark" ? "dark" : "light"}
-      />
+      <NavigationBar style={theme === "dark" ? "dark" : "light"} />
 
-      {isWorkoutFlow && (
+      {isWorkoutFlow ? (
         <SafeAreaView edges={["top"]}>
           <View style={styles.header}>
             <Pressable
@@ -100,63 +84,39 @@ function MainLayout() {
               </UIText>
             </Pressable>
 
-            <ThemeToggler
-              color={themeColor.foreground}
-            />
+            <ThemeToggler color={themeColor.foreground} />
           </View>
         </SafeAreaView>
-      )}
-
-      {!isWorkoutFlow && (
+      ) : (
         <SafeAreaView edges={["top"]} />
       )}
 
-      <View style={styles.keyboardContainer}>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={[
-            styles.scrollContent,
-            !isWorkoutFlow &&
-              styles.scrollContentWithNavigation,
+      <View
+        style={[styles.content, isWorkoutFlow && styles.workoutFlowContent]}
+      >
+        <View
+          style={[
+            styles.pageContainer,
+            isWorkoutFlow && styles.workoutFlowPageContainer,
           ]}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
         >
-          <View
-            style={[
-              styles.pageContainer,
-              isWorkoutFlow &&
-                styles.workoutFlowPageContainer,
-              {
-                minHeight: isWorkoutFlow
-                  ? height -
-                    insets.top -
-                    styles.header.height
-                  : height -
-                    insets.top -
-                    insets.bottom -
-                    56,
-              },
-            ]}
-          >
-            <Slot />
-          </View>
-        </ScrollView>
+          <Slot />
+        </View>
       </View>
 
       {!isWorkoutFlow && (
-        <>
-          <View
-            style={[
-              styles.bottomNavigation,
-              {
-                backgroundColor: themeColor.card,
-              },
-            ]}
-          >
+        <View
+          style={[
+            styles.navigationContainer,
+            {
+              paddingBottom: insets.bottom,
+              backgroundColor: themeColor.card,
+            },
+          ]}
+        >
+          <View style={styles.bottomNavigation}>
             {menus.map((menu) => {
-              const isActive =
-                pathname === menu.path;
+              const isActive = pathname === menu.path;
 
               const Icon = menu.icon;
 
@@ -164,16 +124,12 @@ function MainLayout() {
                 <Pressable
                   key={menu.route}
                   style={styles.navItem}
-                  onPress={() =>
-                    router.replace(menu.route)
-                  }
+                  onPress={() => router.replace(menu.route)}
                 >
                   <Icon
                     size={21}
                     color={
-                      isActive
-                        ? themeColor.primary
-                        : themeColor.foreground
+                      isActive ? themeColor.primary : themeColor.foreground
                     }
                   />
 
@@ -193,9 +149,7 @@ function MainLayout() {
               );
             })}
           </View>
-
-          <SafeAreaView edges={["bottom"]} />
-        </>
+        </View>
       )}
     </View>
   );
@@ -234,20 +188,12 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
 
-  keyboardContainer: {
+  content: {
     flex: 1,
   },
 
-  scrollView: {
+  workoutFlowContent: {
     flex: 1,
-  },
-
-  scrollContent: {
-    flexGrow: 1,
-  },
-
-  scrollContentWithNavigation: {
-    paddingBottom: 56,
   },
 
   pageContainer: {
@@ -258,13 +204,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
 
+  navigationContainer: {
+    width: "100%",
+  },
+
   bottomNavigation: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
     height: 56,
-    borderRadius: 6,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",

@@ -11,10 +11,7 @@ import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/components/
 import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/components/workout-recommendation-step";
 import WorkoutSessionStep from "@/components/ui/main/workout-flow/components/workout-session-step";
 
-import {
-  workouts,
-  type Workout,
-} from "@/components/ui/main/workout-flow/workout-data";
+import { workouts, type Workout } from "@/components/data/workout-data";
 
 type WorkoutStep = "type" | "recommend" | "detail" | "session" | "complete";
 
@@ -36,7 +33,7 @@ export default function WorkoutFlow() {
 
   const [bodyPart, setBodyPart] = useState("");
   const [equipment, setEquipment] = useState("");
-  const [difficulty, setDifficulty] = useState("");
+  const [category, setCategory] = useState("");
   const [target, setTarget] = useState("");
 
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(
@@ -52,11 +49,11 @@ export default function WorkoutFlow() {
 
     const equipmentMatch = !equipment || workout.equipment === equipment;
 
-    const difficultyMatch = !difficulty || workout.difficulty === difficulty;
+    const categoryMatch = !category || workout.category === category;
 
     const targetMatch = !target || workout.target === target;
 
-    return bodyPartMatch && equipmentMatch && difficultyMatch && targetMatch;
+    return bodyPartMatch && equipmentMatch && categoryMatch && targetMatch;
   });
 
   const displayedWorkouts =
@@ -120,11 +117,11 @@ export default function WorkoutFlow() {
           <WorkoutPreferenceStep
             bodyPart={bodyPart}
             equipment={equipment}
-            difficulty={difficulty}
+            category={category}
             target={target}
             onBodyPartChange={setBodyPart}
             onEquipmentChange={setEquipment}
-            onDifficultyChange={setDifficulty}
+            onCategoryChange={setCategory}
             onTargetChange={setTarget}
             onNext={goToRecommend}
           />

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -7,12 +7,10 @@ import {
   Pressable,
   StyleSheet,
   View,
-  ViewToken,
 } from "react-native";
 
-import useThemeColor from "@/hooks/use-theme-color";
-
 import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsItem = {
   id: string;
@@ -32,24 +30,10 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const activeIndexRef = useRef(0);
   const listRef = useRef<FlatList<NewsItem>>(null);
+  const activeIndexRef = useRef(0);
 
   const cardWidth = width - 40;
-
-  const handleViewableItemsChanged = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      const index = viewableItems[0]?.index;
-
-      if (index === null || index === undefined) {
-        return;
-      }
-
-      activeIndexRef.current = index;
-      setActiveIndex(index);
-    },
-    [],
-  );
 
   useEffect(() => {
     if (data.length <= 1) {
@@ -57,20 +41,22 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
     }
 
     const interval = setInterval(() => {
-      const currentIndex = activeIndexRef.current;
-      const nextIndex = currentIndex + 1 >= data.length ? 0 : currentIndex + 1;
+      const nextIndex =
+        activeIndexRef.current + 1 >= data.length
+          ? 0
+          : activeIndexRef.current + 1;
 
       activeIndexRef.current = nextIndex;
       setActiveIndex(nextIndex);
 
-      listRef.current?.scrollToIndex({
-        index: nextIndex,
+      listRef.current?.scrollToOffset({
+        offset: nextIndex * cardWidth,
         animated: true,
       });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [data.length]);
+  }, [data.length, cardWidth]);
 
   return (
     <View>
@@ -78,19 +64,16 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
         ref={listRef}
         data={data}
         horizontal
-        showsHorizontalScrollIndicator={false}
         pagingEnabled
-        snapToInterval={cardWidth}
-        decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
-        getItemLayout={(_, index) => ({
-          length: cardWidth,
-          offset: cardWidth * index,
-          index,
-        })}
-        onViewableItemsChanged={handleViewableItemsChanged}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 60,
+        onMomentumScrollEnd={(event) => {
+          const index = Math.round(
+            event.nativeEvent.contentOffset.x / cardWidth,
+          );
+
+          activeIndexRef.current = index;
+          setActiveIndex(index);
         }}
         renderItem={({ item }) => (
           <Pressable
@@ -99,8 +82,8 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               styles.card,
               {
                 width: cardWidth,
-                borderColor: themeColor.destructive,
                 backgroundColor: themeColor.card,
+                borderColor: themeColor.border,
               },
             ]}
           >
@@ -110,7 +93,14 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               style={styles.image}
             />
 
-            <View style={[styles.overlay]}/>
+            <View
+              style={[
+                styles.overlay,
+                {
+                  backgroundColor: themeColor.overlay,
+                },
+              ]}
+            />
 
             <View style={styles.content}>
               <UIText style={styles.title}>{item.title}</UIText>
@@ -147,7 +137,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    height: 120,
+    height: 126,
     borderWidth: 1,
     borderRadius: 7,
     overflow: "hidden",
@@ -179,7 +169,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    maxWidth: 150,
+    maxWidth: 155,
     fontSize: 15,
     fontWeight: "600",
     lineHeight: 18,

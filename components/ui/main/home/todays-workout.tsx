@@ -1,5 +1,5 @@
-import { Check, Circle } from "lucide-react-native";
-import { useCallback, useState } from "react";
+import { Check, ChevronRight, Circle } from "lucide-react-native";
+import { useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -7,13 +7,12 @@ import {
   Pressable,
   StyleSheet,
   View,
-  ViewToken,
 } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/ui/main/workout-flow/workout-data";
+import type { Workout } from "@/components/data/workout-data";
 
 type TodayWorkout = {
   workout: Workout;
@@ -32,24 +31,12 @@ export default function TodaysWorkout({
   onSelect,
 }: TodaysWorkoutProps) {
   const themeColor = useThemeColor();
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cardWidth = width - 40;
 
   const completedCount = workouts.filter((item) => item.completed).length;
-
-  const handleViewableItemsChanged = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      const index = viewableItems[0]?.index;
-
-      if (index === null || index === undefined) {
-        return;
-      }
-
-      setActiveIndex(index);
-    },
-    [],
-  );
 
   return (
     <View style={styles.container}>
@@ -66,17 +53,13 @@ export default function TodaysWorkout({
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        snapToInterval={cardWidth}
-        decelerationRate="fast"
         keyExtractor={(item) => item.workout.id}
-        getItemLayout={(_, index) => ({
-          length: cardWidth,
-          offset: cardWidth * index,
-          index,
-        })}
-        onViewableItemsChanged={handleViewableItemsChanged}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 60,
+        onMomentumScrollEnd={(event) => {
+          const index = Math.round(
+            event.nativeEvent.contentOffset.x / cardWidth,
+          );
+
+          setActiveIndex(index);
         }}
         renderItem={({ item }) => (
           <Pressable
@@ -92,41 +75,53 @@ export default function TodaysWorkout({
           >
             <Image source={item.workout.image} style={styles.image} />
 
+            <View
+              style={[
+                styles.overlay,
+                {
+                  backgroundColor: themeColor.overlaySoft,
+                },
+              ]}
+            />
+
+            <View
+              style={[
+                styles.statusBadge,
+                {
+                  backgroundColor: themeColor.statusBackground,
+                },
+              ]}
+            >
+              {item.completed ? (
+                <Check size={11} color={themeColor.white} strokeWidth={3} />
+              ) : (
+                <Circle size={10} color={themeColor.mutedForeground} />
+              )}
+
+              <UIText
+                style={[
+                  styles.statusText,
+                  {
+                    color: item.completed
+                      ? themeColor.white
+                      : themeColor.mutedForeground,
+                  },
+                ]}
+              >
+                {item.completed ? "Completed" : "Not Completed"}
+              </UIText>
+            </View>
+
+            <View style={styles.arrow}>
+              <ChevronRight size={19} color={themeColor.foreground} />
+            </View>
+
             <View style={styles.content}>
               <UIText style={styles.workoutTitle}>{item.workout.title}</UIText>
 
               <UIText variant="muted" style={styles.meta}>
                 {item.workout.bodyPart} • {item.workout.equipment}
               </UIText>
-
-              {item.completed ? (
-                <View style={styles.statusRow}>
-                  <Check size={12} color="#16C84E" strokeWidth={3} />
-
-                  <UIText
-                    style={[
-                      styles.statusText,
-                      {
-                        color: "#16C84E",
-                      },
-                    ]}
-                  >
-                    Completed
-                  </UIText>
-                </View>
-              ) : (
-                <View style={styles.statusRow}>
-                  <Circle
-                    size={12}
-                    color={themeColor.mutedForeground}
-                    strokeWidth={2}
-                  />
-
-                  <UIText variant="muted" style={styles.statusText}>
-                    Not Completed
-                  </UIText>
-                </View>
-              )}
             </View>
           </Pressable>
         )}
@@ -142,7 +137,7 @@ export default function TodaysWorkout({
                 {
                   backgroundColor:
                     index === activeIndex
-                      ? themeColor.destructive
+                      ? themeColor.primary
                       : themeColor.mutedForeground,
                 },
               ]}
@@ -177,21 +172,59 @@ const styles = StyleSheet.create({
 
   card: {
     height: 120,
-    flexDirection: "row",
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 8,
     overflow: "hidden",
+    position: "relative",
   },
 
   image: {
-    width: "45%",
+    position: "absolute",
+    width: "58%",
     height: "100%",
+    left: 0,
+    top: 0,
+    resizeMode: "cover",
+  },
+
+  overlay: {
+    position: "absolute",
+    left: "45%",
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+
+  statusBadge: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 7,
+    paddingVertical: 4,
+    borderRadius: 10,
+  },
+
+  statusText: {
+    fontSize: 8,
+    fontWeight: "600",
+  },
+
+  arrow: {
+    position: "absolute",
+    right: 8,
+    top: "50%",
+    marginTop: -10,
   },
 
   content: {
     flex: 1,
-    justifyContent: "center",
+    marginLeft: "55%",
     paddingHorizontal: 12,
+    paddingBottom: 15,
+    justifyContent: "flex-end",
   },
 
   workoutTitle: {
@@ -200,32 +233,20 @@ const styles = StyleSheet.create({
   },
 
   meta: {
-    fontSize: 11,
-    marginTop: 4,
-  },
-
-  statusRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginTop: 8,
-  },
-
-  statusText: {
     fontSize: 10,
-    fontWeight: "600",
+    marginTop: 4,
   },
 
   indicator: {
     flexDirection: "row",
     justifyContent: "center",
     gap: 8,
-    marginTop: 10,
+    marginTop: 8,
   },
 
   dot: {
-    width: 8,
-    height: 8,
+    width: 7,
+    height: 7,
     borderRadius: 4,
   },
 });
