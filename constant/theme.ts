@@ -8,16 +8,10 @@ export const Colors = {
     mutedForeground: "#7d8287",
     destructive: "#800000",
     border: "#E6E6E6",
+    overlay: "rgba(0,0,0,0.35)",
 
     white: "#FFFFFF",
-
     success: "#16C84E",
-    successLight: "#55E36A",
-    successBackground: "#17351F",
-
-    overlay: "rgba(0,0,0,0.35)",
-    overlaySoft: "rgba(0,0,0,0.18)",
-    overlayStrong: "rgba(0,0,0,0.45)",
   },
 
   dark: {
@@ -29,16 +23,10 @@ export const Colors = {
     mutedForeground: "#9BA1A6",
     destructive: "#800000",
     border: "#333333",
+    overlay: "rgba(0,0,0,0.35)",
 
     white: "#FFFFFF",
-
     success: "#16C84E",
-    successLight: "#55E36A",
-    successBackground: "#17351F",
-
-    overlay: "rgba(0,0,0,0.35)",
-    overlaySoft: "rgba(0,0,0,0.18)",
-    overlayStrong: "rgba(0,0,0,0.45)",
   },
 };
 

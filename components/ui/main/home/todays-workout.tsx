@@ -79,7 +79,7 @@ export default function TodaysWorkout({
               style={[
                 styles.overlay,
                 {
-                  backgroundColor: themeColor.overlaySoft,
+                  backgroundColor: themeColor.overlay,
                 },
               ]}
             />
@@ -88,7 +88,7 @@ export default function TodaysWorkout({
               style={[
                 styles.statusBadge,
                 {
-                  backgroundColor: themeColor.statusBackground,
+                  backgroundColor: themeColor.card,
                 },
               ]}
             >

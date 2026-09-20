@@ -64,7 +64,7 @@ export default function WeeklyWorkout({
             style={[
               styles.arrowButton,
               {
-                backgroundColor: themeColor.surfaceDark,
+                backgroundColor: themeColor.border,
               },
             ]}
           >
@@ -75,7 +75,7 @@ export default function WeeklyWorkout({
             style={[
               styles.arrowButton,
               {
-                backgroundColor: themeColor.surfaceDark,
+                backgroundColor: themeColor.border,
               },
             ]}
           >

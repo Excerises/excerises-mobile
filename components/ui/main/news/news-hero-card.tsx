@@ -31,7 +31,7 @@ export default function NewsHeroCard({
         style={[
           styles.overlay,
           {
-            backgroundColor: themeColor.overlayStrong,
+            backgroundColor: themeColor.overlay,
           },
         ]}
       />

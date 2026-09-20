@@ -37,7 +37,7 @@ export default function WorkoutCurrentCard({
           style={[
             styles.status,
             {
-              backgroundColor: themeColor.surfaceDark,
+              backgroundColor: themeColor.card,
             },
           ]}
         >

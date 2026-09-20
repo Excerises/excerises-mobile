@@ -94,17 +94,17 @@ function HistoryCard({ item }: HistoryCardProps) {
             style={[
               styles.completed,
               {
-                backgroundColor: themeColor.successBackground,
+                backgroundColor: themeColor.card,
               },
             ]}
           >
-            <Check size={12} color={themeColor.successLight} strokeWidth={3} />
+            <Check size={12} color={themeColor.success} strokeWidth={3} />
 
             <UIText
               style={[
                 styles.completedText,
                 {
-                  color: themeColor.successLight,
+                  color: themeColor.success,
                 },
               ]}
             >
