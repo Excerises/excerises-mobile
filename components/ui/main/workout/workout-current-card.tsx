@@ -69,7 +69,7 @@ export default function WorkoutCurrentCard({
           </View>
 
           <UIButton
-            label="CONTINUE WORKOUT  →"
+            label="Continue Workout  →"
             variant="primary"
             style={styles.button}
             onPress={onContinue}
