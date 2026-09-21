@@ -2,8 +2,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react-native";
 
 import { Pressable, StyleSheet, View } from "react-native";
 
-import { weeklyDayNames } from "@/components/data/home-data";
-
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -12,6 +10,8 @@ type WeeklyWorkoutProps = {
   completedDates: Date[];
   weeklyTarget?: number;
 };
+
+const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const sameDate = (date1: Date, date2: Date) =>
   date1.toDateString() === date2.toDateString();
@@ -31,7 +31,7 @@ export default function WeeklyWorkout({
 
   monday.setDate(today.getDate() + mondayOffset);
 
-  const weekDays = weeklyDayNames.map((day, index) => {
+  const weekDays = dayNames.map((day, index) => {
     const date = new Date(monday);
 
     date.setDate(monday.getDate() + index);

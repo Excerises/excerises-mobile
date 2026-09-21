@@ -4,8 +4,6 @@ import { StyleSheet, View } from "react-native";
 
 import Svg, { Path } from "react-native-svg";
 
-import { bmiCategories } from "@/components/data/onboarding-data";
-
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -14,6 +12,29 @@ type BMICardProps = {
   value: string;
   status: string;
 };
+
+const categories = [
+  {
+    color: "#55E36A",
+    range: "< 18,5",
+    label: "Underweight",
+  },
+  {
+    color: "#55E36A",
+    range: "18,5 - 22,9",
+    label: "Normal",
+  },
+  {
+    color: "#FFC107",
+    range: "23,0 - 24,9",
+    label: "Overweight",
+  },
+  {
+    color: "#FF1717",
+    range: "≥ 25,0",
+    label: "Obesity",
+  },
+];
 
 export default function BMICard({ value, status }: BMICardProps) {
   const themeColor = useThemeColor();
@@ -116,7 +137,7 @@ export default function BMICard({ value, status }: BMICardProps) {
           BMI Categories (Asia-Pacific Standard)
         </UIText>
 
-        {bmiCategories.map((category) => (
+        {categories.map((category) => (
           <View key={category.label} style={styles.categoryRow}>
             <View
               style={[

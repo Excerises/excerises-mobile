@@ -14,16 +14,7 @@ import {
   ViewToken,
 } from "react-native";
 
-import {
-  currentWorkouts,
-  fullBodyCategories,
-  historyFilters,
-  historyToday,
-  historyYesterday,
-  workoutFilters,
-  workouts,
-  type Workout,
-} from "@/components/data/workout-data";
+import { workouts } from "@/components/data/workout-data";
 
 import UIText from "@/components/ui/common/text";
 
@@ -33,13 +24,72 @@ import WorkoutCustomizeBanner from "@/components/ui/main/workout/workout-customi
 
 import WorkoutHeader from "@/components/ui/main/workout/workout-header";
 
-import WorkoutHistoryList from "@/components/ui/main/workout/workout-history-list";
+import WorkoutHistoryList, {
+  type WorkoutHistoryItem,
+} from "@/components/ui/main/workout/workout-history-list";
 
 import WorkoutRecommendedCard from "@/components/ui/main/workout/workout-recommended-card";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
+import type { Workout } from "@/components/data/workout-data";
+
 const { width } = Dimensions.get("window");
+
+const currentWorkouts = [
+  {
+    workout: workouts[3],
+    duration: "04:25",
+  },
+  {
+    workout: workouts[1],
+    duration: "02:18",
+  },
+];
+
+const historyToday: WorkoutHistoryItem[] = [
+  {
+    workout: workouts[0],
+    duration: "04:25",
+    completed: true,
+  },
+  {
+    workout: workouts[1],
+    duration: "06:12",
+    completed: true,
+  },
+  {
+    workout: workouts[8],
+    duration: "03:45",
+    completed: true,
+  },
+];
+
+const historyYesterday: WorkoutHistoryItem[] = [
+  {
+    workout: workouts[2],
+    duration: "05:20",
+    completed: true,
+  },
+  {
+    workout: workouts[3],
+    duration: "06:18",
+    completed: true,
+  },
+];
+
+const filters = [
+  "All",
+  "Chest",
+  "Arms",
+  "Legs",
+  "Core",
+  "Back",
+  "Shoulders",
+  "Full Body",
+];
+
+const historyFilters = ["All", "Today", "This Week", "This Month"] as const;
 
 type HistoryFilter = (typeof historyFilters)[number];
 
@@ -91,7 +141,7 @@ export default function WorkoutScreen() {
     }
 
     if (activeFilter === "Full Body") {
-      return fullBodyCategories.includes(workout.category);
+      return ["Upper Body", "Lower Body", "Core"].includes(workout.category);
     }
 
     return workout.bodyPart === activeFilter;
@@ -100,6 +150,7 @@ export default function WorkoutScreen() {
   const displayedRecommendedWorkouts = showAllRecommended
     ? filteredRecommendedWorkouts
     : filteredRecommendedWorkouts.slice(0, 4);
+
 
   const filteredHistoryYesterday =
     historyFilter === "Today" ? [] : historyYesterday;
@@ -272,7 +323,7 @@ export default function WorkoutScreen() {
 
               {showFilters && (
                 <View style={styles.filterList}>
-                  {workoutFilters.map((filter) => (
+                  {filters.map((filter) => (
                     <Pressable
                       key={filter}
                       style={[

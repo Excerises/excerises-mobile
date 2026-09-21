@@ -3,18 +3,12 @@ import { ChevronRight } from "lucide-react-native";
 import { useState } from "react";
 
 import {
+  ImageSourcePropType,
   Pressable,
   ScrollView,
   StyleSheet,
   View,
 } from "react-native";
-
-import {
-  articles,
-  newsCategories,
-  newsHero,
-  popularNews,
-} from "@/components/data/news-data";
 
 import UIText from "@/components/ui/common/text";
 
@@ -27,6 +21,65 @@ import NewsHeroCard from "@/components/ui/main/news/news-hero-card";
 import NewsPopularCard from "@/components/ui/main/news/news-popular-card";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
+type NewsArticle = {
+  id: string;
+  image: ImageSourcePropType;
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+};
+
+const categories = ["All", "Articles", "Tips", "Programs", "Community"];
+
+const articles: NewsArticle[] = [
+  {
+    id: "1",
+    image: require("@/assets/images/news-1.png"),
+    title: "10 Simple Habits for a Healthier Lifestyle",
+    description: "Build better habits, get a stronger you.",
+    date: "12 Sep 2026",
+    category: "Articles",
+  },
+  {
+    id: "2",
+    image: require("@/assets/images/news-2.png"),
+    title: "Nutrition Guide for Muscle Gain",
+    description: "Fuel your body the right way.",
+    date: "10 Sep 2026",
+    category: "Tips",
+  },
+  {
+    id: "3",
+    image: require("@/assets/images/news-3.png"),
+    title: "Beginner's Guide to Strength Training",
+    description: "Everything you need to know to start.",
+    date: "8 Sep 2026",
+    category: "Articles",
+  },
+];
+
+const popularNews = [
+  {
+    id: "1",
+    image: require("@/assets/images/news-1.png"),
+    title: "Home Workout Routine",
+    views: "12.4K",
+  },
+  {
+    id: "2",
+    image: require("@/assets/images/news-2.png"),
+    title: "Best Protein Sources",
+    views: "9.8K",
+  },
+  {
+    id: "3",
+    image: require("@/assets/images/news-3.png"),
+    title: "Staying Consistent in Your Fitness Journey",
+    views: "8.1K",
+  },
+];
 
 export default function News() {
   const themeColor = useThemeColor();
@@ -55,9 +108,9 @@ export default function News() {
         contentContainerStyle={styles.scrollContent}
       >
         <NewsHeroCard
-          image={newsHero.image}
-          title={newsHero.title}
-          description={newsHero.description}
+          image={require("@/assets/images/news-2.png")}
+          title={"Small Steps\nBig Results"}
+          description={"Consistency is\nthe key to progress."}
         />
 
         <ScrollView
@@ -65,7 +118,7 @@ export default function News() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryList}
         >
-          {newsCategories.map((category) => {
+          {categories.map((category) => {
             const isActive = activeCategory === category;
 
             return (

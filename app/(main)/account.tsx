@@ -6,8 +6,6 @@ import { LogOut } from "lucide-react-native";
 
 import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 
-import { profileData } from "@/components/data/profile-data";
-
 import UIText from "@/components/ui/common/text";
 
 import ProfileGoal from "@/components/ui/main/profile/profile-goal";
@@ -61,16 +59,16 @@ export default function Profile() {
         contentContainerStyle={styles.scrollContent}
       >
         <ProfileInfoCard
-          name={profileData.name}
-          email={profileData.email}
+          name="Rama"
+          email="rama@email.com"
         />
 
         <ProfileStats />
 
         <ProfileGoal
-          goal={profileData.goal}
-          description={profileData.goalDescription}
-          progress={profileData.goalProgress}
+          goal="Muscle Gain"
+          description="Stay consistent and reach your goal."
+          progress={60}
         />
 
         <ProfileMenu />

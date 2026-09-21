@@ -1,3 +1,4 @@
+// Dummy data for the News entity in the ERD.
 import type { ImageSourcePropType } from "react-native";
 
 export type NewsArticle = {
@@ -9,19 +10,29 @@ export type NewsArticle = {
   category: string;
 };
 
-export type PopularNewsItem = {
+export type PopularNews = {
   id: string;
   image: ImageSourcePropType;
   title: string;
   views: string;
 };
 
-export const newsCategories = [
-  "All",
-  "Articles",
-  "Tips",
-  "Programs",
-  "Community",
+export const homeNews = [
+  {
+    id: "1",
+    image: require("@/assets/images/news-1.png"),
+    title: "5 Tips to Stay Consistent with Your Workout",
+  },
+  {
+    id: "2",
+    image: require("@/assets/images/news-2.png"),
+    title: "How to Build a Better Workout Routine",
+  },
+  {
+    id: "3",
+    image: require("@/assets/images/news-3.png"),
+    title: "Simple Ways to Improve Your Fitness",
+  },
 ];
 
 export const articles: NewsArticle[] = [
@@ -51,7 +62,7 @@ export const articles: NewsArticle[] = [
   },
 ];
 
-export const popularNews: PopularNewsItem[] = [
+export const popularNews: PopularNews[] = [
   {
     id: "1",
     image: require("@/assets/images/news-1.png"),

@@ -2,14 +2,17 @@ import { Check, MoreVertical } from "lucide-react-native";
 
 import { Image, StyleSheet, View } from "react-native";
 
-import {
-  historyGroupTitles,
-  type WorkoutHistoryItem,
-} from "@/components/data/workout-data";
-
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
+import type { Workout } from "@/components/data/workout-data";
+
+export type WorkoutHistoryItem = {
+  workout: Workout;
+  duration: string;
+  completed: boolean;
+};
 
 type WorkoutHistoryListProps = {
   today: WorkoutHistoryItem[];
@@ -22,9 +25,9 @@ export default function WorkoutHistoryList({
 }: WorkoutHistoryListProps) {
   return (
     <View style={styles.container}>
-      <HistoryGroup title={historyGroupTitles.today} workouts={today} />
+      <HistoryGroup title="Today, 18 Sep 2026" workouts={today} />
 
-      <HistoryGroup title={historyGroupTitles.yesterday} workouts={yesterday} />
+      <HistoryGroup title="Yesterday, 17 Sep 2026" workouts={yesterday} />
     </View>
   );
 }

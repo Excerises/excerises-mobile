@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 
 import { StyleSheet, View } from "react-native";
 
-import { fitnessResult } from "@/components/data/onboarding-data";
-
 import UIButton from "@/components/ui/common/button";
 
 import UIText from "@/components/ui/common/text";
@@ -137,8 +135,8 @@ export default function Result() {
           </UIText>
 
           <FitnessLevelCard
-            level={fitnessResult.level}
-            description={fitnessResult.description}
+            level="Beginner"
+            description={"A great start! Keep going\nand stay consistent."}
             backgroundColor={themeColor.card}
             foregroundColor={themeColor.foreground}
           />
