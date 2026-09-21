@@ -198,3 +198,81 @@ export const workouts: Workout[] = [
     ],
   },
 ];
+
+export type WorkoutHistoryItem = {
+  workout: Workout;
+  duration: string;
+  completed: boolean;
+};
+
+export type CurrentWorkout = {
+  workout: Workout;
+  duration: string;
+};
+
+export const currentWorkouts: CurrentWorkout[] = [
+  {
+    workout: workouts[3],
+    duration: "04:25",
+  },
+  {
+    workout: workouts[1],
+    duration: "02:18",
+  },
+];
+
+export const historyToday: WorkoutHistoryItem[] = [
+  {
+    workout: workouts[0],
+    duration: "04:25",
+    completed: true,
+  },
+  {
+    workout: workouts[1],
+    duration: "06:12",
+    completed: true,
+  },
+  {
+    workout: workouts[8],
+    duration: "03:45",
+    completed: true,
+  },
+];
+
+export const historyYesterday: WorkoutHistoryItem[] = [
+  {
+    workout: workouts[2],
+    duration: "05:20",
+    completed: true,
+  },
+  {
+    workout: workouts[3],
+    duration: "06:18",
+    completed: true,
+  },
+];
+
+export const fullBodyCategories = ["Upper Body", "Lower Body", "Core"];
+
+export const workoutFilters = [
+  "All",
+  "Chest",
+  "Arms",
+  "Legs",
+  "Core",
+  "Back",
+  "Shoulders",
+  "Full Body",
+];
+
+export const historyFilters = [
+  "All",
+  "Today",
+  "This Week",
+  "This Month",
+] as const;
+
+export const historyGroupTitles = {
+  today: "Today, 18 Sep 2026",
+  yesterday: "Yesterday, 17 Sep 2026",
+};

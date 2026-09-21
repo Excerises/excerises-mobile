@@ -1,5 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
+import { durationOptions, workoutFrequencyOptions } from "@/components/data/onboarding-data";
+
 import UIButton from "@/components/ui/common/button";
 
 import FormGroup from "@/components/ui/common/form-group";
@@ -17,22 +19,6 @@ type WorkoutRoutineStepProps = {
   onDurationChange: (value: string) => void;
   onNext: () => void;
 };
-
-const workoutFrequencyOptions = [
-  "1 day",
-  "2 days",
-  "3 days",
-  "4 days",
-  "5 days",
-  "6 days",
-];
-
-const durationOptions = [
-  "15 minutes",
-  "30 minutes",
-  "45 minutes",
-  "60 minutes",
-];
 
 export default function WorkoutRoutineStep({
   workoutFrequency,

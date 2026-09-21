@@ -11,16 +11,13 @@ import {
   View,
 } from "react-native";
 
+import type { TodayWorkout } from "@/components/data/home-data";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type { Workout } from "@/components/data/workout-data";
-
-type TodayWorkout = {
-  workout: Workout;
-  completed: boolean;
-};
 
 type TodaysWorkoutProps = {
   workouts: TodayWorkout[];

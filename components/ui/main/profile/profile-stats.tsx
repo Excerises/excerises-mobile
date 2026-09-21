@@ -2,27 +2,11 @@ import { Clock3, Dumbbell, Flame } from "lucide-react-native";
 
 import { StyleSheet, View } from "react-native";
 
+import { profileStats } from "@/components/data/profile-data";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
-
-const stats = [
-  {
-    value: "24",
-    label: "Workouts",
-    icon: Dumbbell,
-  },
-  {
-    value: "12",
-    label: "Days Streak",
-    icon: Flame,
-  },
-  {
-    value: "36.5",
-    label: "Hours",
-    icon: Clock3,
-  },
-];
 
 export default function ProfileStats() {
   const themeColor = useThemeColor();
@@ -37,7 +21,7 @@ export default function ProfileStats() {
         },
       ]}
     >
-      {stats.map((stat) => {
+      {profileStats.map((stat) => {
         const Icon = stat.icon;
 
         return (

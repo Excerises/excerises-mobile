@@ -2,20 +2,14 @@ import { Check, ChevronRight } from "lucide-react-native";
 
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
+import type { RecentWorkout } from "@/components/data/home-data";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
-
-type WorkoutHistory = {
-  workout: Workout;
-  duration: number;
-  completedAt: Date;
-};
-
 type RecentWorkoutsProps = {
-  workouts: WorkoutHistory[];
+  workouts: RecentWorkout[];
 };
 
 export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {

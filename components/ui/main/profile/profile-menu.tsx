@@ -1,40 +1,12 @@
-import {
-    Bell,
-    ChevronRight,
-    CircleHelp,
-    FileText,
-    Palette,
-    Settings2,
-} from "lucide-react-native";
+import { ChevronRight } from "lucide-react-native";
 
 import { Pressable, StyleSheet, View } from "react-native";
+
+import { profileMenuItems } from "@/components/data/profile-data";
 
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
-
-const menuItems = [
-  {
-    label: "Account Settings",
-    icon: Settings2,
-  },
-  {
-    label: "Notifications",
-    icon: Bell,
-  },
-  {
-    label: "Appearance",
-    icon: Palette,
-  },
-  {
-    label: "Help & Support",
-    icon: CircleHelp,
-  },
-  {
-    label: "Terms & Privacy",
-    icon: FileText,
-  },
-];
 
 type ProfileMenuProps = {
   onPress?: (label: string) => void;
@@ -56,9 +28,9 @@ export default function ProfileMenu({ onPress }: ProfileMenuProps) {
           },
         ]}
       >
-        {menuItems.map((item, index) => {
+        {profileMenuItems.map((item, index) => {
           const Icon = item.icon;
-          const isLast = index === menuItems.length - 1;
+          const isLast = index === profileMenuItems.length - 1;
 
           return (
             <Pressable

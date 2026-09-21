@@ -1,5 +1,12 @@
 import { StyleSheet, View } from "react-native";
 
+import {
+  workoutBodyPartOptions,
+  workoutCategoryOptions,
+  workoutEquipmentOptions,
+  workoutTargetOptions,
+} from "@/components/data/onboarding-data";
+
 import UIButton from "@/components/ui/common/button";
 
 import FormGroup from "@/components/ui/common/form-group";
@@ -19,14 +26,6 @@ type WorkoutPreferenceStepProps = {
   onTargetChange: (value: string) => void;
   onNext: () => void;
 };
-
-const bodyPartOptions = ["Chest", "Back", "Shoulders", "Arms", "Legs", "Core"];
-
-const equipmentOptions = ["Bodyweight", "Dumbbell", "Barbell", "Machine"];
-
-const categoryOptions = ["Upper Body", "Lower Body", "Core"];
-
-const targetOptions = ["Strength", "Endurance", "Flexibility", "Balance"];
 
 export default function WorkoutPreferenceStep({
   bodyPart,
@@ -51,7 +50,7 @@ export default function WorkoutPreferenceStep({
         <FormGroup label="Body Part">
           <Selector
             placeholder="Select body part"
-            options={bodyPartOptions}
+            options={workoutBodyPartOptions}
             value={bodyPart}
             onChange={onBodyPartChange}
           />
@@ -60,7 +59,7 @@ export default function WorkoutPreferenceStep({
         <FormGroup label="Equipment">
           <Selector
             placeholder="Select equipment"
-            options={equipmentOptions}
+            options={workoutEquipmentOptions}
             value={equipment}
             onChange={onEquipmentChange}
           />
@@ -69,7 +68,7 @@ export default function WorkoutPreferenceStep({
         <FormGroup label="Target">
           <Selector
             placeholder="Select target"
-            options={targetOptions}
+            options={workoutTargetOptions}
             value={target}
             onChange={onTargetChange}
           />
@@ -78,7 +77,7 @@ export default function WorkoutPreferenceStep({
         <FormGroup label="Category">
           <Selector
             placeholder="Select category"
-            options={categoryOptions}
+            options={workoutCategoryOptions}
             value={category}
             onChange={onCategoryChange}
           />

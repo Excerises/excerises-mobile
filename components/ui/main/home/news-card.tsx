@@ -11,15 +11,11 @@ import {
 
 import type { ImageSourcePropType } from "react-native";
 
+import type { HomeNewsItem as NewsItem } from "@/components/data/home-data";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
-
-type NewsItem = {
-  id: string;
-  image: ImageSourcePropType;
-  title: string;
-};
 
 type NewsCardProps = {
   data: NewsItem[];

@@ -1,5 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
+import { reminderTimeOptions, workoutDayOptions } from "@/components/data/onboarding-data";
+
 import UIButton from "@/components/ui/common/button";
 
 import FormGroup from "@/components/ui/common/form-group";
@@ -21,17 +23,6 @@ type WorkoutTimeStepProps = {
   onReminderEnabledChange: (value: boolean) => void;
   onNext: () => void;
 };
-
-const workoutDayOptions = ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-const reminderTimeOptions = [
-  "07:00",
-  "09:00",
-  "12:00",
-  "16:00",
-  "19:00",
-  "21:00",
-];
 
 export default function WorkoutTimeStep({
   workoutDays,
