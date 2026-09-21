@@ -24,16 +24,13 @@ export default function WeeklyWorkout({
 
   const today = new Date();
   const currentDay = today.getDay();
-
   const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
 
   const monday = new Date(today);
-
   monday.setDate(today.getDate() + mondayOffset);
 
   const weekDays = dayNames.map((day, index) => {
     const date = new Date(monday);
-
     date.setDate(monday.getDate() + index);
 
     const completed = completedDates.some((completedDate) =>
@@ -113,8 +110,8 @@ export default function WeeklyWorkout({
             <UIText
               style={[
                 styles.dayText,
-                item.completed && {
-                  color: themeColor.white,
+                {
+                  color: item.completed ? themeColor.black : themeColor.white,
                 },
               ]}
             >
@@ -124,13 +121,13 @@ export default function WeeklyWorkout({
             <UIText
               style={[
                 styles.dateText,
-                item.completed && {
-                  color: themeColor.white,
+                {
+                  color: item.completed
+                    ? themeColor.black
+                    : item.isToday
+                      ? themeColor.primary
+                      : themeColor.white,
                 },
-                item.isToday &&
-                  !item.completed && {
-                    color: themeColor.primary,
-                  },
               ]}
             >
               {item.date.getDate()}
