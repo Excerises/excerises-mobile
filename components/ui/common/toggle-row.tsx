@@ -58,7 +58,7 @@ export default function ToggleRow({
           false: themeColor.border,
           true: themeColor.primary,
         }}
-        thumbColor="#FFFFFF"
+        thumbColor={themeColor.white}
       />
     </Pressable>
   );

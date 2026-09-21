@@ -93,7 +93,7 @@ export default function News() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <NewsHeader onSearchPress={() => {}} onNotificationPress={() => {}} />
+        <NewsHeader />
       </View>
 
       <ScrollView
@@ -167,7 +167,6 @@ export default function News() {
                 title={article.title}
                 description={article.description}
                 date={article.date}
-                onPress={() => {}}
               />
             ))}
           </View>
@@ -193,7 +192,6 @@ export default function News() {
                 image={item.image}
                 title={item.title}
                 views={item.views}
-                onPress={() => {}}
               />
             ))}
           </View>

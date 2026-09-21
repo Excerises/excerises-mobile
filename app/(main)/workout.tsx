@@ -140,8 +140,7 @@ export default function WorkoutScreen() {
     ? filteredRecommendedWorkouts
     : filteredRecommendedWorkouts.slice(0, 4);
 
-  const filteredHistoryToday =
-    historyFilter === "Today" ? historyToday : historyToday;
+  const filteredHistoryToday = historyToday;
 
   const filteredHistoryYesterday =
     historyFilter === "Today" ? [] : historyYesterday;
@@ -274,7 +273,9 @@ export default function WorkoutScreen() {
 
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <UIText style={styles.sectionTitle}>Recommended For You</UIText>
+                <UIText style={styles.sectionTitle}>
+                  Recommended For You
+                </UIText>
 
                 <Pressable
                   style={[

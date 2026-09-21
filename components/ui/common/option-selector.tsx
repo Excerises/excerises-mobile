@@ -68,7 +68,7 @@ export default function OptionSelector(props: OptionSelectorProps) {
               },
             ]}
             labelStyle={{
-              color: selected ? themeColor.black : themeColor.white,
+              color: selected ? themeColor.black : themeColor.foreground,
             }}
             onPress={() => handlePress(option)}
           />

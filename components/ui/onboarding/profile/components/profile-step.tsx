@@ -58,13 +58,15 @@ export default function ProfileStep({
               <Mars
                 key="male"
                 size={20}
-                color={gender === "male" ? themeColor.black : themeColor.white}
+                color={
+                  gender === "male" ? themeColor.black : themeColor.foreground
+                }
               />,
               <Venus
                 key="female"
                 size={20}
                 color={
-                  gender === "female" ? themeColor.black : themeColor.white
+                  gender === "female" ? themeColor.black : themeColor.foreground
                 }
               />,
             ]}

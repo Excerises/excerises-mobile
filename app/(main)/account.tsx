@@ -23,7 +23,7 @@ export default function Profile() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <ProfileHeader onSettingsPress={() => {}} />
+        <ProfileHeader />
       </View>
 
       <ScrollView
@@ -33,7 +33,6 @@ export default function Profile() {
         <ProfileInfoCard
           name="Rama"
           email="rama@email.com"
-          onEditPress={() => {}}
         />
 
         <ProfileStats />
@@ -42,10 +41,9 @@ export default function Profile() {
           goal="Muscle Gain"
           description="Stay consistent and reach your goal."
           progress={60}
-          onPress={() => {}}
         />
 
-        <ProfileMenu onPress={() => {}} />
+        <ProfileMenu />
 
         <Pressable
           style={[

@@ -86,7 +86,10 @@ export default function Selector({
                 style={[
                   styles.text,
                   {
-                    color: option === value ? "#FFFFFF" : themeColor.foreground,
+                    color:
+                      option === value
+                        ? themeColor.black
+                        : themeColor.foreground,
                   },
                 ]}
               >

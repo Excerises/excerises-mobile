@@ -90,11 +90,7 @@ export default function Home() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <HomeHeader
-          name="User"
-          onSearchPress={() => {}}
-          onNotificationPress={() => {}}
-        />
+        <HomeHeader name="User" />
       </View>
 
       <ScrollView
@@ -147,7 +143,7 @@ export default function Home() {
               value="23.4"
               unit="Normal"
               label="BMI"
-              unitColor="#16C84E"
+              unitColor="success"
             />
           </View>
         </View>

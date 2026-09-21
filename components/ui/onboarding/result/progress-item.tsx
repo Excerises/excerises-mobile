@@ -28,7 +28,7 @@ export default function ProgressItem({
             },
           ]}
         >
-          <Check size={13} color="#FFFFFF" strokeWidth={3} />
+          <Check size={13} color={themeColor.white} strokeWidth={3} />
         </View>
       ) : (
         <Circle size={20} color={themeColor.border} strokeWidth={2} />
