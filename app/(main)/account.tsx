@@ -1,5 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import { LogOut } from "lucide-react-native";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 import ProfileGoal from "@/components/ui/main/profile/profile-goal";
@@ -12,6 +14,25 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Profile() {
   const themeColor = useThemeColor();
+
+  // FUNGSI HANDLE LOGOUT
+  const handleLogout = () => {
+    Alert.alert("Konfirmasi Logout", "Apakah Anda yakin ingin keluar?", [
+      { text: "Batal", style: "cancel" },
+      {
+        text: "Keluar",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await AsyncStorage.removeItem("user");
+            router.replace("/(auth)/login");
+          } catch (e) {
+            console.error("Gagal melakukan logout", e);
+          }
+        },
+      },
+    ]);
+  };
 
   return (
     <View
@@ -47,11 +68,14 @@ export default function Profile() {
 
         <ProfileMenu onPress={() => {}} />
 
+        {/* MENAMBAHKAN onPress={handleLogout} DI PRESSABLE */}
         <Pressable
-          style={[
+          onPress={handleLogout}
+          style={({ pressed }) => [
             styles.logoutButton,
             {
               borderColor: themeColor.border,
+              opacity: pressed ? 0.7 : 1, // Efek tekan
             },
           ]}
         >
