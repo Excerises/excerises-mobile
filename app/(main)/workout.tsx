@@ -2,26 +2,26 @@ import { useRouter } from "expo-router";
 import { ChevronDown, SlidersHorizontal } from "lucide-react-native";
 import { useCallback, useState } from "react";
 import {
-    Dimensions,
-    FlatList,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    View,
-    ViewToken,
+  Dimensions,
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewToken,
 } from "react-native";
 
+import type { Workout } from "@/components/data/workout-data";
+import { workouts } from "@/components/data/workout-data";
 import UIText from "@/components/ui/common/text";
 import WorkoutCurrentCard from "@/components/ui/main/workout/workout-current-card";
 import WorkoutCustomizeBanner from "@/components/ui/main/workout/workout-customize-banner";
 import WorkoutHeader from "@/components/ui/main/workout/workout-header";
 import WorkoutHistoryList, {
-    type WorkoutHistoryItem,
+  type WorkoutHistoryItem,
 } from "@/components/ui/main/workout/workout-history-list";
 import WorkoutRecommendedCard from "@/components/ui/main/workout/workout-recommended-card";
 import useThemeColor from "@/hooks/use-theme-color";
-
-import { workouts, type Workout } from "@/components/data/workout-data";
 
 const { width } = Dimensions.get("window");
 
@@ -91,13 +91,9 @@ export default function WorkoutScreen() {
   );
 
   const [activeCurrentIndex, setActiveCurrentIndex] = useState(0);
-
   const [showFilters, setShowFilters] = useState(false);
-
   const [activeFilter, setActiveFilter] = useState("All");
-
   const [historyFilter, setHistoryFilter] = useState<HistoryFilter>("All");
-
   const [showAllRecommended, setShowAllRecommended] = useState(false);
 
   const cardWidth = width - 40;
@@ -182,7 +178,9 @@ export default function WorkoutScreen() {
             <UIText
               style={[
                 styles.tabText,
-                activeTab === "myWorkout" && styles.activeTabText,
+                activeTab === "myWorkout" && {
+                  color: themeColor.black,
+                },
               ]}
             >
               MY WORKOUT
@@ -201,7 +199,9 @@ export default function WorkoutScreen() {
             <UIText
               style={[
                 styles.tabText,
-                activeTab === "history" && styles.activeTabText,
+                activeTab === "history" && {
+                  color: themeColor.black,
+                },
               ]}
             >
               HISTORY
@@ -292,13 +292,17 @@ export default function WorkoutScreen() {
                 >
                   <SlidersHorizontal
                     size={13}
-                    color={showFilters ? "#FFFFFF" : themeColor.foreground}
+                    color={
+                      showFilters ? themeColor.black : themeColor.foreground
+                    }
                   />
 
                   <UIText
                     style={[
                       styles.filterButtonText,
-                      showFilters && styles.activeFilterButtonText,
+                      showFilters && {
+                        color: themeColor.black,
+                      },
                     ]}
                   >
                     Filter
@@ -329,7 +333,10 @@ export default function WorkoutScreen() {
                       <UIText
                         style={[
                           styles.filterText,
-                          activeFilter === filter && styles.activeFilterText,
+                          activeFilter === filter && {
+                            color: themeColor.black,
+                            fontWeight: "600",
+                          },
                         ]}
                       >
                         {filter}
@@ -418,8 +425,10 @@ export default function WorkoutScreen() {
                   <UIText
                     style={[
                       styles.historyFilterText,
-                      historyFilter === filter &&
-                        styles.activeHistoryFilterText,
+                      historyFilter === filter && {
+                        color: themeColor.black,
+                        fontWeight: "600",
+                      },
                     ]}
                   >
                     {filter}
@@ -498,10 +507,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  activeTabText: {
-    color: "#FFFFFF",
-  },
-
   section: {
     marginTop: 18,
   },
@@ -550,10 +555,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  activeFilterButtonText: {
-    color: "#FFFFFF",
-  },
-
   filterList: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -572,11 +573,6 @@ const styles = StyleSheet.create({
 
   filterText: {
     fontSize: 9,
-  },
-
-  activeFilterText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
   },
 
   recommendedGrid: {
@@ -645,10 +641,5 @@ const styles = StyleSheet.create({
 
   historyFilterText: {
     fontSize: 9,
-  },
-
-  activeHistoryFilterText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
   },
 });

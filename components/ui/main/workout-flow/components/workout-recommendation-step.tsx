@@ -1,10 +1,9 @@
 import { ChevronRight, Dumbbell, Home, Signal } from "lucide-react-native";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
+import type { Workout } from "@/components/data/workout-data";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
-
-import type { Workout } from "@/components/data/workout-data";
 
 type WorkoutRecommendationStepProps = {
   workouts: Workout[];
@@ -165,14 +164,14 @@ export default function WorkoutRecommendationStep({
                   style={[
                     styles.startButtonText,
                     {
-                      color: themeColor.white,
+                      color: themeColor.black,
                     },
                   ]}
                 >
                   Start Workout
                 </UIText>
 
-                <ChevronRight size={24} color={themeColor.white} />
+                <ChevronRight size={24} color={themeColor.black} />
               </Pressable>
             </View>
 

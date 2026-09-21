@@ -13,7 +13,6 @@ import NewsArticleCard from "@/components/ui/main/news/news-article-card";
 import NewsHeader from "@/components/ui/main/news/news-header";
 import NewsHeroCard from "@/components/ui/main/news/news-hero-card";
 import NewsPopularCard from "@/components/ui/main/news/news-popular-card";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsArticle = {
@@ -77,7 +76,6 @@ const popularNews = [
 
 export default function News() {
   const themeColor = useThemeColor();
-
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredArticles =
@@ -113,34 +111,39 @@ export default function News() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryList}
         >
-          {categories.map((category) => (
-            <Pressable
-              key={category}
-              style={[
-                styles.categoryButton,
-                {
-                  backgroundColor:
-                    activeCategory === category
+          {categories.map((category) => {
+            const isActive = activeCategory === category;
+
+            return (
+              <Pressable
+                key={category}
+                style={[
+                  styles.categoryButton,
+                  {
+                    backgroundColor: isActive
                       ? themeColor.primary
                       : themeColor.card,
-                  borderColor:
-                    activeCategory === category
+                    borderColor: isActive
                       ? themeColor.primary
                       : themeColor.border,
-                },
-              ]}
-              onPress={() => setActiveCategory(category)}
-            >
-              <UIText
-                style={[
-                  styles.categoryText,
-                  activeCategory === category && styles.activeCategoryText,
+                  },
                 ]}
+                onPress={() => setActiveCategory(category)}
               >
-                {category}
-              </UIText>
-            </Pressable>
-          ))}
+                <UIText
+                  style={[
+                    styles.categoryText,
+                    isActive && {
+                      color: themeColor.black,
+                      fontWeight: "600",
+                    },
+                  ]}
+                >
+                  {category}
+                </UIText>
+              </Pressable>
+            );
+          })}
         </ScrollView>
 
         <View style={styles.section}>
@@ -232,11 +235,6 @@ const styles = StyleSheet.create({
 
   categoryText: {
     fontSize: 10,
-  },
-
-  activeCategoryText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
   },
 
   section: {

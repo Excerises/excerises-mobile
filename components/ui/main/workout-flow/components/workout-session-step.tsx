@@ -70,7 +70,7 @@ export default function WorkoutSessionStep({
             style={[
               styles.timerStatusText,
               {
-                color: isPaused ? themeColor.mutedForeground : themeColor.white,
+                color: isPaused ? themeColor.mutedForeground : themeColor.black,
               },
             ]}
           >
@@ -114,7 +114,7 @@ export default function WorkoutSessionStep({
                   style={[
                     styles.numberText,
                     {
-                      color: themeColor.white,
+                      color: themeColor.black,
                     },
                   ]}
                 >

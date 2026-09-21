@@ -54,7 +54,7 @@ export default function UIButton({
         style={[
           styles.text,
           {
-            color: isPrimary ? "#FFFFFF" : themeColor.foreground,
+            color: isPrimary ? "#000000" : themeColor.foreground,
           },
           labelStyle,
         ]}

@@ -1,6 +1,6 @@
 export const Colors = {
   light: {
-    primary: "#d80000",
+    primary: "#ffd51e",
     card: "#F2F2F2",
     background: "#FFFFFF",
     foreground: "#01101C",
@@ -11,11 +11,12 @@ export const Colors = {
     overlay: "rgba(0,0,0,0.35)",
 
     white: "#FFFFFF",
+    black: "#000000",
     success: "#16C84E",
   },
 
   dark: {
-    primary: "#d80000",
+    primary: "#ffd51e",
     card: "#252525",
     background: "#000000",
     foreground: "#F7F8FA",
@@ -26,6 +27,7 @@ export const Colors = {
     overlay: "rgba(0,0,0,0.35)",
 
     white: "#FFFFFF",
+    black: "#000000",
     success: "#16C84E",
   },
 };

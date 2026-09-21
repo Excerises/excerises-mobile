@@ -36,9 +36,7 @@ export default function OptionSelector(props: OptionSelectorProps) {
   const handlePress = (option: string) => {
     if (props.multiple) {
       if (props.value.includes(option)) {
-        props.onChange(
-          props.value.filter((item) => item !== option),
-        );
+        props.onChange(props.value.filter((item) => item !== option));
       } else {
         props.onChange([...props.value, option]);
       }
@@ -66,15 +64,11 @@ export default function OptionSelector(props: OptionSelectorProps) {
                 backgroundColor: selected
                   ? themeColor.primary
                   : themeColor.card,
-                borderColor: selected
-                  ? themeColor.primary
-                  : themeColor.border,
+                borderColor: selected ? themeColor.primary : themeColor.border,
               },
             ]}
             labelStyle={{
-              color: selected
-                ? "#FFFFFF"
-                : themeColor.foreground,
+              color: selected ? themeColor.black : themeColor.white,
             }}
             onPress={() => handlePress(option)}
           />

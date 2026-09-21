@@ -40,7 +40,7 @@ export default function WorkoutDetailStep({
             style={[
               styles.tagText,
               {
-                color: themeColor.white,
+                color: themeColor.black,
               },
             ]}
           >
@@ -239,7 +239,7 @@ export default function WorkoutDetailStep({
                   style={[
                     styles.numberText,
                     {
-                      color: themeColor.white,
+                      color: themeColor.black,
                     },
                   ]}
                 >

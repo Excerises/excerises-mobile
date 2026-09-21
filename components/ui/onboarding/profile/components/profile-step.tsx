@@ -7,6 +7,7 @@ import FormGroup from "@/components/ui/common/form-group";
 import Input from "@/components/ui/common/input";
 import OptionSelector from "@/components/ui/common/option-selector";
 import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type ProfileStepProps = {
   date: Date | null;
@@ -31,6 +32,8 @@ export default function ProfileStep({
   onWeightChange,
   onNext,
 }: ProfileStepProps) {
+  const themeColor = useThemeColor();
+
   return (
     <>
       <UIText style={styles.title}>Tell Us About You</UIText>
@@ -52,8 +55,18 @@ export default function ProfileStep({
               onGenderChange(value === "Male" ? "male" : "female")
             }
             icons={[
-              <Mars key="male" size={20} color="#FFFFFF" />,
-              <Venus key="female" size={20} color="#FFFFFF" />,
+              <Mars
+                key="male"
+                size={20}
+                color={gender === "male" ? themeColor.black : themeColor.white}
+              />,
+              <Venus
+                key="female"
+                size={20}
+                color={
+                  gender === "female" ? themeColor.black : themeColor.white
+                }
+              />,
             ]}
           />
         </FormGroup>
