@@ -97,21 +97,25 @@ export default function WeeklyWorkout({
             key={item.day}
             style={[
               styles.day,
-              item.completed && {
-                backgroundColor: themeColor.primary,
+              {
+                backgroundColor: item.completed
+                  ? themeColor.primary
+                  : themeColor.card,
+                borderWidth: item.completed ? 1.5 : 1,
+                borderColor:
+                  item.completed || item.isToday
+                    ? themeColor.primary
+                    : themeColor.border,
               },
-              item.isToday &&
-                !item.completed && {
-                  borderWidth: 1,
-                  borderColor: themeColor.primary,
-                },
             ]}
           >
             <UIText
               style={[
                 styles.dayText,
                 {
-                  color: item.completed ? themeColor.black : themeColor.white,
+                  color: item.completed
+                    ? themeColor.black
+                    : themeColor.foreground,
                 },
               ]}
             >
@@ -124,9 +128,7 @@ export default function WeeklyWorkout({
                 {
                   color: item.completed
                     ? themeColor.black
-                    : item.isToday
-                      ? themeColor.primary
-                      : themeColor.white,
+                    : themeColor.foreground,
                 },
               ]}
             >
@@ -188,6 +190,7 @@ const styles = StyleSheet.create({
     height: 58,
     marginHorizontal: 2,
     borderRadius: 12,
+    overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
     gap: 2,

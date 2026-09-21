@@ -26,7 +26,7 @@ export const histories: History[] = [
     exercise_id: "EX001",
     duration: 265,
     status: "completed",
-    created_at: "2026-09-22T10:00:00",
+    created_at: "2026-09-21T10:00:00",
   },
   {
     user_id: "USR001",
