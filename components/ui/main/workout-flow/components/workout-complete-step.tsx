@@ -10,10 +10,10 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutCompleteStepProps = {
-  workout: Workout | null;
+  workout: Exercise | null;
   elapsedTime: string;
   onDone: () => void;
 };

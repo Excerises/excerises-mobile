@@ -8,10 +8,10 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutSessionStepProps = {
-  workout: Workout;
+  workout: Exercise;
   elapsedTime: string;
   isPaused: boolean;
   onTogglePause: () => void;
@@ -82,7 +82,7 @@ export default function WorkoutSessionStep({
         </View>
       </View>
 
-      <UIText style={styles.detailTitle}>{workout.title}</UIText>
+      <UIText style={styles.detailTitle}>{workout.exercise_name}</UIText>
 
       <View
         style={[

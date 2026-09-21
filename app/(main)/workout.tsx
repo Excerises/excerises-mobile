@@ -14,7 +14,11 @@ import {
   ViewToken,
 } from "react-native";
 
-import { workouts } from "@/components/data/workout-data";
+import { exercises, type Exercise } from "@/components/data/Exercise";
+
+import { histories } from "@/components/data/History";
+
+import { currentUser } from "@/components/data/User";
 
 import UIText from "@/components/ui/common/text";
 
@@ -32,51 +36,102 @@ import WorkoutRecommendedCard from "@/components/ui/main/workout/workout-recomme
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
-
 const { width } = Dimensions.get("window");
 
-const currentWorkouts = [
-  {
-    workout: workouts[3],
-    duration: "04:25",
-  },
-  {
-    workout: workouts[1],
-    duration: "02:18",
-  },
+const formatDuration = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(
+    remainingSeconds,
+  ).padStart(2, "0")}`;
+};
+
+const userHistory = histories.filter(
+  (item) => item.user_id === currentUser.user_id,
+);
+
+const getExercise = (exerciseId: string) =>
+  exercises.find((exercise) => exercise.exercise_id === exerciseId);
+
+const currentWorkouts = userHistory
+  .filter((item) => item.status === "in_progress")
+  .map((item) => {
+    const exercise = getExercise(item.exercise_id);
+
+    if (!exercise) {
+      return null;
+    }
+
+    return {
+      workout: exercise,
+      duration: formatDuration(item.duration),
+    };
+  })
+  .filter(Boolean) as { workout: Exercise; duration: string }[];
+
+const completedHistory = userHistory
+  .filter((item) => item.status === "completed")
+  .sort(
+    (first, second) =>
+      new Date(second.created_at).getTime() -
+      new Date(first.created_at).getTime(),
+  );
+
+const historyDates = [
+  ...new Set(
+    completedHistory.map((item) => new Date(item.created_at).toDateString()),
+  ),
 ];
 
-const historyToday: WorkoutHistoryItem[] = [
-  {
-    workout: workouts[0],
-    duration: "04:25",
-    completed: true,
-  },
-  {
-    workout: workouts[1],
-    duration: "06:12",
-    completed: true,
-  },
-  {
-    workout: workouts[8],
-    duration: "03:45",
-    completed: true,
-  },
-];
+const historyTodayDate = historyDates[0];
+const historyYesterdayDate = historyDates[1];
 
-const historyYesterday: WorkoutHistoryItem[] = [
-  {
-    workout: workouts[2],
-    duration: "05:20",
-    completed: true,
-  },
-  {
-    workout: workouts[3],
-    duration: "06:18",
-    completed: true,
-  },
-];
+const historyToday = userHistory
+  .filter(
+    (item) =>
+      historyTodayDate &&
+      new Date(item.created_at).toDateString() === historyTodayDate,
+  )
+  .filter((item) => item.status === "completed")
+  .map((item) => {
+    const exercise = getExercise(item.exercise_id);
+
+    if (!exercise) {
+      return null;
+    }
+
+    return {
+      workout: exercise,
+      duration: formatDuration(item.duration),
+      completed: true,
+      createdAt: item.created_at,
+    };
+  })
+  .filter(Boolean) as WorkoutHistoryItem[];
+
+const historyYesterday = userHistory
+  .filter(
+    (item) =>
+      historyYesterdayDate &&
+      new Date(item.created_at).toDateString() === historyYesterdayDate,
+  )
+  .filter((item) => item.status === "completed")
+  .map((item) => {
+    const exercise = getExercise(item.exercise_id);
+
+    if (!exercise) {
+      return null;
+    }
+
+    return {
+      workout: exercise,
+      duration: formatDuration(item.duration),
+      completed: true,
+      createdAt: item.created_at,
+    };
+  })
+  .filter(Boolean) as WorkoutHistoryItem[];
 
 const filters = [
   "All",
@@ -113,11 +168,11 @@ export default function WorkoutScreen() {
     router.push("/(main)/workout-flow");
   };
 
-  const goToDetail = (workout: Workout) => {
+  const goToDetail = (workout: Exercise) => {
     router.push({
       pathname: "/(main)/workout-flow",
       params: {
-        workoutId: workout.id,
+        workoutId: workout.exercise_id,
       },
     });
   };
@@ -135,16 +190,16 @@ export default function WorkoutScreen() {
     [],
   );
 
-  const filteredRecommendedWorkouts = workouts.filter((workout) => {
+  const filteredRecommendedWorkouts = exercises.filter((workout) => {
     if (activeFilter === "All") {
       return true;
     }
 
     if (activeFilter === "Full Body") {
-      return ["Upper Body", "Lower Body", "Core"].includes(workout.category);
+      return ["Upper Body", "Lower Body", "Core"].includes(workout.exercise_category);
     }
 
-    return workout.bodyPart === activeFilter;
+    return workout.body_part === activeFilter;
   });
 
   const displayedRecommendedWorkouts = showAllRecommended
@@ -236,7 +291,7 @@ export default function WorkoutScreen() {
                 showsHorizontalScrollIndicator={false}
                 snapToInterval={cardWidth}
                 decelerationRate="fast"
-                keyExtractor={(item) => item.workout.id}
+                keyExtractor={(item) => item.workout.exercise_id}
                 getItemLayout={(_, index) => ({
                   length: cardWidth,
                   offset: cardWidth * index,
@@ -265,7 +320,7 @@ export default function WorkoutScreen() {
                 <View style={styles.indicator}>
                   {currentWorkouts.map((item, index) => (
                     <View
-                      key={item.workout.id}
+                      key={item.workout.exercise_id}
                       style={[
                         styles.dot,
                         {
@@ -360,7 +415,7 @@ export default function WorkoutScreen() {
               <View style={styles.recommendedGrid}>
                 {displayedRecommendedWorkouts.map((workout) => (
                   <WorkoutRecommendedCard
-                    key={workout.id}
+                    key={workout.exercise_id}
                     workout={workout}
                     onPress={() => goToDetail(workout)}
                   />

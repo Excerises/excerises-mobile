@@ -6,11 +6,11 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutRecommendationStepProps = {
-  workouts: Workout[];
-  onSelect: (workout: Workout) => void;
+  workouts: Exercise[];
+  onSelect: (workout: Exercise) => void;
   onNotNow?: () => void;
 };
 
@@ -111,7 +111,7 @@ export default function WorkoutRecommendationStep({
       <View style={styles.list}>
         {workouts.map((workout) => (
           <Pressable
-            key={workout.id}
+            key={workout.exercise_id}
             style={[
               styles.workoutCard,
               {
@@ -125,7 +125,7 @@ export default function WorkoutRecommendationStep({
 
             <View style={styles.workoutContent}>
               <UIText style={styles.workoutTitle} numberOfLines={1}>
-                {workout.title}
+                {workout.exercise_name}
               </UIText>
 
               <View style={styles.infoRow}>
@@ -133,7 +133,7 @@ export default function WorkoutRecommendationStep({
                   <Dumbbell size={22} color={themeColor.foreground} />
 
                   <UIText variant="muted" style={styles.infoText}>
-                    {workout.bodyPart}
+                    {workout.body_part}
                   </UIText>
                 </View>
 
@@ -141,7 +141,7 @@ export default function WorkoutRecommendationStep({
                   <Signal size={22} color={themeColor.foreground} />
 
                   <UIText variant="muted" style={styles.infoText}>
-                    {workout.difficulty}
+                    {workout.level}
                   </UIText>
                 </View>
 

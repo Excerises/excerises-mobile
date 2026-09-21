@@ -6,12 +6,13 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 export type WorkoutHistoryItem = {
-  workout: Workout;
+  workout: Exercise;
   duration: string;
   completed: boolean;
+  createdAt: string;
 };
 
 type WorkoutHistoryListProps = {
@@ -19,15 +20,48 @@ type WorkoutHistoryListProps = {
   yesterday: WorkoutHistoryItem[];
 };
 
+const formatDate = (date: string) => {
+  const value = new Date(date);
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  return `${value.getDate()} ${months[value.getMonth()]} ${value.getFullYear()}`;
+};
+
 export default function WorkoutHistoryList({
   today,
   yesterday,
 }: WorkoutHistoryListProps) {
+  const todayDate = today[0]?.createdAt;
+  const yesterdayDate = yesterday[0]?.createdAt;
+
   return (
     <View style={styles.container}>
-      <HistoryGroup title="Today, 18 Sep 2026" workouts={today} />
+      {todayDate && (
+        <HistoryGroup
+          title={`Today, ${formatDate(todayDate)}`}
+          workouts={today}
+        />
+      )}
 
-      <HistoryGroup title="Yesterday, 17 Sep 2026" workouts={yesterday} />
+      {yesterdayDate && (
+        <HistoryGroup
+          title={`Yesterday, ${formatDate(yesterdayDate)}`}
+          workouts={yesterday}
+        />
+      )}
     </View>
   );
 }
@@ -44,7 +78,7 @@ function HistoryGroup({ title, workouts }: HistoryGroupProps) {
 
       <View style={styles.list}>
         {workouts.map((item, index) => (
-          <HistoryCard key={`${item.workout.id}-${index}`} item={item} />
+          <HistoryCard key={`${item.workout.exercise_id}-${index}`} item={item} />
         ))}
       </View>
     </View>
@@ -72,11 +106,11 @@ function HistoryCard({ item }: HistoryCardProps) {
 
       <View style={styles.content}>
         <UIText style={styles.title} numberOfLines={1}>
-          {item.workout.title}
+          {item.workout.exercise_name}
         </UIText>
 
         <UIText variant="muted" style={styles.meta}>
-          {item.workout.bodyPart} • {item.workout.equipment}
+          {item.workout.body_part} • {item.workout.equipment}
         </UIText>
 
         <View style={styles.infoRow}>

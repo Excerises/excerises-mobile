@@ -2,13 +2,9 @@ import { ChevronRight } from "lucide-react-native";
 
 import { useState } from "react";
 
-import {
-  ImageSourcePropType,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+
+import { featuredNews, news } from "@/components/data/News";
 
 import UIText from "@/components/ui/common/text";
 
@@ -22,64 +18,27 @@ import NewsPopularCard from "@/components/ui/main/news/news-popular-card";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-type NewsArticle = {
-  id: string;
-  image: ImageSourcePropType;
-  title: string;
-  description: string;
-  date: string;
-  category: string;
-};
-
 const categories = ["All", "Articles", "Tips", "Programs", "Community"];
 
-const articles: NewsArticle[] = [
-  {
-    id: "1",
-    image: require("@/assets/images/news-1.png"),
-    title: "10 Simple Habits for a Healthier Lifestyle",
-    description: "Build better habits, get a stronger you.",
-    date: "12 Sep 2026",
-    category: "Articles",
-  },
-  {
-    id: "2",
-    image: require("@/assets/images/news-2.png"),
-    title: "Nutrition Guide for Muscle Gain",
-    description: "Fuel your body the right way.",
-    date: "10 Sep 2026",
-    category: "Tips",
-  },
-  {
-    id: "3",
-    image: require("@/assets/images/news-3.png"),
-    title: "Beginner's Guide to Strength Training",
-    description: "Everything you need to know to start.",
-    date: "8 Sep 2026",
-    category: "Articles",
-  },
-];
+const formatDate = (date: string) => {
+  const value = new Date(date);
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
-const popularNews = [
-  {
-    id: "1",
-    image: require("@/assets/images/news-1.png"),
-    title: "Home Workout Routine",
-    views: "12.4K",
-  },
-  {
-    id: "2",
-    image: require("@/assets/images/news-2.png"),
-    title: "Best Protein Sources",
-    views: "9.8K",
-  },
-  {
-    id: "3",
-    image: require("@/assets/images/news-3.png"),
-    title: "Staying Consistent in Your Fitness Journey",
-    views: "8.1K",
-  },
-];
+  return `${value.getDate()} ${months[value.getMonth()]} ${value.getFullYear()}`;
+};
 
 export default function News() {
   const themeColor = useThemeColor();
@@ -87,8 +46,8 @@ export default function News() {
 
   const filteredArticles =
     activeCategory === "All"
-      ? articles
-      : articles.filter((article) => article.category === activeCategory);
+      ? news
+      : news.filter((article) => article.category === activeCategory);
 
   return (
     <View
@@ -108,9 +67,9 @@ export default function News() {
         contentContainerStyle={styles.scrollContent}
       >
         <NewsHeroCard
-          image={require("@/assets/images/news-2.png")}
-          title={"Small Steps\nBig Results"}
-          description={"Consistency is\nthe key to progress."}
+          image={featuredNews.image}
+          title={featuredNews.title}
+          description={featuredNews.description}
         />
 
         <ScrollView
@@ -169,11 +128,11 @@ export default function News() {
           <View style={styles.articleList}>
             {filteredArticles.map((article) => (
               <NewsArticleCard
-                key={article.id}
+                key={article.news_id}
                 image={article.image}
                 title={article.title}
-                description={article.description}
-                date={article.date}
+                description={article.content}
+                date={formatDate(article.created_at)}
               />
             ))}
           </View>
@@ -193,11 +152,11 @@ export default function News() {
           </View>
 
           <View style={styles.popularList}>
-            {popularNews.map((item) => (
+            {news.map((item) => (
               <NewsPopularCard
-                key={item.id}
+                key={item.news_id}
                 image={item.image}
-                title={item.title}
+                title={item.popular_title}
                 views={item.views}
               />
             ))}

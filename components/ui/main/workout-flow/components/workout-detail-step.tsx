@@ -8,10 +8,10 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutDetailStepProps = {
-  workout: Workout;
+  workout: Exercise;
   onStart: () => void;
 };
 
@@ -21,14 +21,14 @@ export default function WorkoutDetailStep({
 }: WorkoutDetailStepProps) {
   const themeColor = useThemeColor();
 
-  const secondaryMuscles = workout.secondaryMuscles
+  const secondaryMuscles = workout.secondary_muscles
     .split(/[,•]+/)
     .map((item) => item.trim())
     .filter(Boolean);
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>{workout.title}</UIText>
+      <UIText style={styles.title}>{workout.exercise_name}</UIText>
 
       <View style={styles.tags}>
         <View
@@ -47,7 +47,7 @@ export default function WorkoutDetailStep({
               },
             ]}
           >
-            {workout.bodyPart}
+            {workout.body_part}
           </UIText>
         </View>
 
@@ -68,7 +68,7 @@ export default function WorkoutDetailStep({
               },
             ]}
           >
-            {workout.difficulty}
+            {workout.level}
           </UIText>
         </View>
 
@@ -142,7 +142,7 @@ export default function WorkoutDetailStep({
                 },
               ]}
             >
-              {workout.bodyPart}
+              {workout.body_part}
             </UIText>
           </View>
         </View>

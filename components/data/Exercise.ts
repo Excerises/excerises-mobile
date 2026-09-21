@@ -1,196 +1,187 @@
 import type { ImageSourcePropType } from "react-native";
 
-export type Workout = {
-  id: string;
-  title: string;
-  bodyPart: string;
+export type Exercise = {
+  exercise_id: string;
+  exercise_name: string;
+  exercise_category: string;
   equipment: string;
-  difficulty: string;
+  level: string;
   target: string;
-  category: string;
+  body_part: string;
   image: ImageSourcePropType;
   description: string;
-  secondaryMuscles: string;
+  secondary_muscles: string;
   instructions: string[];
 };
 
-export const workouts: Workout[] = [
+export const exercises: Exercise[] = [
   {
-    id: "1",
-    title: "Push Up",
-    bodyPart: "Chest",
+    exercise_id: "EX001",
+    exercise_name: "Push Up",
+    exercise_category: "Upper Body",
     equipment: "Bodyweight",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Chest",
     image: require("@/assets/images/news-1.png"),
     description:
       "A basic bodyweight exercise that targets the chest, shoulders, and triceps.",
-    secondaryMuscles: "Shoulders, Triceps",
+    secondary_muscles: "Shoulders, Triceps",
     instructions: [
       "Start in a high plank position.",
       "Lower your body toward the floor.",
       "Push your body back to the starting position.",
     ],
   },
-
   {
-    id: "2",
-    title: "Dumbbell Shoulder Press",
-    bodyPart: "Shoulders",
+    exercise_id: "EX002",
+    exercise_name: "Dumbbell Shoulder Press",
+    exercise_category: "Upper Body",
     equipment: "Dumbbell",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Shoulders",
     image: require("@/assets/images/news-2.png"),
     description:
       "A shoulder exercise using dumbbells to build pressing strength.",
-    secondaryMuscles: "Triceps",
+    secondary_muscles: "Triceps",
     instructions: [
       "Sit or stand with a dumbbell in each hand.",
       "Press the dumbbells overhead.",
       "Lower them back to shoulder level.",
     ],
   },
-
   {
-    id: "3",
-    title: "Bodyweight Squat",
-    bodyPart: "Legs",
+    exercise_id: "EX003",
+    exercise_name: "Bodyweight Squat",
+    exercise_category: "Lower Body",
     equipment: "Bodyweight",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Strength",
-    category: "Lower Body",
+    body_part: "Legs",
     image: require("@/assets/images/news-3.png"),
     description: "A bodyweight exercise for strengthening the lower body.",
-    secondaryMuscles: "Glutes, Hamstrings",
+    secondary_muscles: "Glutes, Hamstrings",
     instructions: [
       "Stand with your feet shoulder-width apart.",
       "Lower your body by bending your knees.",
       "Return to the starting position.",
     ],
   },
-
   {
-    id: "4",
-    title: "Dumbbell Bicep Curl",
-    bodyPart: "Arms",
+    exercise_id: "EX004",
+    exercise_name: "Dumbbell Bicep Curl",
+    exercise_category: "Upper Body",
     equipment: "Dumbbell",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Arms",
     image: require("@/assets/images/news-1.png"),
     description: "A simple dumbbell exercise for building biceps strength.",
-    secondaryMuscles: "Forearms",
+    secondary_muscles: "Forearms",
     instructions: [
       "Stand with a dumbbell in each hand.",
       "Curl the dumbbells toward your shoulders.",
       "Lower them slowly to the starting position.",
     ],
   },
-
   {
-    id: "5",
-    title: "Dumbbell Bench Press",
-    bodyPart: "Chest",
+    exercise_id: "EX005",
+    exercise_name: "Dumbbell Bench Press",
+    exercise_category: "Upper Body",
     equipment: "Dumbbell",
-    difficulty: "Intermediate",
+    level: "Intermediate",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Chest",
     image: require("@/assets/images/news-2.png"),
     description: "A pressing exercise that targets the chest using dumbbells.",
-    secondaryMuscles: "Shoulders, Triceps",
+    secondary_muscles: "Shoulders, Triceps",
     instructions: [
       "Lie on a bench with dumbbells at chest level.",
       "Press the dumbbells upward.",
       "Lower them under control.",
     ],
   },
-
   {
-    id: "6",
-    title: "Dumbbell Fly",
-    bodyPart: "Chest",
+    exercise_id: "EX006",
+    exercise_name: "Dumbbell Fly",
+    exercise_category: "Upper Body",
     equipment: "Dumbbell",
-    difficulty: "Intermediate",
+    level: "Intermediate",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Chest",
     image: require("@/assets/images/news-3.png"),
     description: "An isolation exercise for the chest using dumbbells.",
-    secondaryMuscles: "Shoulders",
+    secondary_muscles: "Shoulders",
     instructions: [
       "Lie on a bench holding dumbbells above your chest.",
       "Lower your arms outward in a controlled motion.",
       "Bring the dumbbells back together.",
     ],
   },
-
   {
-    id: "7",
-    title: "Shoulder Press",
-    bodyPart: "Shoulders",
+    exercise_id: "EX007",
+    exercise_name: "Shoulder Press",
+    exercise_category: "Upper Body",
     equipment: "Dumbbell",
-    difficulty: "Intermediate",
+    level: "Intermediate",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Shoulders",
     image: require("@/assets/images/news-1.png"),
     description:
       "A shoulder pressing movement for developing upper body strength.",
-    secondaryMuscles: "Triceps",
+    secondary_muscles: "Triceps",
     instructions: [
       "Hold the weights at shoulder level.",
       "Press them upward.",
       "Return to the starting position.",
     ],
   },
-
   {
-    id: "8",
-    title: "Incline Push Up",
-    bodyPart: "Chest",
+    exercise_id: "EX008",
+    exercise_name: "Incline Push Up",
+    exercise_category: "Upper Body",
     equipment: "Bodyweight",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Chest",
     image: require("@/assets/images/news-2.png"),
     description: "A modified push-up variation suitable for beginners.",
-    secondaryMuscles: "Shoulders, Triceps",
+    secondary_muscles: "Shoulders, Triceps",
     instructions: [
       "Place your hands on an elevated surface.",
       "Lower your chest toward the surface.",
       "Push back to the starting position.",
     ],
   },
-
   {
-    id: "9",
-    title: "Plank",
-    bodyPart: "Core",
+    exercise_id: "EX009",
+    exercise_name: "Plank",
+    exercise_category: "Core",
     equipment: "Bodyweight",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Endurance",
-    category: "Core",
+    body_part: "Core",
     image: require("@/assets/images/news-3.png"),
     description: "A core exercise that helps improve stability and endurance.",
-    secondaryMuscles: "Shoulders, Back",
+    secondary_muscles: "Shoulders, Back",
     instructions: [
       "Start with your forearms on the floor.",
       "Keep your body straight.",
       "Hold the position while keeping your core engaged.",
     ],
   },
-
   {
-    id: "10",
-    title: "Dumbbell Lateral Raise",
-    bodyPart: "Shoulders",
+    exercise_id: "EX010",
+    exercise_name: "Dumbbell Lateral Raise",
+    exercise_category: "Upper Body",
     equipment: "Dumbbell",
-    difficulty: "Beginner",
+    level: "Beginner",
     target: "Strength",
-    category: "Upper Body",
+    body_part: "Shoulders",
     image: require("@/assets/images/news-1.png"),
     description: "An isolation movement for the shoulder muscles.",
-    secondaryMuscles: "Traps",
+    secondary_muscles: "Traps",
     instructions: [
       "Hold dumbbells beside your body.",
       "Raise your arms to shoulder height.",

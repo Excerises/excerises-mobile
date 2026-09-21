@@ -6,10 +6,10 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutRecommendedCardProps = {
-  workout: Workout;
+  workout: Exercise;
   onPress: () => void;
 };
 
@@ -33,15 +33,15 @@ export default function WorkoutRecommendedCard({
 
       <View style={styles.content}>
         <UIText style={styles.title} numberOfLines={1}>
-          {workout.title}
+          {workout.exercise_name}
         </UIText>
 
         <UIText variant="muted" style={styles.meta} numberOfLines={1}>
-          {workout.bodyPart} • {workout.equipment}
+          {workout.body_part} • {workout.equipment}
         </UIText>
 
         <UIText variant="muted" style={styles.difficulty}>
-          {workout.difficulty}
+          {workout.level}
         </UIText>
 
         <UIButton

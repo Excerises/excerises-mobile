@@ -4,10 +4,10 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutCardProps = {
-  workout: Workout;
+  workout: Exercise;
   onPress: () => void;
 };
 
@@ -28,10 +28,10 @@ export default function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
       <Image source={workout.image} style={styles.image} />
 
       <View style={styles.content}>
-        <UIText style={styles.title}>{workout.title}</UIText>
+        <UIText style={styles.title}>{workout.exercise_name}</UIText>
 
         <UIText style={styles.meta}>
-          {workout.bodyPart} • {workout.difficulty}
+          {workout.body_part} • {workout.level}
         </UIText>
 
         <UIText style={styles.meta}>{workout.equipment}</UIText>

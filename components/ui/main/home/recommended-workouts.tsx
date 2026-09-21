@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import {
   Dimensions,
   FlatList,
@@ -9,15 +8,13 @@ import {
   View,
 } from "react-native";
 
+import type { Exercise } from "@/components/data/Exercise";
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
-
 type RecommendedWorkoutsProps = {
-  workouts: Workout[];
-  onSelect?: (workout: Workout) => void;
+  workouts: Exercise[];
+  onSelect?: (workout: Exercise) => void;
 };
 
 const { width } = Dimensions.get("window");
@@ -48,8 +45,8 @@ export default function RecommendedWorkouts({
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => <View style={{ width: 8 }} />}
-        keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        keyExtractor={(item) => item.exercise_id}
         snapToInterval={snapDistance}
         decelerationRate="fast"
         onMomentumScrollEnd={(event) => {
@@ -75,11 +72,11 @@ export default function RecommendedWorkouts({
 
             <View style={styles.content}>
               <UIText style={styles.workoutTitle} numberOfLines={2}>
-                {item.title}
+                {item.exercise_name}
               </UIText>
 
               <UIText variant="muted" style={styles.meta} numberOfLines={1}>
-                {item.bodyPart} • {item.equipment}
+                {item.body_part} • {item.equipment}
               </UIText>
 
               <UIText
@@ -101,7 +98,7 @@ export default function RecommendedWorkouts({
         <View style={styles.indicator}>
           {workouts.slice(0, 4).map((item, index) => (
             <View
-              key={item.id}
+              key={item.exercise_id}
               style={[
                 styles.dot,
                 {
@@ -144,6 +141,10 @@ const styles = StyleSheet.create({
     paddingRight: 4,
   },
 
+  separator: {
+    width: 8,
+  },
+
   card: {
     height: 140,
     borderWidth: 1,
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 8,
-    marginTop: 8,
+    marginTop: 10,
   },
 
   dot: {

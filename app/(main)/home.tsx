@@ -4,7 +4,11 @@ import { Gauge, Ruler, Scale } from "lucide-react-native";
 
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { workouts, type Workout } from "@/components/data/workout-data";
+import { exercises, type Exercise } from "@/components/data/Exercise";
+import { histories } from "@/components/data/History";
+import { news } from "@/components/data/News";
+import { currentUser } from "@/components/data/User";
+import { userProfiles } from "@/components/data/User_Profile";
 
 import { useWorkoutContext } from "@/components/provider/workout-provider";
 
@@ -28,49 +32,84 @@ import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-const newsData = [
-  {
-    id: "1",
-    image: require("@/assets/images/news-1.png"),
-    title: "5 Tips to Stay Consistent with Your Workout",
-  },
-  {
-    id: "2",
-    image: require("@/assets/images/news-2.png"),
-    title: "How to Build a Better Workout Routine",
-  },
-  {
-    id: "3",
-    image: require("@/assets/images/news-3.png"),
-    title: "Simple Ways to Improve Your Fitness",
-  },
-];
+const currentProfile = userProfiles.find(
+  (profile) => profile.user_id === currentUser.user_id,
+);
 
-const todayWorkouts = [
-  {
-    workout: workouts[0],
-    completed: true,
-  },
-  {
-    workout: workouts[1],
-    completed: false,
-  },
-];
+const userHistory = histories.filter(
+  (item) => item.user_id === currentUser.user_id,
+);
 
-const recentWorkouts = [
-  {
-    workout: workouts[0],
-    duration: 332,
-    completedAt: new Date("2026-09-17T10:00:00"),
-  },
-  {
-    workout: workouts[0],
-    duration: 332,
-    completedAt: new Date("2026-09-15T10:00:00"),
-  },
-];
+const getExercise = (exerciseId: string): Exercise | undefined =>
+  exercises.find((exercise) => exercise.exercise_id === exerciseId);
 
-const completedDates = recentWorkouts.map((item) => item.completedAt);
+const completedHistory = userHistory
+  .filter((item) => item.status === "completed")
+  .sort(
+    (first, second) =>
+      new Date(second.created_at).getTime() -
+      new Date(first.created_at).getTime(),
+  );
+
+const todayCompleted = userHistory.find(
+  (item) => item.status === "completed",
+);
+
+const todayInProgress = userHistory.find(
+  (item) => item.status === "in_progress",
+);
+
+const todayWorkouts = [todayCompleted, todayInProgress]
+  .map((item) => {
+    if (!item) {
+      return null;
+    }
+
+    const exercise = getExercise(item.exercise_id);
+
+    if (!exercise) {
+      return null;
+    }
+
+    return {
+      workout: exercise,
+      completed: item.status === "completed",
+    };
+  })
+  .filter(Boolean) as { workout: Exercise; completed: boolean }[];
+
+const recentWorkouts = [completedHistory[2], completedHistory[3]]
+  .filter(Boolean)
+  .map((item) => {
+    const exercise = getExercise(item.exercise_id);
+
+    if (!exercise) {
+      return null;
+    }
+
+    return {
+      workout: exercise,
+      duration: item.duration,
+      completedAt: new Date(item.created_at),
+    };
+  })
+  .filter(Boolean) as {
+  workout: Exercise;
+  duration: number;
+  completedAt: Date;
+}[];
+
+const completedDates = userHistory
+  .filter((item) => item.status === "completed")
+  .map((item) => new Date(item.created_at));
+
+const latestNews = news.map((item) => ({
+  id: item.news_id,
+  image: item.image,
+  title: item.home_title,
+}));
+
+const profile = currentProfile ?? userProfiles[0];
 
 export default function Home() {
   const router = useRouter();
@@ -82,11 +121,11 @@ export default function Home() {
     router.push("/(main)/workout-flow");
   };
 
-  const goToDetail = (workout: Workout) => {
+  const goToDetail = (exercise: (typeof exercises)[number]) => {
     router.push({
       pathname: "/(main)/workout-flow",
       params: {
-        workoutId: workout.id,
+        workoutId: exercise.exercise_id,
       },
     });
   };
@@ -101,7 +140,7 @@ export default function Home() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <HomeHeader name="User" />
+        <HomeHeader name={currentUser.name} />
       </View>
 
       <ScrollView
@@ -117,11 +156,17 @@ export default function Home() {
           />
         ) : (
           <>
-            <WeeklyWorkout completedDates={completedDates} weeklyTarget={4} />
+            <WeeklyWorkout
+              completedDates={completedDates}
+              weeklyTarget={profile.frequency_exercise}
+            />
 
             <TodaysWorkout workouts={todayWorkouts} onSelect={goToDetail} />
 
-            <RecommendedWorkouts workouts={workouts} onSelect={goToDetail} />
+            <RecommendedWorkouts
+              workouts={exercises}
+              onSelect={goToDetail}
+            />
           </>
         )}
 
@@ -137,22 +182,22 @@ export default function Home() {
           <View style={styles.statsRow}>
             <StatCard
               icon={<Ruler size={22} color={themeColor.destructive} />}
-              value="171"
+              value={String(profile.height)}
               unit="cm"
               label="Height"
             />
 
             <StatCard
               icon={<Scale size={22} color={themeColor.destructive} />}
-              value="68.5"
+              value={String(profile.weight)}
               unit="kg"
               label="Weight"
             />
 
             <StatCard
               icon={<Gauge size={22} color={themeColor.destructive} />}
-              value="23.4"
-              unit="Normal"
+              value={profile.bmi.toFixed(1)}
+              unit={profile.bmi_status}
               label="BMI"
               unitColor="success"
             />
@@ -170,7 +215,7 @@ export default function Home() {
             </UIText>
           </View>
 
-          <NewsCard data={newsData} />
+          <NewsCard data={latestNews} />
         </View>
       </ScrollView>
     </View>

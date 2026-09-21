@@ -6,6 +6,10 @@ import { LogOut } from "lucide-react-native";
 
 import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 
+import { currentUser } from "@/components/data/User";
+
+import { userProfiles } from "@/components/data/User_Profile";
+
 import UIText from "@/components/ui/common/text";
 
 import ProfileGoal from "@/components/ui/main/profile/profile-goal";
@@ -22,6 +26,9 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Profile() {
   const themeColor = useThemeColor();
+  const profile = userProfiles.find(
+    (item) => item.user_id === currentUser.user_id,
+  ) ?? userProfiles[0];
 
   const handleLogout = () => {
     Alert.alert("Konfirmasi Logout", "Apakah Anda yakin ingin keluar?", [
@@ -58,17 +65,18 @@ export default function Profile() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <ProfileInfoCard
-          name="Rama"
-          email="rama@email.com"
+        <ProfileInfoCard name={currentUser.name} email={currentUser.email} />
+
+        <ProfileStats
+          workoutCount={profile.workout_count}
+          daysStreak={profile.days_streak}
+          totalHours={profile.total_hours}
         />
 
-        <ProfileStats />
-
         <ProfileGoal
-          goal="Muscle Gain"
-          description="Stay consistent and reach your goal."
-          progress={60}
+          goal={profile.goal}
+          description={profile.goal_description}
+          progress={profile.goal_progress}
         />
 
         <ProfileMenu />

@@ -6,26 +6,38 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-const stats = [
-  {
-    value: "24",
-    label: "Workouts",
-    icon: Dumbbell,
-  },
-  {
-    value: "12",
-    label: "Days Streak",
-    icon: Flame,
-  },
-  {
-    value: "36.5",
-    label: "Hours",
-    icon: Clock3,
-  },
-];
 
-export default function ProfileStats() {
+
+type ProfileStatsProps = {
+  workoutCount: number;
+  daysStreak: number;
+  totalHours: number;
+};
+
+export default function ProfileStats({
+  workoutCount,
+  daysStreak,
+  totalHours,
+}: ProfileStatsProps) {
   const themeColor = useThemeColor();
+
+  const stats = [
+    {
+      value: String(workoutCount),
+      label: "Workouts",
+      icon: Dumbbell,
+    },
+    {
+      value: String(daysStreak),
+      label: "Days Streak",
+      icon: Flame,
+    },
+    {
+      value: String(totalHours),
+      label: "Hours",
+      icon: Clock3,
+    },
+  ];
 
   return (
     <View

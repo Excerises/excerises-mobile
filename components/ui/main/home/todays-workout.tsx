@@ -15,16 +15,16 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type TodayWorkout = {
-  workout: Workout;
+  workout: Exercise;
   completed: boolean;
 };
 
 type TodaysWorkoutProps = {
   workouts: TodayWorkout[];
-  onSelect?: (workout: Workout) => void;
+  onSelect?: (workout: Exercise) => void;
 };
 
 const { width } = Dimensions.get("window");
@@ -56,7 +56,7 @@ export default function TodaysWorkout({
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.workout.id}
+        keyExtractor={(item) => item.workout.exercise_id}
         onMomentumScrollEnd={(event) => {
           const index = Math.round(
             event.nativeEvent.contentOffset.x / cardWidth,
@@ -120,10 +120,10 @@ export default function TodaysWorkout({
             </View>
 
             <View style={styles.content}>
-              <UIText style={styles.workoutTitle}>{item.workout.title}</UIText>
+              <UIText style={styles.workoutTitle}>{item.workout.exercise_name}</UIText>
 
               <UIText variant="muted" style={styles.meta}>
-                {item.workout.bodyPart} • {item.workout.equipment}
+                {item.workout.body_part} • {item.workout.equipment}
               </UIText>
             </View>
           </Pressable>
@@ -134,7 +134,7 @@ export default function TodaysWorkout({
         <View style={styles.indicator}>
           {workouts.map((item, index) => (
             <View
-              key={item.workout.id}
+              key={item.workout.exercise_id}
               style={[
                 styles.dot,
                 {

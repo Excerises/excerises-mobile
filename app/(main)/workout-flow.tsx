@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { workouts, type Workout } from "@/components/data/workout-data";
+import { exercises, type Exercise } from "@/components/data/Exercise";
 
 import { useWorkoutContext } from "@/components/provider/workout-provider";
 
@@ -32,7 +32,7 @@ export default function WorkoutFlow() {
 
   const { setHasCompletedWorkout } = useWorkoutContext();
 
-  const initialWorkout = workouts.find((workout) => workout.id === workoutId);
+  const initialWorkout = exercises.find((workout) => workout.exercise_id === workoutId);
 
   const [step, setStep] = useState<WorkoutStep>(
     initialWorkout ? "detail" : "type",
@@ -43,7 +43,7 @@ export default function WorkoutFlow() {
   const [category, setCategory] = useState("");
   const [target, setTarget] = useState("");
 
-  const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(
+  const [selectedWorkout, setSelectedWorkout] = useState<Exercise | null>(
     initialWorkout ?? null,
   );
 
@@ -51,12 +51,12 @@ export default function WorkoutFlow() {
 
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  const recommendedWorkouts = workouts.filter((workout) => {
-    const bodyPartMatch = !bodyPart || workout.bodyPart === bodyPart;
+  const recommendedWorkouts = exercises.filter((workout) => {
+    const bodyPartMatch = !bodyPart || workout.body_part === bodyPart;
 
     const equipmentMatch = !equipment || workout.equipment === equipment;
 
-    const categoryMatch = !category || workout.category === category;
+    const categoryMatch = !category || workout.exercise_category === category;
 
     const targetMatch = !target || workout.target === target;
 
@@ -64,7 +64,7 @@ export default function WorkoutFlow() {
   });
 
   const displayedWorkouts =
-    recommendedWorkouts.length > 0 ? recommendedWorkouts : workouts;
+    recommendedWorkouts.length > 0 ? recommendedWorkouts : exercises;
 
   useEffect(() => {
     if (step !== "session" || isPaused) {
@@ -82,7 +82,7 @@ export default function WorkoutFlow() {
     setStep("recommend");
   };
 
-  const goToDetail = (workout: Workout) => {
+  const goToDetail = (workout: Exercise) => {
     setSelectedWorkout(workout);
     setStep("detail");
   };

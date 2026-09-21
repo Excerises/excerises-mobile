@@ -18,11 +18,18 @@ import ProgressBar from "@/components/ui/onboarding/result/progress-bar";
 
 import ProgressItem from "@/components/ui/onboarding/result/progress-item";
 
+import { currentUser } from "@/components/data/User";
+
+import { userProfiles } from "@/components/data/User_Profile";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Result() {
   const router = useRouter();
   const themeColor = useThemeColor();
+  const profile = userProfiles.find(
+    (item) => item.user_id === currentUser.user_id,
+  ) ?? userProfiles[0];
 
   const [isComplete, setIsComplete] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -135,8 +142,8 @@ export default function Result() {
           </UIText>
 
           <FitnessLevelCard
-            level="Beginner"
-            description={"A great start! Keep going\nand stay consistent."}
+            level={profile.fitness_level}
+            description={profile.fitness_level_description}
             backgroundColor={themeColor.card}
             foregroundColor={themeColor.foreground}
           />

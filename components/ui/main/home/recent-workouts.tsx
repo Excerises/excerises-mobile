@@ -6,10 +6,10 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-import type { Workout } from "@/components/data/workout-data";
+import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutHistory = {
-  workout: Workout;
+  workout: Exercise;
   duration: number;
   completedAt: Date;
 };
@@ -69,7 +69,7 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
 
             <View style={styles.content}>
               <UIText style={styles.workoutTitle} numberOfLines={1}>
-                {item.workout.title}
+                {item.workout.exercise_name}
               </UIText>
 
               <View style={styles.metaRow}>
