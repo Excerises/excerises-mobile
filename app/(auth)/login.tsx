@@ -1,16 +1,24 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+
 import { useRouter } from "expo-router";
+
 import { Pressable, StyleSheet, View } from "react-native";
 
-import useThemeColor from "@/hooks/use-theme-color";
-
 import AuthFooter from "@/components/ui/auth/auth-footer";
+
 import OAuthButton from "@/components/ui/auth/oauth-button";
+
 import UIButton from "@/components/ui/common/button";
+
 import FormGroup from "@/components/ui/common/form-group";
+
 import Input from "@/components/ui/common/input";
+
 import Separator from "@/components/ui/common/separator";
+
 import UIText from "@/components/ui/common/text";
+
+import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Login() {
   const router = useRouter();

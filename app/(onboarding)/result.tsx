@@ -1,14 +1,23 @@
 import { useRouter } from "expo-router";
+
 import { useEffect, useState } from "react";
+
 import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
+
 import AILoader from "@/components/ui/onboarding/result/ai-loader";
+
 import CompleteIllustration from "@/components/ui/onboarding/result/complete-illustration";
+
 import FitnessLevelCard from "@/components/ui/onboarding/result/fitness-level-card";
+
 import ProgressBar from "@/components/ui/onboarding/result/progress-bar";
+
 import ProgressItem from "@/components/ui/onboarding/result/progress-item";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Result() {

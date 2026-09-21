@@ -1,21 +1,32 @@
 import { useRouter } from "expo-router";
+
 import { Gauge, Ruler, Scale } from "lucide-react-native";
+
 import { ScrollView, StyleSheet, View } from "react-native";
 
+import { workouts, type Workout } from "@/components/data/workout-data";
+
 import { useWorkoutContext } from "@/components/provider/workout-provider";
-import useThemeColor from "@/hooks/use-theme-color";
 
 import UIText from "@/components/ui/common/text";
+
 import HomeHeader from "@/components/ui/main/home/home-header";
+
 import NewsCard from "@/components/ui/main/home/news-card";
+
 import RecentWorkouts from "@/components/ui/main/home/recent-workouts";
+
 import RecommendedWorkouts from "@/components/ui/main/home/recommended-workouts";
+
 import StatCard from "@/components/ui/main/home/stat-card";
+
 import TodaysWorkout from "@/components/ui/main/home/todays-workout";
+
 import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
+
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
-import { workouts, type Workout } from "@/components/data/workout-data";
+import useThemeColor from "@/hooks/use-theme-color";
 
 const newsData = [
   {

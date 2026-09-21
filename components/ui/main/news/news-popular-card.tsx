@@ -1,4 +1,5 @@
 import { Bookmark, Flame } from "lucide-react-native";
+
 import {
     Image,
     ImageSourcePropType,
@@ -8,6 +9,7 @@ import {
 } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsPopularCardProps = {

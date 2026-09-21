@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+
 import {
   Dimensions,
   FlatList,
   Image,
-  ImageSourcePropType,
   Pressable,
   StyleSheet,
   View,
 } from "react-native";
 
+import type { ImageSourcePropType } from "react-native";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsItem = {

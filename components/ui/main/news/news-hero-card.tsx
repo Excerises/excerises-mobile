@@ -1,6 +1,9 @@
-import { Image, ImageSourcePropType, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
+
+import type { ImageSourcePropType } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsHeroCardProps = {

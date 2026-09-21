@@ -1,13 +1,19 @@
 import { useRouter } from "expo-router";
+
 import { useState } from "react";
+
 import { StyleSheet, View } from "react-native";
 
 import { useOnboardingContext } from "@/components/provider/onboarding-provider";
 
 import BMIStep from "@/components/ui/onboarding/profile/components/bmi-step";
+
 import ProfileStep from "@/components/ui/onboarding/profile/components/profile-step";
+
 import WorkoutRoutineStep from "@/components/ui/onboarding/profile/components/workout-routine-step";
+
 import WorkoutTimeStep from "@/components/ui/onboarding/profile/components/workout-time-step";
+
 import StepIndicator from "@/components/ui/onboarding/profile/step-indicator";
 
 export default function Profile() {

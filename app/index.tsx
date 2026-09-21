@@ -1,10 +1,16 @@
-import { useThemeContext } from "@/components/provider/theme-provider";
-import ThemeToggler from "@/components/theme-toggler";
-import UIButton from "@/components/ui/common/button";
-import UIText from "@/components/ui/common/text";
-import useThemeColor from "@/hooks/use-theme-color";
 import { useRouter } from "expo-router";
+
 import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
+
+import { useThemeContext } from "@/components/provider/theme-provider";
+
+import ThemeToggler from "@/components/theme-toggler";
+
+import UIButton from "@/components/ui/common/button";
+
+import UIText from "@/components/ui/common/text";
+
+import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Page() {
   const router = useRouter();
@@ -106,7 +112,7 @@ export default function Page() {
         </UIText>
 
         <UIButton
-          style={[styles.startButton]}
+          style={styles.startButton}
           label="Started"
           variant="primary"
           labelStyle={styles.startButtonText}
@@ -154,7 +160,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
 
-  youText: {},
 
   description: {
     fontSize: 18,

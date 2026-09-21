@@ -1,9 +1,12 @@
 import { ChevronRight, Dumbbell, Home, Signal } from "lucide-react-native";
+
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
-import type { Workout } from "@/components/data/workout-data";
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
+
+import type { Workout } from "@/components/data/workout-data";
 
 type WorkoutRecommendationStepProps = {
   workouts: Workout[];

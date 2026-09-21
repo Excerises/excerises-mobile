@@ -1,5 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
+import type { ReactNode } from "react";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import UIText from "./text";
@@ -7,7 +9,7 @@ import UIText from "./text";
 type InfoCardProps = {
   title: string;
   description?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 };
 
 export default function InfoCard({ title, description, icon }: InfoCardProps) {

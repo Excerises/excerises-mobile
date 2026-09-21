@@ -1,12 +1,17 @@
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
+
 import { useState } from "react";
-import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
+
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
+
+import type { ReactNode } from "react";
+
+import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
 type InputProps = Omit<TextInputProps, "style"> & {
-  prefix?: React.ReactNode;
+  prefix?: ReactNode;
   isPassword?: boolean;
   style?: StyleProp<ViewStyle>;
 };

@@ -1,13 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { router } from "expo-router";
+
 import { LogOut } from "lucide-react-native";
+
 import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import ProfileGoal from "@/components/ui/main/profile/profile-goal";
+
 import ProfileHeader from "@/components/ui/main/profile/profile-header";
+
 import ProfileInfoCard from "@/components/ui/main/profile/profile-info-card";
+
 import ProfileMenu from "@/components/ui/main/profile/profile-menu";
+
 import ProfileStats from "@/components/ui/main/profile/profile-stats";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -15,7 +23,6 @@ import useThemeColor from "@/hooks/use-theme-color";
 export default function Profile() {
   const themeColor = useThemeColor();
 
-  // FUNGSI HANDLE LOGOUT
   const handleLogout = () => {
     Alert.alert("Konfirmasi Logout", "Apakah Anda yakin ingin keluar?", [
       { text: "Batal", style: "cancel" },
@@ -66,14 +73,13 @@ export default function Profile() {
 
         <ProfileMenu />
 
-        {/* MENAMBAHKAN onPress={handleLogout} DI PRESSABLE */}
         <Pressable
           onPress={handleLogout}
           style={({ pressed }) => [
             styles.logoutButton,
             {
               borderColor: themeColor.border,
-              opacity: pressed ? 0.7 : 1, // Efek tekan
+              opacity: pressed ? 0.7 : 1,
             },
           ]}
         >

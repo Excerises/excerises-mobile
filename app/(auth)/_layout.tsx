@@ -1,6 +1,9 @@
 import { NavigationBar } from "expo-navigation-bar";
+
 import { Slot, useRouter } from "expo-router";
+
 import { StatusBar } from "expo-status-bar";
+
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,13 +13,16 @@ import {
   Text,
   View,
 } from "react-native";
+
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
 import { useThemeContext } from "@/components/provider/theme-provider";
+
 import ThemeToggler from "@/components/theme-toggler";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Layout() {

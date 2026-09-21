@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, View } from "react-native";
 
-import useThemeColor from "@/hooks/use-theme-color";
-
 import UIText from "@/components/ui/common/text";
+
+import useThemeColor from "@/hooks/use-theme-color";
 
 type AuthFooterProps = {
   text: string;

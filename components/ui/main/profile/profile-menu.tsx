@@ -6,9 +6,11 @@ import {
     Palette,
     Settings2,
 } from "lucide-react-native";
+
 import { Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 const menuItems = [

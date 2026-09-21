@@ -1,7 +1,9 @@
 import { StyleSheet } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
+
 import BMICard from "@/components/ui/onboarding/profile/bmi-card";
 
 type BMIStepProps = {

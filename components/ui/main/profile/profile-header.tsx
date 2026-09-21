@@ -1,8 +1,11 @@
 import { Bell, Search } from "lucide-react-native";
+
 import { Pressable, StyleSheet, View } from "react-native";
 
 import ThemeToggler from "@/components/theme-toggler";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type ProfileHeaderProps = {

@@ -1,17 +1,24 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
+
 import { useEffect, useState } from "react";
+
 import { ScrollView, StyleSheet, View } from "react-native";
 
+import { workouts, type Workout } from "@/components/data/workout-data";
+
 import { useWorkoutContext } from "@/components/provider/workout-provider";
-import useThemeColor from "@/hooks/use-theme-color";
 
 import WorkoutCompleteStep from "@/components/ui/main/workout-flow/components/workout-complete-step";
+
 import WorkoutDetailStep from "@/components/ui/main/workout-flow/components/workout-detail-step";
+
 import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/components/workout-preference-step";
+
 import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/components/workout-recommendation-step";
+
 import WorkoutSessionStep from "@/components/ui/main/workout-flow/components/workout-session-step";
 
-import { workouts, type Workout } from "@/components/data/workout-data";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type WorkoutStep = "type" | "recommend" | "detail" | "session" | "complete";
 

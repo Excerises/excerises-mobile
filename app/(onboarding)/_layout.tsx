@@ -1,6 +1,9 @@
 import { NavigationBar } from "expo-navigation-bar";
+
 import { Slot } from "expo-router";
+
 import { StatusBar } from "expo-status-bar";
+
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,6 +13,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -18,9 +22,13 @@ import {
 import OnboardingProvider, {
   useOnboardingContext,
 } from "@/components/provider/onboarding-provider";
+
 import { useThemeContext } from "@/components/provider/theme-provider";
+
 import ThemeToggler from "@/components/theme-toggler";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 function OnboardingLayout() {

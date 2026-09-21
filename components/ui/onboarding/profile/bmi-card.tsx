@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+
 import { StyleSheet, View } from "react-native";
+
 import Svg, { Path } from "react-native-svg";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type BMICardProps = {

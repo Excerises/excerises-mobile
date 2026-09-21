@@ -1,5 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
+import type { ReactNode } from "react";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import UIButton from "./button";
@@ -9,7 +11,7 @@ type SingleProps = {
   value: string;
   onChange: (value: string) => void;
   multiple?: false;
-  icons?: React.ReactNode[];
+  icons?: ReactNode[];
 };
 
 type MultipleProps = {
@@ -17,7 +19,7 @@ type MultipleProps = {
   value: string[];
   onChange: (value: string[]) => void;
   multiple: true;
-  icons?: React.ReactNode[];
+  icons?: ReactNode[];
 };
 
 type OptionSelectorProps = SingleProps | MultipleProps;

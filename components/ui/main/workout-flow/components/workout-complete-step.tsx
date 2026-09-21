@@ -1,9 +1,13 @@
 import { CheckCircle, Dumbbell, Frown, Meh, Smile } from "lucide-react-native";
+
 import { useState } from "react";
+
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type { Workout } from "@/components/data/workout-data";

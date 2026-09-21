@@ -1,14 +1,18 @@
-import { Pressable, StyleSheet, ViewStyle } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
-import useThemeColor from "@/hooks/use-theme-color";
+import type { ReactNode } from "react";
+
+import type { StyleProp, ViewStyle } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 
+import useThemeColor from "@/hooks/use-theme-color";
+
 interface OAuthButtonProps {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   onPress?: () => void;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function OAuthButton({

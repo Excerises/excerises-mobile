@@ -1,7 +1,9 @@
 import { Clock3, Dumbbell, Flame } from "lucide-react-native";
+
 import { StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 const stats = [

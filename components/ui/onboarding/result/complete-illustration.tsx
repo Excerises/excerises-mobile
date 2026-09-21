@@ -1,4 +1,5 @@
 import { BarChart3 } from "lucide-react-native";
+
 import { StyleSheet, View } from "react-native";
 
 type CompleteIllustrationProps = {

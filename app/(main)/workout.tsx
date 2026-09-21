@@ -1,6 +1,9 @@
 import { useRouter } from "expo-router";
+
 import { ChevronDown, SlidersHorizontal } from "lucide-react-native";
+
 import { useCallback, useState } from "react";
+
 import {
   Dimensions,
   FlatList,
@@ -11,17 +14,25 @@ import {
   ViewToken,
 } from "react-native";
 
-import type { Workout } from "@/components/data/workout-data";
 import { workouts } from "@/components/data/workout-data";
+
 import UIText from "@/components/ui/common/text";
+
 import WorkoutCurrentCard from "@/components/ui/main/workout/workout-current-card";
+
 import WorkoutCustomizeBanner from "@/components/ui/main/workout/workout-customize-banner";
+
 import WorkoutHeader from "@/components/ui/main/workout/workout-header";
+
 import WorkoutHistoryList, {
   type WorkoutHistoryItem,
 } from "@/components/ui/main/workout/workout-history-list";
+
 import WorkoutRecommendedCard from "@/components/ui/main/workout/workout-recommended-card";
+
 import useThemeColor from "@/hooks/use-theme-color";
+
+import type { Workout } from "@/components/data/workout-data";
 
 const { width } = Dimensions.get("window");
 
@@ -140,7 +151,6 @@ export default function WorkoutScreen() {
     ? filteredRecommendedWorkouts
     : filteredRecommendedWorkouts.slice(0, 4);
 
-  const filteredHistoryToday = historyToday;
 
   const filteredHistoryYesterday =
     historyFilter === "Today" ? [] : historyYesterday;
@@ -439,7 +449,7 @@ export default function WorkoutScreen() {
             </View>
 
             <WorkoutHistoryList
-              today={filteredHistoryToday}
+              today={historyToday}
               yesterday={filteredHistoryYesterday}
             />
 

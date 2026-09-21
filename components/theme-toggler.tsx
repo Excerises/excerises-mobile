@@ -1,10 +1,10 @@
 import { MoonIcon, SunIcon } from "lucide-react-native";
 
-import { useThemeContext } from "./provider/theme-provider";
-
 import { Pressable } from "react-native";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
+import { useThemeContext } from "./provider/theme-provider";
 
 export default function ThemeToggler({ color }: { color?: string }) {
   const themeColor = useThemeColor();

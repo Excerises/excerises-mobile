@@ -1,12 +1,19 @@
 import { Mars, Venus } from "lucide-react-native";
+
 import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import DateInput from "@/components/ui/common/date-input";
+
 import FormGroup from "@/components/ui/common/form-group";
+
 import Input from "@/components/ui/common/input";
+
 import OptionSelector from "@/components/ui/common/option-selector";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type ProfileStepProps = {

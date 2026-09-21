@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
+import type { ReactNode } from "react";
+
 export type ThemeType = "light" | "dark";
 
 export type ThemeContextType = {
@@ -7,16 +9,22 @@ export type ThemeContextType = {
   setTheme: (theme: ThemeType) => void;
 };
 
-const ThemeContext = createContext({} as ThemeContextType);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function useThemeContext() {
-  return useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error("useThemeContext must be used inside ThemeProvider");
+  }
+
+  return context;
 }
 
 export default function ThemeProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const [theme, setTheme] = useState<ThemeType>("dark");
 

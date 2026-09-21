@@ -1,5 +1,8 @@
 import { useRouter } from "expo-router";
+
 import { createContext, useContext, useState } from "react";
+
+import type { ReactNode } from "react";
 
 type OnboardingStep = "profile" | "bmi" | "workout" | "time";
 
@@ -28,7 +31,7 @@ export function useOnboardingContext() {
 export default function OnboardingProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const router = useRouter();
 

@@ -1,5 +1,7 @@
 import { ChevronRight } from "lucide-react-native";
+
 import { useState } from "react";
+
 import {
   ImageSourcePropType,
   Pressable,
@@ -9,10 +11,15 @@ import {
 } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import NewsArticleCard from "@/components/ui/main/news/news-article-card";
+
 import NewsHeader from "@/components/ui/main/news/news-header";
+
 import NewsHeroCard from "@/components/ui/main/news/news-hero-card";
+
 import NewsPopularCard from "@/components/ui/main/news/news-popular-card";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsArticle = {

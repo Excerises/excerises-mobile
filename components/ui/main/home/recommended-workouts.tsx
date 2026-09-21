@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Dimensions,
   FlatList,
@@ -9,6 +10,7 @@ import {
 } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type { Workout } from "@/components/data/workout-data";

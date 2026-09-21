@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
+import type { ReactNode } from "react";
+
 type WorkoutContextType = {
   hasCompletedWorkout: boolean;
   setHasCompletedWorkout: (value: boolean) => void;
@@ -20,7 +22,7 @@ export function useWorkoutContext() {
 export default function WorkoutProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const [hasCompletedWorkout, setHasCompletedWorkout] = useState(false);
 

@@ -1,9 +1,13 @@
 import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import FormGroup from "@/components/ui/common/form-group";
+
 import OptionSelector from "@/components/ui/common/option-selector";
+
 import Selector from "@/components/ui/common/selector";
+
 import UIText from "@/components/ui/common/text";
 
 type WorkoutRoutineStepProps = {

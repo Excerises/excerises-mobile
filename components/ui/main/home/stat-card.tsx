@@ -1,11 +1,13 @@
 import { StyleSheet, View } from "react-native";
 
-import useThemeColor from "@/hooks/use-theme-color";
+import type { ReactNode } from "react";
 
 import UIText from "@/components/ui/common/text";
 
+import useThemeColor from "@/hooks/use-theme-color";
+
 type StatCardProps = {
-  icon: React.ReactNode;
+  icon: ReactNode;
   value: string;
   unit: string;
   label: string;

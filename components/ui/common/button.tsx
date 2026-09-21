@@ -1,14 +1,12 @@
-import { Borders } from "@/constant/theme";
-import useThemeColor from "@/hooks/use-theme-color";
+import { StyleSheet, TouchableOpacity } from "react-native";
+
 import type { ReactNode } from "react";
-import {
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  ViewStyle,
-} from "react-native";
+
+import type { StyleProp, TextStyle, TouchableOpacityProps, ViewStyle } from "react-native";
+
+import { Borders } from "@/constant/theme";
+
+import useThemeColor from "@/hooks/use-theme-color";
 
 import UIText from "./text";
 

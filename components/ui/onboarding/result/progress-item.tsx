@@ -1,7 +1,9 @@
 import { Check, Circle } from "lucide-react-native";
+
 import { StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type ProgressItemProps = {

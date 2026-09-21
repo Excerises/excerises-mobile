@@ -1,17 +1,26 @@
 import { NavigationBar } from "expo-navigation-bar";
+
 import { Slot, usePathname, useRouter } from "expo-router";
+
 import { StatusBar } from "expo-status-bar";
+
 import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
+
 import { Pressable, StyleSheet, View } from "react-native";
+
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
 import { useThemeContext } from "@/components/provider/theme-provider";
+
 import WorkoutProvider from "@/components/provider/workout-provider";
+
 import ThemeToggler from "@/components/theme-toggler";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 function MainLayout() {
@@ -92,7 +101,7 @@ function MainLayout() {
       )}
 
       <View
-        style={[styles.content, isWorkoutFlow && styles.workoutFlowContent]}
+        style={styles.content}
       >
         <View
           style={[
@@ -192,9 +201,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  workoutFlowContent: {
-    flex: 1,
-  },
 
   pageContainer: {
     flex: 1,

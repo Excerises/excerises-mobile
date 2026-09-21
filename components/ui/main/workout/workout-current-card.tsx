@@ -1,8 +1,11 @@
 import { Clock3 } from "lucide-react-native";
+
 import { Image, StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type { Workout } from "@/components/data/workout-data";

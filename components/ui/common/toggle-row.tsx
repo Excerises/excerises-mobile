@@ -1,6 +1,9 @@
 import { Pressable, StyleSheet, Switch, View } from "react-native";
 
+import type { ReactNode } from "react";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type ToggleRowProps = {
@@ -8,7 +11,7 @@ type ToggleRowProps = {
   description?: string;
   value: boolean;
   onChange: (value: boolean) => void;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 };
 
 export default function ToggleRow({
