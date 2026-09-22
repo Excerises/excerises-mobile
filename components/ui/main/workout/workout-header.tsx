@@ -1,12 +1,7 @@
-import { Bell, Search } from "lucide-react-native";
-
-import { Pressable, StyleSheet, View } from "react-native";
-
-import ThemeToggler from "@/components/theme-toggler";
+import { StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
-
-import useThemeColor from "@/hooks/use-theme-color";
+import HeaderActions from "@/components/ui/main/header-actions";
 
 type WorkoutHeaderProps = {
   onSearchPress?: () => void;
@@ -17,8 +12,6 @@ export default function WorkoutHeader({
   onSearchPress,
   onNotificationPress,
 }: WorkoutHeaderProps) {
-  const themeColor = useThemeColor();
-
   return (
     <View style={styles.container}>
       <View>
@@ -27,25 +20,10 @@ export default function WorkoutHeader({
         <UIText style={styles.subtitle}>Stronger Today, Better Tomorrow</UIText>
       </View>
 
-      <View style={styles.actions}>
-        <Pressable
-          style={styles.actionButton}
-          onPress={onSearchPress}
-          hitSlop={8}
-        >
-          <Search size={22} color={themeColor.foreground} />
-        </Pressable>
-
-        <ThemeToggler />
-
-        <Pressable
-          style={styles.actionButton}
-          onPress={onNotificationPress}
-          hitSlop={8}
-        >
-          <Bell size={22} color={themeColor.foreground} />
-        </Pressable>
-      </View>
+      <HeaderActions
+        onSearchPress={onSearchPress}
+        onNotificationPress={onNotificationPress}
+      />
     </View>
   );
 }
@@ -65,16 +43,5 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 10,
     marginTop: 2,
-  },
-
-  actions: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-  },
-
-  actionButton: {
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

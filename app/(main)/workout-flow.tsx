@@ -8,15 +8,15 @@ import { exercises, type Exercise } from "@/components/data/Exercise";
 
 import { useWorkoutContext } from "@/components/provider/workout-provider";
 
-import WorkoutCompleteStep from "@/components/ui/main/workout-flow/components/workout-complete-step";
+import WorkoutCompleteStep from "@/components/ui/main/workout-flow/workout-complete-step";
 
-import WorkoutDetailStep from "@/components/ui/main/workout-flow/components/workout-detail-step";
+import WorkoutDetailStep from "@/components/ui/main/workout-flow/workout-detail-step";
 
-import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/components/workout-preference-step";
+import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/workout-preference-step";
 
-import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/components/workout-recommendation-step";
+import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/workout-recommendation-step";
 
-import WorkoutSessionStep from "@/components/ui/main/workout-flow/components/workout-session-step";
+import WorkoutSessionStep from "@/components/ui/main/workout-flow/workout-session-step";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
@@ -32,7 +32,9 @@ export default function WorkoutFlow() {
 
   const { setHasCompletedWorkout } = useWorkoutContext();
 
-  const initialWorkout = exercises.find((workout) => workout.exercise_id === workoutId);
+  const initialWorkout = exercises.find(
+    (workout) => workout.exercise_id === workoutId,
+  );
 
   const [step, setStep] = useState<WorkoutStep>(
     initialWorkout ? "detail" : "type",

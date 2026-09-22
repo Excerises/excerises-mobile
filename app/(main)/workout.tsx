@@ -5,13 +5,13 @@ import { ChevronDown, SlidersHorizontal } from "lucide-react-native";
 import { useCallback, useState } from "react";
 
 import {
-  Dimensions,
-  FlatList,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewToken,
+    Dimensions,
+    FlatList,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    View,
+    ViewToken,
 } from "react-native";
 
 import { exercises, type Exercise } from "@/components/data/Exercise";
@@ -29,7 +29,7 @@ import WorkoutCustomizeBanner from "@/components/ui/main/workout/workout-customi
 import WorkoutHeader from "@/components/ui/main/workout/workout-header";
 
 import WorkoutHistoryList, {
-  type WorkoutHistoryItem,
+    type WorkoutHistoryItem,
 } from "@/components/ui/main/workout/workout-history-list";
 
 import WorkoutRecommendedCard from "@/components/ui/main/workout/workout-recommended-card";
@@ -196,7 +196,9 @@ export default function WorkoutScreen() {
     }
 
     if (activeFilter === "Full Body") {
-      return ["Upper Body", "Lower Body", "Core"].includes(workout.exercise_category);
+      return ["Upper Body", "Lower Body", "Core"].includes(
+        workout.exercise_category,
+      );
     }
 
     return workout.body_part === activeFilter;
@@ -205,7 +207,6 @@ export default function WorkoutScreen() {
   const displayedRecommendedWorkouts = showAllRecommended
     ? filteredRecommendedWorkouts
     : filteredRecommendedWorkouts.slice(0, 4);
-
 
   const filteredHistoryYesterday =
     historyFilter === "Today" ? [] : historyYesterday;
@@ -338,9 +339,7 @@ export default function WorkoutScreen() {
 
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <UIText style={styles.sectionTitle}>
-                  Recommended For You
-                </UIText>
+                <UIText style={styles.sectionTitle}>Recommended For You</UIText>
 
                 <Pressable
                   style={[

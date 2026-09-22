@@ -1,11 +1,8 @@
-import { Bell, Search, User } from "lucide-react-native";
-
-import { Pressable, StyleSheet, View } from "react-native";
-
-import ThemeToggler from "@/components/theme-toggler";
+import { User } from "lucide-react-native";
+import { StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
-
+import HeaderActions from "@/components/ui/main/header-actions";
 import useThemeColor from "@/hooks/use-theme-color";
 
 type HomeHeaderProps = {
@@ -42,25 +39,10 @@ export default function HomeHeader({
         </View>
       </View>
 
-      <View style={styles.actions}>
-        <Pressable
-          style={styles.actionButton}
-          onPress={onSearchPress}
-          hitSlop={8}
-        >
-          <Search size={22} color={themeColor.foreground} />
-        </Pressable>
-
-        <ThemeToggler />
-
-        <Pressable
-          style={styles.actionButton}
-          onPress={onNotificationPress}
-          hitSlop={8}
-        >
-          <Bell size={22} color={themeColor.foreground} />
-        </Pressable>
-      </View>
+      <HeaderActions
+        onSearchPress={onSearchPress}
+        onNotificationPress={onNotificationPress}
+      />
     </View>
   );
 }
@@ -95,16 +77,5 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 13,
     marginTop: 2,
-  },
-
-  actions: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-  },
-
-  actionButton: {
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
