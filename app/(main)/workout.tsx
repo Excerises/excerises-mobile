@@ -1,37 +1,27 @@
 import { useRouter } from "expo-router";
-
 import { ChevronDown, SlidersHorizontal } from "lucide-react-native";
-
 import { useCallback, useState } from "react";
-
 import {
-    Dimensions,
-    FlatList,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    View,
-    ViewToken,
+  Dimensions,
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewToken,
 } from "react-native";
 
 import { exercises, type Exercise } from "@/components/data/Exercise";
-
 import { histories } from "@/components/data/History";
-
 import { currentUser } from "@/components/data/User";
 
 import UIText from "@/components/ui/common/text";
-
 import WorkoutCurrentCard from "@/components/ui/main/workout/workout-current-card";
-
 import WorkoutCustomizeBanner from "@/components/ui/main/workout/workout-customize-banner";
-
 import WorkoutHeader from "@/components/ui/main/workout/workout-header";
-
 import WorkoutHistoryList, {
-    type WorkoutHistoryItem,
+  type WorkoutHistoryItem,
 } from "@/components/ui/main/workout/workout-history-list";
-
 import WorkoutRecommendedCard from "@/components/ui/main/workout/workout-recommended-card";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -230,7 +220,14 @@ export default function WorkoutScreen() {
       >
         <WorkoutCustomizeBanner onPress={goToCustomize} />
 
-        <View style={styles.tabs}>
+        <View
+          style={[
+            styles.tabs,
+            {
+              borderColor: themeColor.primary,
+            },
+          ]}
+        >
           <Pressable
             style={[
               styles.tab,
