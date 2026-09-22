@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { ChevronDown, SlidersHorizontal } from "lucide-react-native";
+import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react-native";
 import { useCallback, useState } from "react";
 import {
   Dimensions,
@@ -150,9 +150,11 @@ export default function WorkoutScreen() {
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const [historyFilter, setHistoryFilter] = useState<HistoryFilter>("All");
-  const [showAllRecommended, setShowAllRecommended] = useState(false);
+  const [visibleRecommendedCount, setVisibleRecommendedCount] = useState(4);
 
   const cardWidth = width - 40;
+
+  const buttonTextColor = themeColor.foreground;
 
   const goToCustomize = () => {
     router.push("/(main)/workout-flow");
@@ -194,9 +196,15 @@ export default function WorkoutScreen() {
     return workout.body_part === activeFilter;
   });
 
-  const displayedRecommendedWorkouts = showAllRecommended
-    ? filteredRecommendedWorkouts
-    : filteredRecommendedWorkouts.slice(0, 4);
+  const displayedRecommendedWorkouts = filteredRecommendedWorkouts.slice(
+    0,
+    visibleRecommendedCount,
+  );
+
+  const canLoadMore =
+    visibleRecommendedCount < filteredRecommendedWorkouts.length;
+
+  const canShowLess = visibleRecommendedCount > 4;
 
   const filteredHistoryYesterday =
     historyFilter === "Today" ? [] : historyYesterday;
@@ -390,7 +398,10 @@ export default function WorkoutScreen() {
                               : themeColor.border,
                         },
                       ]}
-                      onPress={() => setActiveFilter(filter)}
+                      onPress={() => {
+                        setActiveFilter(filter);
+                        setVisibleRecommendedCount(4);
+                      }}
                     >
                       <UIText
                         style={[
@@ -418,31 +429,70 @@ export default function WorkoutScreen() {
                 ))}
               </View>
 
-              {!showAllRecommended &&
-                filteredRecommendedWorkouts.length > 4 && (
-                  <Pressable
-                    style={[
-                      styles.loadMoreButton,
-                      {
-                        borderColor: themeColor.primary,
-                      },
-                    ]}
-                    onPress={() => setShowAllRecommended(true)}
-                  >
-                    <UIText
+              {(canLoadMore || canShowLess) && (
+                <View style={styles.loadMoreContainer}>
+                  {canLoadMore && (
+                    <Pressable
                       style={[
-                        styles.loadMoreText,
+                        styles.loadMoreButton,
                         {
-                          color: themeColor.black,
+                          borderColor: themeColor.primary,
                         },
                       ]}
+                      onPress={() =>
+                        setVisibleRecommendedCount((current) =>
+                          Math.min(
+                            current + 4,
+                            filteredRecommendedWorkouts.length,
+                          ),
+                        )
+                      }
                     >
-                      LOAD MORE
-                    </UIText>
+                      <UIText
+                        style={[
+                          styles.loadMoreText,
+                          {
+                            color: buttonTextColor,
+                          },
+                        ]}
+                      >
+                        LOAD MORE
+                      </UIText>
 
-                    <ChevronDown size={17} color={themeColor.black} />
-                  </Pressable>
-                )}
+                      <ChevronDown size={17} color={buttonTextColor} />
+                    </Pressable>
+                  )}
+
+                  {canShowLess && (
+                    <Pressable
+                      style={[
+                        styles.loadMoreButton,
+                        {
+                          borderColor: themeColor.primary,
+                        },
+                      ]}
+                      onPress={() =>
+                        setVisibleRecommendedCount((current) =>
+                          Math.max(current - 4, 4),
+                        )
+                      }
+                    >
+                      <UIText
+                        style={[
+                          styles.loadMoreText,
+                          {
+                            color: buttonTextColor,
+                          },
+                        ]}
+                      >
+                        SHOW LESS
+                      </UIText>
+
+                      <ChevronUp size={17} color={buttonTextColor} />
+                    </Pressable>
+                  )}
+                </View>
+              )}
             </View>
           </>
         ) : (
@@ -592,7 +642,7 @@ const styles = StyleSheet.create({
   indicator: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 8,
+    gap: 10,
     marginTop: 10,
   },
 
@@ -644,9 +694,16 @@ const styles = StyleSheet.create({
     rowGap: 8,
   },
 
-  loadMoreButton: {
-    height: 40,
+  loadMoreContainer: {
+    width: "100%",
+    flexDirection: "row",
+    gap: 8,
     marginTop: 12,
+  },
+
+  loadMoreButton: {
+    flex: 1,
+    height: 40,
     borderWidth: 1,
     borderRadius: 6,
     flexDirection: "row",

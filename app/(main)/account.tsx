@@ -26,22 +26,22 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Profile() {
   const themeColor = useThemeColor();
-  const profile = userProfiles.find(
-    (item) => item.user_id === currentUser.user_id,
-  ) ?? userProfiles[0];
+  const profile =
+    userProfiles.find((item) => item.user_id === currentUser.user_id) ??
+    userProfiles[0];
 
   const handleLogout = () => {
-    Alert.alert("Konfirmasi Logout", "Apakah Anda yakin ingin keluar?", [
-      { text: "Batal", style: "cancel" },
+    Alert.alert("Confirm Logout", "Are you sure you want to log out?", [
+      { text: "Cancel", style: "cancel" },
       {
-        text: "Keluar",
+        text: "Log Out",
         style: "destructive",
         onPress: async () => {
           try {
             await AsyncStorage.removeItem("user");
             router.replace("/(auth)/login");
           } catch (e) {
-            console.error("Gagal melakukan logout", e);
+            console.error("Failed to log out", e);
           }
         },
       },

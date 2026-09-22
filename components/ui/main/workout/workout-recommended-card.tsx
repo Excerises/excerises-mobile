@@ -1,12 +1,8 @@
-import { Image, StyleSheet, View } from "react-native";
-
-import UIButton from "@/components/ui/common/button";
-
-import UIText from "@/components/ui/common/text";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import type { Exercise } from "@/components/data/Exercise";
+import UIButton from "@/components/ui/common/button";
+import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
+import { Image, StyleSheet, View } from "react-native";
 
 type WorkoutRecommendedCardProps = {
   workout: Exercise;
@@ -53,7 +49,7 @@ export default function WorkoutRecommendedCard({
             },
           ]}
           labelStyle={{
-            color: themeColor.black,
+            color: themeColor.foreground,
             fontSize: 10,
           }}
           onPress={onPress}
@@ -70,31 +66,25 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     overflow: "hidden",
   },
-
   image: {
     width: "100%",
     height: 82,
   },
-
   content: {
     padding: 8,
   },
-
   title: {
     fontSize: 10,
     fontWeight: "600",
   },
-
   meta: {
     fontSize: 8,
     marginTop: 3,
   },
-
   difficulty: {
     fontSize: 8,
     marginTop: 2,
   },
-
   button: {
     width: "100%",
     height: 30,

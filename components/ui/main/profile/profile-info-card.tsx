@@ -1,9 +1,7 @@
 import { ChevronRight, User } from "lucide-react-native";
-
 import { Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 type ProfileInfoCardProps = {
@@ -62,7 +60,7 @@ export default function ProfileInfoCard({
               style={[
                 styles.editText,
                 {
-                  color: themeColor.primary,
+                  color: themeColor.foreground,
                 },
               ]}
             >
@@ -85,12 +83,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
   },
-
   topRow: {
     flexDirection: "row",
     alignItems: "center",
   },
-
   avatar: {
     width: 78,
     height: 78,
@@ -99,22 +95,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   info: {
     flex: 1,
     marginLeft: 14,
   },
-
   name: {
     fontSize: 16,
     fontWeight: "600",
   },
-
   email: {
     fontSize: 11,
     marginTop: 3,
   },
-
   editButton: {
     height: 26,
     marginTop: 8,
@@ -123,7 +115,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   editText: {
     fontSize: 10,
     fontWeight: "500",
