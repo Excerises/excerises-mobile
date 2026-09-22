@@ -122,7 +122,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
                 {
                   backgroundColor:
                     index === activeIndex
-                      ? themeColor.destructive
+                      ? themeColor.danger
                       : themeColor.mutedForeground,
                 },
               ]}

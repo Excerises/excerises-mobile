@@ -42,7 +42,7 @@ export default function WorkoutRecommendationStep({
           style={[
             styles.notNowIcon,
             {
-              backgroundColor: themeColor.destructive,
+              backgroundColor: themeColor.danger,
             },
           ]}
         >

@@ -28,7 +28,7 @@ export default function WorkoutBanner({
       style={[
         styles.container,
         {
-          borderColor: themeColor.destructive,
+          borderColor: themeColor.danger,
         },
       ]}
     >

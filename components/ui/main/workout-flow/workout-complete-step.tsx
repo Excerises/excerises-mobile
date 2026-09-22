@@ -107,7 +107,7 @@ export default function WorkoutCompleteStep({
             style={[
               styles.feedbackIcon,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.danger,
               },
             ]}
           >

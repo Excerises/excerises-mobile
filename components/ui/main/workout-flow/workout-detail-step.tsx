@@ -130,7 +130,7 @@ export default function WorkoutDetailStep({
             style={[
               styles.muscleTag,
               {
-                backgroundColor: themeColor.destructive,
+                backgroundColor: themeColor.danger,
               },
             ]}
           >
@@ -169,7 +169,7 @@ export default function WorkoutDetailStep({
                 style={[
                   styles.muscleTag,
                   {
-                    backgroundColor: themeColor.destructive,
+                    backgroundColor: themeColor.danger,
                   },
                 ]}
               >
