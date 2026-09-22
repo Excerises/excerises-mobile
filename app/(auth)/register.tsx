@@ -10,7 +10,7 @@ import FormGroup from "@/components/ui/common/form-group";
 
 import Input from "@/components/ui/common/input";
 
-import UIText from "@/components/ui/common/text";
+import StepHeader from "@/components/ui/common/step-header";
 
 export default function Register() {
   const router = useRouter();
@@ -21,11 +21,10 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>Create a New Account</UIText>
-
-      <UIText style={styles.subtitle}>
-        Let&apos;s start your fitness journey.
-      </UIText>
+      <StepHeader
+        title="Create a New Account"
+        subtitle="Let's start your fitness journey."
+      />
 
       <View style={styles.form}>
         <FormGroup label="Fullname">
@@ -70,16 +69,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingTop: 10,
-  },
-
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-
-  subtitle: {
-    fontSize: 16,
-    marginTop: 4,
   },
 
   form: {

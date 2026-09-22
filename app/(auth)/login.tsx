@@ -16,6 +16,7 @@ import Input from "@/components/ui/common/input";
 
 import Separator from "@/components/ui/common/separator";
 
+import StepHeader from "@/components/ui/common/step-header";
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -34,9 +35,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>Log In</UIText>
-
-      <UIText style={styles.subtitle}>Welcome back!</UIText>
+      <StepHeader title="Log In" subtitle="Welcome back!" />
 
       <View style={styles.form}>
         <FormGroup label="Email">
@@ -111,16 +110,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingTop: 10,
-  },
-
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-
-  subtitle: {
-    fontSize: 16,
-    marginTop: 4,
   },
 
   form: {

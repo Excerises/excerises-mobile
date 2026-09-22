@@ -10,7 +10,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 
@@ -22,6 +21,7 @@ import {
 import { useThemeContext } from "@/components/provider/theme-provider";
 
 import ThemeToggler from "@/components/theme-toggler";
+import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
@@ -52,7 +52,7 @@ export default function Layout() {
 
       <View style={styles.header}>
         <Pressable onPress={goToHome} style={styles.backButton}>
-          <Text
+          <UIText
             style={[
               styles.backText,
               {
@@ -61,7 +61,7 @@ export default function Layout() {
             ]}
           >
             ←
-          </Text>
+          </UIText>
         </Pressable>
 
         <ThemeToggler color={themeColor.foreground} />
