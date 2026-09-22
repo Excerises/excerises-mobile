@@ -433,14 +433,14 @@ export default function WorkoutScreen() {
                       style={[
                         styles.loadMoreText,
                         {
-                          color: themeColor.primary,
+                          color: themeColor.black,
                         },
                       ]}
                     >
                       LOAD MORE
                     </UIText>
 
-                    <ChevronDown size={17} color={themeColor.primary} />
+                    <ChevronDown size={17} color={themeColor.black} />
                   </Pressable>
                 )}
             </View>

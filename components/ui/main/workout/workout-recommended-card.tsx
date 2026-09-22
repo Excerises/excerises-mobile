@@ -53,7 +53,7 @@ export default function WorkoutRecommendedCard({
             },
           ]}
           labelStyle={{
-            color: themeColor.primary,
+            color: themeColor.black,
             fontSize: 10,
           }}
           onPress={onPress}
