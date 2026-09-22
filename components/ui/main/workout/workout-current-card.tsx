@@ -1,27 +1,33 @@
-import { Clock3 } from "lucide-react-native";
+import { Clock3, MoreVertical } from "lucide-react-native";
 
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
-
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type { Exercise } from "@/components/data/Exercise";
 
+type WorkoutStatus = "completed" | "not_completed";
+
 type WorkoutCurrentCardProps = {
   workout: Exercise;
   duration: string;
+  status: WorkoutStatus;
   onContinue: () => void;
+  onMenu: () => void;
 };
 
 export default function WorkoutCurrentCard({
   workout,
   duration,
+  status,
   onContinue,
+  onMenu,
 }: WorkoutCurrentCardProps) {
   const themeColor = useThemeColor();
+
+  const isCompleted = status === "completed";
 
   return (
     <View
@@ -33,9 +39,11 @@ export default function WorkoutCurrentCard({
         },
       ]}
     >
+      {/* Exercise Image */}
       <View style={styles.imageContainer}>
         <Image source={workout.image} style={styles.image} />
 
+        {/* Workout Status */}
         <View
           style={[
             styles.status,
@@ -48,31 +56,62 @@ export default function WorkoutCurrentCard({
             style={[
               styles.statusDot,
               {
-                backgroundColor: themeColor.primary,
+                backgroundColor: isCompleted ? "#22C55E" : themeColor.primary,
               },
             ]}
           />
 
-          <UIText style={styles.statusText}>In Progress</UIText>
+          <UIText
+            style={[
+              styles.statusText,
+              {
+                color: isCompleted ? "#22C55E" : themeColor.primary,
+              },
+            ]}
+          >
+            {isCompleted ? "Completed" : "Not Completed"}
+          </UIText>
         </View>
       </View>
 
+      {/* Content */}
       <View style={styles.content}>
-        <UIText style={styles.title}>{workout.exercise_name}</UIText>
+        {/* Title + Menu */}
+        <View style={styles.titleRow}>
+          <UIText
+            style={[
+              styles.title,
+              {
+                color: themeColor.text,
+              },
+            ]}
+            numberOfLines={1}
+          >
+            {workout.exercise_name}
+          </UIText>
 
+          <Pressable onPress={onMenu} style={styles.menuButton} hitSlop={8}>
+            <MoreVertical size={20} color={themeColor.text} />
+          </Pressable>
+        </View>
+
+        {/* Metadata */}
         <UIText variant="muted" style={styles.meta}>
           {workout.body_part} • {workout.equipment} • {workout.level}
         </UIText>
 
+        {/* Bottom Row */}
         <View style={styles.bottomRow}>
+          {/* Duration */}
           <View style={styles.duration}>
             <Clock3 size={15} color={themeColor.primary} />
 
             <UIText style={styles.durationText}>{duration}</UIText>
           </View>
 
+          {/* Continue Button */}
           <UIButton
-            label="Continue Workout  →"
+            label="Continue Workout →"
             variant="primary"
             style={styles.button}
             onPress={onContinue}
@@ -87,7 +126,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 10,
     overflow: "hidden",
   },
 
@@ -130,9 +169,24 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
   title: {
+    flex: 1,
     fontSize: 14,
     fontWeight: "600",
+  },
+
+  menuButton: {
+    width: 32,
+    height: 32,
+    marginLeft: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   meta: {

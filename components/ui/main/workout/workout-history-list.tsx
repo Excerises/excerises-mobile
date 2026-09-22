@@ -1,4 +1,4 @@
-import { Check, MoreVertical } from "lucide-react-native";
+import { Check, ChevronRight } from "lucide-react-native";
 
 import { Image, StyleSheet, View } from "react-native";
 
@@ -117,10 +117,6 @@ function HistoryCard({ item }: HistoryCardProps) {
           <UIText variant="muted" style={styles.info}>
             ◷ {item.duration}
           </UIText>
-
-          <UIText variant="muted" style={styles.info}>
-            | 3 sets
-          </UIText>
         </View>
       </View>
 
@@ -149,7 +145,7 @@ function HistoryCard({ item }: HistoryCardProps) {
           </View>
         )}
 
-        <MoreVertical size={17} color={themeColor.foreground} />
+        <ChevronRight size={17} color={themeColor.foreground} /> 
       </View>
     </View>
   );

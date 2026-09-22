@@ -12,8 +12,6 @@ import { userProfiles } from "@/components/data/User_Profile";
 
 import UIText from "@/components/ui/common/text";
 
-import ProfileGoal from "@/components/ui/main/profile/profile-goal";
-
 import ProfileHeader from "@/components/ui/main/profile/profile-header";
 
 import ProfileInfoCard from "@/components/ui/main/profile/profile-info-card";
@@ -45,7 +43,7 @@ export default function Profile() {
           }
         },
       },
-    ]); 
+    ]);
   };
 
   return (
@@ -73,12 +71,6 @@ export default function Profile() {
           totalHours={profile.total_hours}
         />
 
-        <ProfileGoal
-          goal={profile.goal}
-          description={profile.goal_description}
-          progress={profile.goal_progress}
-        />
-
         <ProfileMenu />
 
         <Pressable
@@ -86,18 +78,18 @@ export default function Profile() {
           style={({ pressed }) => [
             styles.logoutButton,
             {
-              borderColor: themeColor.border,
+              borderColor: themeColor.primary,
               opacity: pressed ? 0.7 : 1,
             },
           ]}
         >
-          <LogOut size={20} color={themeColor.primary} />
+          <LogOut size={20} color={themeColor.danger} />
 
           <UIText
             style={[
               styles.logoutText,
               {
-                color: themeColor.primary,
+                color: themeColor.danger,
               },
             ]}
           >

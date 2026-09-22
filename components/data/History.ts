@@ -54,7 +54,7 @@ export const histories: History[] = [
     exercise_id: "EX004",
     duration: 378,
     status: "completed",
-    created_at: "2026-09-17T09:00:00",
+    created_at: "2026-09-18T09:00:00",
   },
   {
     user_id: "USR001",

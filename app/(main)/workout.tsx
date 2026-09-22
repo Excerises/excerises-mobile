@@ -44,9 +44,29 @@ const userHistory = histories.filter(
 const getExercise = (exerciseId: string) =>
   exercises.find((exercise) => exercise.exercise_id === exerciseId);
 
-const currentWorkouts = userHistory
-  .filter((item) => item.status === "in_progress")
+/*
+ * Mengikuti data Today's Workout di Home:
+ * 1 completed
+ * 1 in_progress
+ */
+const todayCompleted = userHistory.find((item) => item.status === "completed");
+
+const todayInProgress = userHistory.find(
+  (item) => item.status === "in_progress",
+);
+
+type CurrentWorkout = {
+  workout: Exercise;
+  duration: string;
+  status: "completed" | "not_completed";
+};
+
+const currentWorkouts = [todayCompleted, todayInProgress]
   .map((item) => {
+    if (!item) {
+      return null;
+    }
+
     const exercise = getExercise(item.exercise_id);
 
     if (!exercise) {
@@ -56,9 +76,10 @@ const currentWorkouts = userHistory
     return {
       workout: exercise,
       duration: formatDuration(item.duration),
+      status: item.status === "completed" ? "completed" : "not_completed",
     };
   })
-  .filter(Boolean) as { workout: Exercise; duration: string }[];
+  .filter(Boolean) as CurrentWorkout[];
 
 const completedHistory = userHistory
   .filter((item) => item.status === "completed")
@@ -147,9 +168,13 @@ export default function WorkoutScreen() {
   );
 
   const [activeCurrentIndex, setActiveCurrentIndex] = useState(0);
+
   const [showFilters, setShowFilters] = useState(false);
+
   const [activeFilter, setActiveFilter] = useState("All");
+
   const [historyFilter, setHistoryFilter] = useState<HistoryFilter>("All");
+
   const [visibleRecommendedCount, setVisibleRecommendedCount] = useState(4);
 
   const cardWidth = width - 40;
@@ -316,7 +341,9 @@ export default function WorkoutScreen() {
                     <WorkoutCurrentCard
                       workout={item.workout}
                       duration={item.duration}
+                      status={item.status}
                       onContinue={() => goToDetail(item.workout)}
+                      onMenu={() => {}}
                     />
                   </View>
                 )}

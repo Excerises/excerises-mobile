@@ -3,8 +3,6 @@ import {
     ChevronRight,
     CircleHelp,
     FileText,
-    Palette,
-    Settings2,
 } from "lucide-react-native";
 
 import { Pressable, StyleSheet, View } from "react-native";
@@ -15,16 +13,8 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 const menuItems = [
   {
-    label: "Account Settings",
-    icon: Settings2,
-  },
-  {
     label: "Notifications",
     icon: Bell,
-  },
-  {
-    label: "Appearance",
-    icon: Palette,
   },
   {
     label: "Help & Support",

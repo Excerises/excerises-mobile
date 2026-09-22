@@ -11,8 +11,8 @@ export const users: User[] = [
   {
     user_id: "USR001",
     role: "user",
-    name: "Rama",
-    email: "rama@email.com",
+    name: "User",
+    email: "user@email.com",
     password: "password123",
     email_verified_at: "2026-09-01T08:00:00",
   },

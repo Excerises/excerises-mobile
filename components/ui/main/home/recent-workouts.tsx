@@ -1,12 +1,9 @@
 import { Check, ChevronRight } from "lucide-react-native";
-
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
-import UIText from "@/components/ui/common/text";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import type { Exercise } from "@/components/data/Exercise";
+import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type WorkoutHistory = {
   workout: Exercise;
@@ -25,22 +22,11 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
-
     const remainingSeconds = seconds % 60;
 
     return `${String(minutes).padStart(2, "0")}:${String(
       remainingSeconds,
     ).padStart(2, "0")}`;
-  };
-
-  const formatDate = (date: Date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-
-    const year = String(date.getFullYear()).slice(-2);
-
-    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -72,17 +58,29 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
                 {item.workout.exercise_name}
               </UIText>
 
-              <View style={styles.metaRow}>
-                <UIText variant="muted" style={styles.meta}>
-                  {index === 0 ? "Today" : formatDate(item.completedAt)} •{" "}
-                  {formatTime(item.duration)}
-                </UIText>
+              <UIText variant="muted" style={styles.meta} numberOfLines={1}>
+                {item.workout.body_part} • {item.workout.equipment}
+              </UIText>
 
-                <Check size={11} color={themeColor.success} strokeWidth={3} />
+              <UIText variant="muted" style={styles.info}>
+                ◷ {formatTime(item.duration)}
+              </UIText>
+            </View>
+
+            <View style={styles.right}>
+              <View
+                style={[
+                  styles.completed,
+                  {
+                    backgroundColor: themeColor.card,
+                  },
+                ]}
+              >
+                <Check size={12} color={themeColor.success} strokeWidth={3} />
 
                 <UIText
                   style={[
-                    styles.completed,
+                    styles.completedText,
                     {
                       color: themeColor.success,
                     },
@@ -91,9 +89,13 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
                   Completed
                 </UIText>
               </View>
-            </View>
 
-            <ChevronRight size={18} color={themeColor.foreground} />
+              <ChevronRight
+                size={18}
+                color={themeColor.foreground}
+                strokeWidth={2}
+              />
+            </View>
           </Pressable>
         ))}
       </View>
@@ -127,44 +129,60 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    minHeight: 58,
+    minHeight: 66,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 6,
     overflow: "hidden",
-    paddingRight: 8,
   },
 
   image: {
-    width: 58,
-    height: 58,
+    width: 62,
+    height: 62,
   },
 
   content: {
     flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 7,
   },
 
   workoutTitle: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "600",
   },
 
-  metaRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 4,
-    gap: 3,
+  meta: {
+    fontSize: 8,
+    marginTop: 3,
   },
 
-  meta: {
-    fontSize: 9,
+  info: {
+    fontSize: 8,
+    marginTop: 3,
+  },
+
+  right: {
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    alignSelf: "stretch",
+    paddingVertical: 7,
+    paddingRight: 7,
   },
 
   completed: {
-    fontSize: 9,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    paddingHorizontal: 7,
+    paddingVertical: 4,
+    borderRadius: 5,
+  },
+
+  completedText: {
+    fontSize: 8,
     fontWeight: "600",
   },
 });

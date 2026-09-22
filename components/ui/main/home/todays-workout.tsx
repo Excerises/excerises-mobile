@@ -1,5 +1,7 @@
-import { Check, ChevronRight, Circle } from "lucide-react-native";
+import { ChevronRight, Circle } from "lucide-react-native";
+
 import { useState } from "react";
+
 import {
   Dimensions,
   FlatList,
@@ -10,7 +12,9 @@ import {
 } from "react-native";
 
 import type { Exercise } from "@/components/data/Exercise";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type TodayWorkout = {
@@ -30,10 +34,16 @@ export default function TodaysWorkout({
   onSelect,
 }: TodaysWorkoutProps) {
   const themeColor = useThemeColor();
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cardWidth = width - 40;
-  const completedCount = workouts.filter((item) => item.completed).length;
+
+  const notCompletedWorkouts = workouts.filter((item) => !item.completed);
+
+  if (notCompletedWorkouts.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -41,12 +51,12 @@ export default function TodaysWorkout({
         <UIText style={styles.title}>Today&apos;s Workout</UIText>
 
         <UIText variant="muted" style={styles.count}>
-          {completedCount}/{workouts.length} Completed &gt;
+          {notCompletedWorkouts.length} Not Completed &gt;
         </UIText>
       </View>
 
       <FlatList
-        data={workouts}
+        data={notCompletedWorkouts}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
@@ -89,23 +99,17 @@ export default function TodaysWorkout({
                 },
               ]}
             >
-              {item.completed ? (
-                <Check size={11} color={themeColor.success} strokeWidth={3} />
-              ) : (
-                <Circle size={10} color={themeColor.mutedForeground} />
-              )}
+              <Circle size={10} color={themeColor.mutedForeground} />
 
               <UIText
                 style={[
                   styles.statusText,
                   {
-                    color: item.completed
-                      ? themeColor.success
-                      : themeColor.mutedForeground,
+                    color: themeColor.mutedForeground,
                   },
                 ]}
               >
-                {item.completed ? "Completed" : "Not Completed"}
+                Not Completed
               </UIText>
             </View>
 
@@ -126,9 +130,9 @@ export default function TodaysWorkout({
         )}
       />
 
-      {workouts.length > 1 && (
+      {notCompletedWorkouts.length > 1 && (
         <View style={styles.indicator}>
-          {workouts.map((item, index) => (
+          {notCompletedWorkouts.map((item, index) => (
             <View
               key={item.workout.exercise_id}
               style={[
