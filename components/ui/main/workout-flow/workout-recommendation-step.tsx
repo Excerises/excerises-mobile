@@ -56,7 +56,7 @@ export default function WorkoutRecommendationStep({
 
           <UIText variant="muted" style={styles.notNowDescription}>
             No problem! You can come back later.
-          </UIText>
+          </UIText> 
         </View>
 
         <Pressable

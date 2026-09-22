@@ -1,6 +1,11 @@
 import { NavigationBar } from "expo-navigation-bar";
 
-import { Slot, usePathname, useRouter } from "expo-router";
+import {
+  Slot,
+  useGlobalSearchParams,
+  usePathname,
+  useRouter,
+} from "expo-router";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -23,6 +28,8 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
+type WorkoutStep = "type" | "recommend" | "detail" | "session" | "complete";
+
 function MainLayout() {
   const themeColor = useThemeColor();
   const { theme } = useThemeContext();
@@ -31,7 +38,54 @@ function MainLayout() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const { step, workoutId } = useGlobalSearchParams<{
+    step?: WorkoutStep;
+    workoutId?: string;
+  }>();
+
   const isWorkoutFlow = pathname === "/workout-flow";
+
+  const currentWorkoutStep: WorkoutStep =
+    step ?? (workoutId ? "detail" : "type");
+
+  const handleWorkoutBack = () => {
+    if (currentWorkoutStep === "type") {
+      router.back();
+      return;
+    }
+
+    if (currentWorkoutStep === "recommend") {
+      router.setParams({
+        step: "type",
+      });
+      return;
+    }
+
+    if (currentWorkoutStep === "detail") {
+      if (workoutId) {
+        router.back();
+      } else {
+        router.setParams({
+          step: "recommend",
+        });
+      }
+
+      return;
+    }
+
+    if (currentWorkoutStep === "session") {
+      router.setParams({
+        step: "detail",
+      });
+      return;
+    }
+
+    if (currentWorkoutStep === "complete") {
+      router.setParams({
+        step: "detail",
+      });
+    }
+  };
 
   const menus = [
     {
@@ -77,7 +131,7 @@ function MainLayout() {
         <SafeAreaView edges={["top"]}>
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.back()}
+              onPress={handleWorkoutBack}
               style={styles.backButton}
               hitSlop={8}
             >
@@ -100,9 +154,7 @@ function MainLayout() {
         <SafeAreaView edges={["top"]} />
       )}
 
-      <View
-        style={styles.content}
-      >
+      <View style={styles.content}>
         <View
           style={[
             styles.pageContainer,
@@ -200,7 +252,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-
 
   pageContainer: {
     flex: 1,

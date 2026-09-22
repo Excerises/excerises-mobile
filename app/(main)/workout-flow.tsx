@@ -26,18 +26,15 @@ export default function WorkoutFlow() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
-  const { workoutId } = useLocalSearchParams<{
+  const { workoutId, step: stepParam } = useLocalSearchParams<{
     workoutId?: string;
+    step?: WorkoutStep;
   }>();
 
   const { setHasCompletedWorkout } = useWorkoutContext();
 
   const initialWorkout = exercises.find(
     (workout) => workout.exercise_id === workoutId,
-  );
-
-  const [step, setStep] = useState<WorkoutStep>(
-    initialWorkout ? "detail" : "type",
   );
 
   const [bodyPart, setBodyPart] = useState("");
@@ -52,6 +49,14 @@ export default function WorkoutFlow() {
   const [isPaused, setIsPaused] = useState(false);
 
   const [elapsedTime, setElapsedTime] = useState(0);
+
+  const step: WorkoutStep = stepParam ?? (initialWorkout ? "detail" : "type");
+
+  const changeStep = (nextStep: WorkoutStep) => {
+    router.setParams({
+      step: nextStep,
+    });
+  };
 
   const recommendedWorkouts = exercises.filter((workout) => {
     const bodyPartMatch = !bodyPart || workout.body_part === bodyPart;
@@ -81,23 +86,23 @@ export default function WorkoutFlow() {
   }, [step, isPaused]);
 
   const goToRecommend = () => {
-    setStep("recommend");
+    changeStep("recommend");
   };
 
   const goToDetail = (workout: Exercise) => {
     setSelectedWorkout(workout);
-    setStep("detail");
+    changeStep("detail");
   };
 
   const goToSession = () => {
     setElapsedTime(0);
     setIsPaused(false);
-    setStep("session");
+    changeStep("session");
   };
 
   const goToComplete = () => {
     setHasCompletedWorkout(true);
-    setStep("complete");
+    changeStep("complete");
   };
 
   const formatTime = (seconds: number) => {
