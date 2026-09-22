@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import type { ImageSourcePropType } from "react-native";
 import {
   Dimensions,
   FlatList,
@@ -9,10 +9,7 @@ import {
   View,
 } from "react-native";
 
-import type { ImageSourcePropType } from "react-native";
-
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 type NewsItem = {
@@ -30,7 +27,6 @@ const { width } = Dimensions.get("window");
 
 export default function NewsCard({ data, onPress }: NewsCardProps) {
   const themeColor = useThemeColor();
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const listRef = useRef<FlatList<NewsItem>>(null);
@@ -56,7 +52,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
         offset: nextIndex * cardWidth,
         animated: true,
       });
-    }, 5000);
+    }, 7000);
 
     return () => clearInterval(interval);
   }, [data.length, cardWidth]);
@@ -100,7 +96,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               style={[
                 styles.overlay,
                 {
-                  backgroundColor: themeColor.overlay,
+                  backgroundColor: themeColor.card,
                 },
               ]}
             />
@@ -157,7 +153,7 @@ const styles = StyleSheet.create({
 
   overlay: {
     position: "absolute",
-    left: "30%",
+    left: "46%",
     right: 0,
     top: 0,
     bottom: 0,

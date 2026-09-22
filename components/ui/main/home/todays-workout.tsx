@@ -1,7 +1,5 @@
 import { Check, ChevronRight, Circle } from "lucide-react-native";
-
 import { useState } from "react";
-
 import {
   Dimensions,
   FlatList,
@@ -11,11 +9,9 @@ import {
   View,
 } from "react-native";
 
-import UIText from "@/components/ui/common/text";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import type { Exercise } from "@/components/data/Exercise";
+import UIText from "@/components/ui/common/text";
+import useThemeColor from "@/hooks/use-theme-color";
 
 type TodayWorkout = {
   workout: Exercise;
@@ -34,11 +30,9 @@ export default function TodaysWorkout({
   onSelect,
 }: TodaysWorkoutProps) {
   const themeColor = useThemeColor();
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cardWidth = width - 40;
-
   const completedCount = workouts.filter((item) => item.completed).length;
 
   return (
@@ -82,7 +76,7 @@ export default function TodaysWorkout({
               style={[
                 styles.overlay,
                 {
-                  backgroundColor: themeColor.overlay,
+                  backgroundColor: themeColor.card,
                 },
               ]}
             />
@@ -96,7 +90,7 @@ export default function TodaysWorkout({
               ]}
             >
               {item.completed ? (
-                <Check size={11} color={themeColor.white} strokeWidth={3} />
+                <Check size={11} color={themeColor.success} strokeWidth={3} />
               ) : (
                 <Circle size={10} color={themeColor.mutedForeground} />
               )}
@@ -106,7 +100,7 @@ export default function TodaysWorkout({
                   styles.statusText,
                   {
                     color: item.completed
-                      ? themeColor.white
+                      ? themeColor.success
                       : themeColor.mutedForeground,
                   },
                 ]}
@@ -120,7 +114,9 @@ export default function TodaysWorkout({
             </View>
 
             <View style={styles.content}>
-              <UIText style={styles.workoutTitle}>{item.workout.exercise_name}</UIText>
+              <UIText style={styles.workoutTitle}>
+                {item.workout.exercise_name}
+              </UIText>
 
               <UIText variant="muted" style={styles.meta}>
                 {item.workout.body_part} • {item.workout.equipment}
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
 
   image: {
     position: "absolute",
-    width: "58%",
+    width: "45%",
     height: "100%",
     left: 0,
     top: 0,
@@ -224,7 +220,7 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    marginLeft: "55%",
+    marginLeft: "45%",
     paddingHorizontal: 12,
     paddingBottom: 15,
     justifyContent: "flex-end",

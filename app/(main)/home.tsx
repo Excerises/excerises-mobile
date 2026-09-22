@@ -1,7 +1,5 @@
 import { useRouter } from "expo-router";
-
 import { Gauge, Ruler, Scale } from "lucide-react-native";
-
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { exercises, type Exercise } from "@/components/data/Exercise";
@@ -13,21 +11,13 @@ import { userProfiles } from "@/components/data/User_Profile";
 import { useWorkoutContext } from "@/components/provider/workout-provider";
 
 import UIText from "@/components/ui/common/text";
-
 import HomeHeader from "@/components/ui/main/home/home-header";
-
 import NewsCard from "@/components/ui/main/home/news-card";
-
 import RecentWorkouts from "@/components/ui/main/home/recent-workouts";
-
 import RecommendedWorkouts from "@/components/ui/main/home/recommended-workouts";
-
 import StatCard from "@/components/ui/main/home/stat-card";
-
 import TodaysWorkout from "@/components/ui/main/home/todays-workout";
-
 import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
-
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -51,9 +41,7 @@ const completedHistory = userHistory
       new Date(first.created_at).getTime(),
   );
 
-const todayCompleted = userHistory.find(
-  (item) => item.status === "completed",
-);
+const todayCompleted = userHistory.find((item) => item.status === "completed");
 
 const todayInProgress = userHistory.find(
   (item) => item.status === "in_progress",
@@ -76,7 +64,10 @@ const todayWorkouts = [todayCompleted, todayInProgress]
       completed: item.status === "completed",
     };
   })
-  .filter(Boolean) as { workout: Exercise; completed: boolean }[];
+  .filter(Boolean) as {
+  workout: Exercise;
+  completed: boolean;
+}[];
 
 const recentWorkouts = [completedHistory[2], completedHistory[3]]
   .filter(Boolean)
@@ -163,10 +154,7 @@ export default function Home() {
 
             <TodaysWorkout workouts={todayWorkouts} onSelect={goToDetail} />
 
-            <RecommendedWorkouts
-              workouts={exercises}
-              onSelect={goToDetail}
-            />
+            <RecommendedWorkouts workouts={exercises} onSelect={goToDetail} />
           </>
         )}
 
@@ -181,21 +169,21 @@ export default function Home() {
 
           <View style={styles.statsRow}>
             <StatCard
-              icon={<Ruler size={22} color={themeColor.destructive} />}
+              icon={<Ruler size={22} color={themeColor.primary} />}
               value={String(profile.height)}
               unit="cm"
               label="Height"
             />
 
             <StatCard
-              icon={<Scale size={22} color={themeColor.destructive} />}
+              icon={<Scale size={22} color={themeColor.primary} />}
               value={String(profile.weight)}
               unit="kg"
               label="Weight"
             />
 
             <StatCard
-              icon={<Gauge size={22} color={themeColor.destructive} />}
+              icon={<Gauge size={22} color={themeColor.primary} />}
               value={profile.bmi.toFixed(1)}
               unit={profile.bmi_status}
               label="BMI"

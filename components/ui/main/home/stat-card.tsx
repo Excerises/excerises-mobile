@@ -1,9 +1,7 @@
+import type { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 
-import type { ReactNode } from "react";
-
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 type StatCardProps = {
@@ -29,7 +27,7 @@ export default function StatCard({
         styles.container,
         {
           backgroundColor: themeColor.card,
-          borderColor: themeColor.destructive,
+          borderColor: themeColor.border,
         },
       ]}
     >
