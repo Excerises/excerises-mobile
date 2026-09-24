@@ -1,9 +1,8 @@
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
+import { Check } from "lucide-react-native";
 
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 type WeeklyWorkoutProps = {
@@ -58,28 +57,6 @@ export default function WeeklyWorkout({
           <UIText variant="muted" style={styles.count}>
             {completedCount}/{weeklyTarget}
           </UIText>
-
-          <Pressable
-            style={[
-              styles.arrowButton,
-              {
-                backgroundColor: themeColor.border,
-              },
-            ]}
-          >
-            <ChevronLeft size={15} color={themeColor.foreground} />
-          </Pressable>
-
-          <Pressable
-            style={[
-              styles.arrowButton,
-              {
-                backgroundColor: themeColor.border,
-              },
-            ]}
-          >
-            <ChevronRight size={15} color={themeColor.foreground} />
-          </Pressable>
         </View>
       </View>
 
@@ -101,7 +78,7 @@ export default function WeeklyWorkout({
                 backgroundColor: item.completed
                   ? themeColor.primary
                   : themeColor.card,
-                borderWidth: item.completed ? 1.5 : 1,
+
                 borderColor:
                   item.completed || item.isToday
                     ? themeColor.primary
@@ -134,6 +111,21 @@ export default function WeeklyWorkout({
             >
               {item.date.getDate()}
             </UIText>
+
+            {item.completed ? (
+              <Check size={13} color={themeColor.black} strokeWidth={3} />
+            ) : (
+              <UIText
+                style={[
+                  styles.marker,
+                  {
+                    color: themeColor.mutedForeground,
+                  },
+                ]}
+              >
+                —
+              </UIText>
+            )}
           </View>
         ))}
       </View>
@@ -165,16 +157,8 @@ const styles = StyleSheet.create({
   },
 
   count: {
-    fontSize: 10,
+    fontSize: 12,
     marginRight: 2,
-  },
-
-  arrowButton: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   card: {
@@ -187,13 +171,14 @@ const styles = StyleSheet.create({
 
   day: {
     flex: 1,
-    height: 58,
+    height: 72,
     marginHorizontal: 2,
     borderRadius: 12,
+    borderWidth: 1,
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
-    gap: 2,
+    gap: 1,
   },
 
   dayText: {
@@ -204,5 +189,10 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 11,
     fontWeight: "600",
+  },
+
+  marker: {
+    fontSize: 10,
+    lineHeight: 12,
   },
 });

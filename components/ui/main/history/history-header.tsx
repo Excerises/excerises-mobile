@@ -3,21 +3,21 @@ import { StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/common/text";
 import HeaderActions from "@/components/ui/main/header-actions";
 
-type WorkoutHeaderProps = {
+type HistoryHeaderProps = {
   onSearchPress?: () => void;
   onNotificationPress?: () => void;
 };
 
-export default function WorkoutHeader({
+export default function HistoryHeader({
   onSearchPress,
   onNotificationPress,
-}: WorkoutHeaderProps) {
+}: HistoryHeaderProps) {
   return (
     <View style={styles.container}>
       <View>
-        <UIText style={styles.title}>WORKOUT</UIText>
+        <UIText style={styles.title}>HISTORY</UIText>
 
-        <UIText style={styles.subtitle}>Stronger Today, Better Tomorrow</UIText>
+        <UIText style={styles.subtitle}>Track Your Progress, Keep Going</UIText>
       </View>
 
       <HeaderActions

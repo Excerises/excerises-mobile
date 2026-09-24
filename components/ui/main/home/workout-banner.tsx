@@ -1,8 +1,5 @@
-import { Image, StyleSheet, View } from "react-native";
-
 import type { ImageSourcePropType } from "react-native";
-
-import UIButton from "@/components/ui/common/button";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 
@@ -10,14 +7,13 @@ import useThemeColor from "@/hooks/use-theme-color";
 
 type WorkoutBannerProps = {
   image: ImageSourcePropType;
-  title: string;
+  title?: string;
   description: string;
   onPress?: () => void;
 };
 
 export default function WorkoutBanner({
   image,
-  title,
   description,
   onPress,
 }: WorkoutBannerProps) {
@@ -28,41 +24,89 @@ export default function WorkoutBanner({
       style={[
         styles.container,
         {
-          borderColor: themeColor.danger,
+          borderColor: themeColor.primary,
         },
       ]}
     >
       <Image source={image} resizeMode="cover" style={styles.image} />
 
+      <View
+        style={[
+          styles.overlay,
+          {
+            backgroundColor: themeColor.overlay,
+          },
+        ]}
+      />
+
       <View style={styles.content}>
-        <UIText
-          style={[
-            styles.title,
-            {
-              color: themeColor.white,
-            },
-          ]}
-        >
-          {title}
-        </UIText>
+        <View>
+          <UIText
+            style={[
+              styles.title,
+              {
+                color: themeColor.white,
+              },
+            ]}
+          >
+            START YOUR
+          </UIText>
 
-        <UIText
-          style={[
-            styles.description,
-            {
-              color: themeColor.white,
-            },
-          ]}
-        >
-          {description}
-        </UIText>
+          <UIText
+            style={[
+              styles.title,
+              {
+                color: themeColor.primary,
+                marginTop: -2,
+              },
+            ]}
+          >
+            WORKOUT
+          </UIText>
 
-        <UIButton
-          style={styles.button}
-          label="Start Workout →"
-          variant="primary"
+          <UIText
+            style={[
+              styles.description,
+              {
+                color: themeColor.white,
+              },
+            ]}
+          >
+            {description}
+          </UIText>
+        </View>
+
+        <Pressable
           onPress={onPress}
-        />
+          style={[
+            styles.button,
+            {
+              backgroundColor: themeColor.primary,
+            },
+          ]}
+        >
+          <UIText
+            style={[
+              styles.buttonText,
+              {
+                color: themeColor.black,
+              },
+            ]}
+          >
+            START WORKOUT
+          </UIText>
+
+          <UIText
+            style={[
+              styles.arrow,
+              {
+                color: themeColor.black,
+              },
+            ]}
+          >
+            →
+          </UIText>
+        </Pressable>
       </View>
     </View>
   );
@@ -70,11 +114,12 @@ export default function WorkoutBanner({
 
 const styles = StyleSheet.create({
   container: {
-    height: 170,
-    marginTop: 20,
+    height: 190,
+    marginTop: 14,
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 8,
     overflow: "hidden",
+    position: "relative",
   },
 
   image: {
@@ -87,31 +132,52 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
+  overlay: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+
   content: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 14,
-    paddingBottom: 12,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 14,
+    justifyContent: "space-between",
   },
 
   title: {
-    maxWidth: 170,
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 25,
+    fontWeight: "800",
     lineHeight: 27,
   },
 
   description: {
-    maxWidth: 210,
-    marginTop: 4,
-    fontSize: 14,
+    maxWidth: 190,
+    marginTop: 8,
+    fontSize: 13,
     lineHeight: 17,
   },
 
   button: {
-    width: 230,
-    height: 40,
-    marginTop: "auto",
-    borderRadius: 6,
+    width: 235,
+    height: 42,
+    borderRadius: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+
+  buttonText: {
+    fontSize: 14,
+    fontWeight: "700",
+  },
+
+  arrow: {
+    fontSize: 20,
+    lineHeight: 20,
   },
 });

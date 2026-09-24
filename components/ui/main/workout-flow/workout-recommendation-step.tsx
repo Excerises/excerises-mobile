@@ -1,7 +1,8 @@
-import { ChevronRight, Dumbbell, Home, Signal } from "lucide-react-native";
+import { Check, X } from "lucide-react-native";
 
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
+import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -10,97 +11,38 @@ import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutRecommendationStepProps = {
   workouts: Exercise[];
-  onSelect: (workout: Exercise) => void;
-  onNotNow?: () => void;
+  selectedWorkouts: Exercise[];
+  onToggleSelect: (workout: Exercise) => void;
+  onConfirm: () => void;
+  onClear: () => void;
 };
 
 export default function WorkoutRecommendationStep({
   workouts,
-  onSelect,
-  onNotNow,
+  selectedWorkouts,
+  onToggleSelect,
+  onConfirm,
+  onClear,
 }: WorkoutRecommendationStepProps) {
   const themeColor = useThemeColor();
 
+  const isSelected = (exerciseId: string) =>
+    selectedWorkouts.some((workout) => workout.exercise_id === exerciseId);
+
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>Recommended Workout</UIText>
+      <UIText style={styles.title}>Select Workout</UIText>
 
       <UIText style={styles.subtitle}>
-        Choose a workout from the list below.
+        Choose several exercises for your workout package.
       </UIText>
 
-      <View
-        style={[
-          styles.notNowCard,
-          {
-            backgroundColor: themeColor.card,
-            borderColor: themeColor.border,
-          },
-        ]}
-      >
-        <View
-          style={[
-            styles.notNowIcon,
-            {
-              backgroundColor: themeColor.danger,
-            },
-          ]}
-        >
-          <Home size={28} color={themeColor.white} />
-        </View>
-
-        <View style={styles.notNowContent}>
-          <UIText style={styles.notNowTitle}>
-            Not ready to work out right now?
-          </UIText>
-
-          <UIText variant="muted" style={styles.notNowDescription}>
-            No problem! You can come back later.
-          </UIText> 
-        </View>
-
-        <Pressable
-          style={[
-            styles.notNowButton,
-            {
-              borderColor: themeColor.primary,
-            },
-          ]}
-          onPress={onNotNow}
-        >
-          <UIText
-            style={[
-              styles.notNowButtonText,
-              {
-                color: themeColor.primary,
-              },
-            ]}
-          >
-            Not Now
-          </UIText>
-
-          <ChevronRight size={25} color={themeColor.primary} />
-        </Pressable>
-      </View>
-
       <View style={styles.sectionHeader}>
-        <View style={styles.sectionTitleRow}>
-          <View
-            style={[
-              styles.sectionLine,
-              {
-                backgroundColor: themeColor.primary,
-              },
-            ]}
-          />
-
-          <View>
-            <UIText style={styles.sectionTitle}>Recommended for You</UIText>
-
-            <UIText variant="muted" style={styles.sectionSubtitle}>
-              Based on your preferences
-            </UIText>
-          </View>
+        <View>
+          <UIText style={styles.sectionTitle}>Recommended Workout</UIText>
+          <UIText variant="muted" style={styles.sectionSubtitle}>
+            Based on your preferences
+          </UIText>
         </View>
 
         <UIText variant="muted" style={styles.workoutCount}>
@@ -109,83 +51,112 @@ export default function WorkoutRecommendationStep({
       </View>
 
       <View style={styles.list}>
-        {workouts.map((workout) => (
-          <Pressable
+        {workouts.map((workout) => {
+          const selected = isSelected(workout.exercise_id);
+
+          return (
+            <Pressable
+              key={workout.exercise_id}
+              style={[
+                styles.workoutCard,
+                {
+                  backgroundColor: themeColor.card,
+                  borderColor: selected
+                    ? themeColor.primary
+                    : themeColor.border,
+                },
+              ]}
+              onPress={() => onToggleSelect(workout)}
+            >
+              <Image source={workout.image} style={styles.workoutImage} />
+
+              <View style={styles.workoutContent}>
+                <UIText style={styles.workoutTitle} numberOfLines={1}>
+                  {workout.exercise_name}
+                </UIText>
+
+                <UIText variant="muted" style={styles.infoText}>
+                  {workout.body_part} • {workout.equipment}
+                </UIText>
+              </View>
+
+              <View
+                style={[
+                  styles.checkbox,
+                  {
+                    backgroundColor: selected
+                      ? themeColor.primary
+                      : themeColor.card,
+                    borderColor: selected
+                      ? themeColor.primary
+                      : themeColor.foreground,
+                  },
+                ]}
+              >
+                {selected && (
+                  <Check
+                    size={17}
+                    color={themeColor.black}
+                    strokeWidth={3}
+                  />
+                )}
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      <View style={styles.selectedHeader}>
+        <UIText style={styles.selectedTitle}>
+          Selected Workout ({selectedWorkouts.length})
+        </UIText>
+
+        {selectedWorkouts.length > 0 && (
+          <Pressable onPress={onClear}>
+            <UIText
+              style={[
+                styles.clearText,
+                { color: themeColor.primary },
+              ]}
+            >
+              Clear All
+            </UIText>
+          </Pressable>
+        )}
+      </View>
+
+      <View style={styles.selectedList}>
+        {selectedWorkouts.map((workout) => (
+          <View
             key={workout.exercise_id}
             style={[
-              styles.workoutCard,
+              styles.selectedItem,
               {
                 backgroundColor: themeColor.card,
                 borderColor: themeColor.border,
               },
             ]}
-            onPress={() => onSelect(workout)}
           >
-            <Image source={workout.image} style={styles.workoutImage} />
+            <Image source={workout.image} style={styles.selectedImage} />
 
-            <View style={styles.workoutContent}>
-              <UIText style={styles.workoutTitle} numberOfLines={1}>
-                {workout.exercise_name}
-              </UIText>
+            <UIText style={styles.selectedItemText} numberOfLines={1}>
+              {workout.exercise_name}
+            </UIText>
 
-              <View style={styles.infoRow}>
-                <View style={styles.infoItem}>
-                  <Dumbbell size={22} color={themeColor.foreground} />
-
-                  <UIText variant="muted" style={styles.infoText}>
-                    {workout.body_part}
-                  </UIText>
-                </View>
-
-                <View style={styles.infoItem}>
-                  <Signal size={22} color={themeColor.foreground} />
-
-                  <UIText variant="muted" style={styles.infoText}>
-                    {workout.level}
-                  </UIText>
-                </View>
-
-                <View style={styles.infoItem}>
-                  <Dumbbell size={22} color={themeColor.foreground} />
-
-                  <UIText variant="muted" style={styles.infoText}>
-                    {workout.equipment}
-                  </UIText>
-                </View>
-              </View>
-
-              <Pressable
-                style={[
-                  styles.startButton,
-                  {
-                    backgroundColor: themeColor.primary,
-                  },
-                ]}
-                onPress={() => onSelect(workout)}
-              >
-                <UIText
-                  style={[
-                    styles.startButtonText,
-                    {
-                      color: themeColor.black,
-                    },
-                  ]}
-                >
-                  Start Workout
-                </UIText>
-
-                <ChevronRight size={24} color={themeColor.black} />
-              </Pressable>
-            </View>
-
-            <ChevronRight
-              size={28}
-              color={themeColor.foreground}
-              style={styles.cardArrow}
-            />
-          </Pressable>
+            <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
+              <X size={21} color={themeColor.foreground} />
+            </Pressable>
+          </View>
         ))}
       </View>
+
+      <UIButton
+        label="Confirm Workout  →"
+        variant="primary"
+        style={styles.mainButton}
+        disabled={selectedWorkouts.length === 0}
+        onPress={onConfirm}
+      />
     </View>
   );
 }
@@ -202,75 +173,16 @@ const styles = StyleSheet.create({
 
   subtitle: {
     fontSize: 16,
+    lineHeight: 21,
     marginTop: 4,
-  },
-
-  notNowCard: {
-    minHeight: 118,
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 14,
-    marginTop: 30,
-  },
-
-  notNowIcon: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  notNowContent: {
-    flex: 1,
-    paddingHorizontal: 12,
-  },
-
-  notNowTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
-
-  notNowDescription: {
-    fontSize: 11,
-    marginTop: 5,
-  },
-
-  notNowButton: {
-    width: 105,
-    height: 58,
-    borderWidth: 2,
-    borderRadius: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  notNowButtonText: {
-    fontSize: 13,
-    fontWeight: "600",
   },
 
   sectionHeader: {
     flexDirection: "row",
-    alignItems: "flex-start",
     justifyContent: "space-between",
-    marginTop: 30,
-    marginBottom: 18,
-  },
-
-  sectionTitleRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-
-  sectionLine: {
-    width: 6,
-    height: 48,
-    borderRadius: 4,
-    marginRight: 14,
+    alignItems: "flex-end",
+    marginTop: 26,
+    marginBottom: 12,
   },
 
   sectionTitle: {
@@ -280,77 +192,107 @@ const styles = StyleSheet.create({
 
   sectionSubtitle: {
     fontSize: 12,
-    marginTop: 4,
+    marginTop: 3,
   },
 
   workoutCount: {
-    fontSize: 13,
-    marginTop: 5,
+    fontSize: 12,
   },
 
   list: {
-    gap: 14,
+    gap: 8,
   },
 
   workoutCard: {
-    minHeight: 190,
+    minHeight: 64,
     flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderRadius: 14,
-    overflow: "hidden",
-    position: "relative",
+    borderRadius: 10,
+    padding: 6,
   },
 
   workoutImage: {
-    width: "43%",
-    height: 190,
-    resizeMode: "cover",
+    width: 54,
+    height: 54,
+    borderRadius: 8,
   },
 
   workoutContent: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingVertical: 15,
+    marginHorizontal: 10,
   },
 
   workoutTitle: {
-    fontSize: 17,
+    fontSize: 14,
     fontWeight: "600",
-    marginRight: 20,
-  },
-
-  infoRow: {
-    marginTop: 14,
-    gap: 10,
-  },
-
-  infoItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
   },
 
   infoText: {
-    fontSize: 12,
+    fontSize: 11,
+    marginTop: 4,
   },
 
-  startButton: {
-    height: 42,
-    borderRadius: 10,
-    flexDirection: "row",
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderWidth: 1,
+    borderRadius: 4,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 14,
+    marginRight: 4,
   },
 
-  startButtonText: {
-    fontSize: 13,
+  selectedHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 22,
+    marginBottom: 10,
+  },
+
+  selectedTitle: {
+    fontSize: 18,
     fontWeight: "600",
   },
 
-  cardArrow: {
-    position: "absolute",
-    top: "42%",
-    right: 10,
+  clearText: {
+    fontSize: 12,
+    fontWeight: "600",
+  },
+
+  selectedList: {
+    gap: 8,
+  },
+
+  selectedItem: {
+    minHeight: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+  },
+
+  selectedImage: {
+    width: 42,
+    height: 42,
+    borderRadius: 6,
+  },
+
+  selectedItemText: {
+    flex: 1,
+    fontSize: 12,
+    fontWeight: "600",
+    marginHorizontal: 10,
+  },
+
+  mainButton: {
+    width: "100%",
+    height: 50,
+    marginTop: 18,
+    marginBottom: 20,
+    borderRadius: 8,
   },
 });

@@ -9,7 +9,7 @@ import {
 
 import { StatusBar } from "expo-status-bar";
 
-import { Clock3, Dumbbell, Home, User } from "lucide-react-native";
+import { Clock3, Home, User } from "lucide-react-native";
 
 import { Pressable, StyleSheet, View } from "react-native";
 
@@ -28,7 +28,15 @@ import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-type WorkoutStep = "type" | "recommend" | "detail" | "session" | "complete";
+type WorkoutStep =
+  | "type"
+  | "recommend"
+  | "confirm"
+  | "created"
+  | "detail"
+  | "session"
+  | "rest"
+  | "summary";
 
 function MainLayout() {
   const themeColor = useThemeColor();
@@ -38,17 +46,25 @@ function MainLayout() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { step, workoutId } = useGlobalSearchParams<{
+  const { step, workoutId, source } = useGlobalSearchParams<{
     step?: WorkoutStep;
     workoutId?: string;
+    source?: "created" | "recent" | "workout" | "history";
   }>();
 
   const isWorkoutFlow = pathname === "/workout-flow";
+  const isHistoryDetail = pathname === "/history" && typeof workoutId === "string";
+  const hasWorkoutHeader = isWorkoutFlow || isHistoryDetail;
 
   const currentWorkoutStep: WorkoutStep =
     step ?? (workoutId ? "detail" : "type");
 
   const handleWorkoutBack = () => {
+    if (isHistoryDetail) {
+      router.replace("/(main)/history");
+      return;
+    }
+
     if (currentWorkoutStep === "type") {
       router.back();
       return;
@@ -61,13 +77,25 @@ function MainLayout() {
       return;
     }
 
+    if (currentWorkoutStep === "confirm") {
+      router.setParams({
+        step: "recommend",
+      });
+      return;
+    }
+
+    if (currentWorkoutStep === "created") {
+      router.replace("/(main)/home");
+      return;
+    }
+
     if (currentWorkoutStep === "detail") {
-      if (workoutId) {
-        router.back();
-      } else {
+      if (source === "created") {
         router.setParams({
-          step: "recommend",
+          step: "created",
         });
+      } else {
+        router.back();
       }
 
       return;
@@ -80,7 +108,14 @@ function MainLayout() {
       return;
     }
 
-    if (currentWorkoutStep === "complete") {
+    if (currentWorkoutStep === "rest") {
+      router.setParams({
+        step: "session",
+      });
+      return;
+    }
+
+    if (currentWorkoutStep === "summary") {
       router.setParams({
         step: "detail",
       });
@@ -95,15 +130,9 @@ function MainLayout() {
       icon: Home,
     },
     {
-      label: "Workout",
-      path: "/workout",
-      route: "/(main)/workout",
-      icon: Dumbbell,
-    },
-    {
-      label: "News",
-      path: "/news",
-      route: "/(main)/news",
+      label: "History",
+      path: "/history",
+      route: "/(main)/history",
       icon: Clock3,
     },
     {
@@ -127,7 +156,7 @@ function MainLayout() {
 
       <NavigationBar style={theme === "dark" ? "dark" : "light"} />
 
-      {isWorkoutFlow ? (
+      {hasWorkoutHeader ? (
         <SafeAreaView edges={["top"]}>
           <View style={styles.header}>
             <Pressable
@@ -165,53 +194,57 @@ function MainLayout() {
         </View>
       </View>
 
-      {!isWorkoutFlow && (
-        <View
-          style={[
-            styles.navigationContainer,
-            {
-              paddingBottom: insets.bottom,
-              backgroundColor: themeColor.card,
-            },
-          ]}
-        >
-          <View style={styles.bottomNavigation}>
-            {menus.map((menu) => {
-              const isActive = pathname === menu.path;
+      <View
+        style={[
+          styles.navigationContainer,
+          {
+            paddingBottom: insets.bottom,
+            backgroundColor: themeColor.card,
+            borderTopColor: themeColor.border,
+            borderTopWidth: 1,
+          },
+        ]}
+      >
+        <View style={styles.bottomNavigation}>
+          {menus.map((menu) => {
+            const isActive = isWorkoutFlow
+              ? menu.path === "/home"
+              : isHistoryDetail
+                ? menu.path === "/history"
+                : pathname === menu.path;
 
-              const Icon = menu.icon;
+            const Icon = menu.icon;
 
-              return (
-                <Pressable
-                  key={menu.route}
-                  style={styles.navItem}
-                  onPress={() => router.replace(menu.route)}
+            return (
+              <Pressable
+                key={menu.route}
+                style={styles.navItem}
+                onPress={() => router.replace(menu.route)}
+              >
+                <Icon
+                  size={21}
+                  color={
+                    isActive ? themeColor.primary : themeColor.mutedForeground
+                  }
+                />
+
+                <UIText
+                  style={[
+                    styles.navLabel,
+                    {
+                      color: isActive
+                        ? themeColor.primary
+                        : themeColor.mutedForeground,
+                    },
+                  ]}
                 >
-                  <Icon
-                    size={21}
-                    color={
-                      isActive ? themeColor.primary : themeColor.foreground
-                    }
-                  />
-
-                  <UIText
-                    style={[
-                      styles.navLabel,
-                      {
-                        color: isActive
-                          ? themeColor.primary
-                          : themeColor.foreground,
-                      },
-                    ]}
-                  >
-                    {menu.label}
-                  </UIText>
-                </Pressable>
-              );
-            })}
-          </View>
+                  {menu.label}
+                </UIText>
+              </Pressable>
+            );
+          })}
         </View>
-      )}
+      </View>
     </View>
   );
 }

@@ -25,11 +25,11 @@ export default function HomeHeader({
           style={[
             styles.avatar,
             {
-              borderColor: themeColor.danger,
+              borderColor: themeColor.primary,
             },
           ]}
         >
-          <User size={22} color={themeColor.danger} />
+          <User size={22} color={themeColor.primary} />
         </View>
 
         <View>

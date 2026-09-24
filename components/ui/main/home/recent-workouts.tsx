@@ -1,24 +1,44 @@
-import { Check, ChevronRight } from "lucide-react-native";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Check, Clock3 } from "lucide-react-native";
 
-import type { Exercise } from "@/components/data/Exercise";
+import { useState } from "react";
+
+import type { ImageSourcePropType } from "react-native";
+
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  View,
+} from "react-native";
+
+import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
 
-type WorkoutHistory = {
-  workout: Exercise;
+type RecentWorkoutItem = {
+  id: string;
+  title: string;
+  exerciseCount: number;
   duration: number;
-  completedAt: Date;
+  image: ImageSourcePropType;
 };
 
 type RecentWorkoutsProps = {
-  workouts: WorkoutHistory[];
+  workouts: RecentWorkoutItem[];
+  onPress?: (workout: RecentWorkoutItem) => void;
 };
 
-export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
-  const themeColor = useThemeColor();
+const { width } = Dimensions.get("window");
 
-  const displayedWorkouts = workouts.slice(0, 3);
+export default function RecentWorkouts({
+  workouts,
+  onPress,
+}: RecentWorkoutsProps) {
+  const themeColor = useThemeColor();
+  const cardWidth = width - 40;
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -32,73 +52,116 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <UIText style={styles.title}>Recent Workouts</UIText>
-
-        <UIText variant="muted" style={styles.seeAll}>
-          See All &gt;
-        </UIText>
+        <UIText style={styles.title}>Recent Workout</UIText>
       </View>
 
-      <View style={styles.list}>
-        {displayedWorkouts.map((item, index) => (
-          <Pressable
-            key={`${item.completedAt.getTime()}-${index}`}
-            style={[
-              styles.card,
-              {
-                backgroundColor: themeColor.card,
-                borderColor: themeColor.border,
-              },
-            ]}
-          >
-            <Image source={item.workout.image} style={styles.image} />
+      <FlatList
+        data={workouts}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        onMomentumScrollEnd={(event) => {
+          const index = Math.round(
+            event.nativeEvent.contentOffset.x / cardWidth,
+          );
 
-            <View style={styles.content}>
-              <UIText style={styles.workoutTitle} numberOfLines={1}>
-                {item.workout.exercise_name}
-              </UIText>
+          setActiveIndex(index);
+        }}
+        renderItem={({ item }) => (
+          <View style={{ width: cardWidth }}>
+            <View
+              style={[
+                styles.card,
+                {
+                  backgroundColor: themeColor.card,
+                  borderColor: themeColor.border,
+                },
+              ]}
+            >
+              <Image source={item.image} style={styles.image} />
 
-              <UIText variant="muted" style={styles.meta} numberOfLines={1}>
-                {item.workout.body_part} • {item.workout.equipment}
-              </UIText>
-
-              <UIText variant="muted" style={styles.info}>
-                ◷ {formatTime(item.duration)}
-              </UIText>
-            </View>
-
-            <View style={styles.right}>
               <View
                 style={[
-                  styles.completed,
+                  styles.overlay,
                   {
                     backgroundColor: themeColor.card,
                   },
                 ]}
-              >
-                <Check size={12} color={themeColor.success} strokeWidth={3} />
-
-                <UIText
-                  style={[
-                    styles.completedText,
-                    {
-                      color: themeColor.success,
-                    },
-                  ]}
-                >
-                  Completed
-                </UIText>
-              </View>
-
-              <ChevronRight
-                size={18}
-                color={themeColor.foreground}
-                strokeWidth={2}
               />
+
+              <View style={styles.content}>
+                <UIText style={styles.workoutTitle} numberOfLines={1}>
+                  {item.title}
+                </UIText>
+
+                <UIText style={styles.exerciseCount}>
+                  {item.exerciseCount} Exercises
+                </UIText>
+
+                <View style={styles.infoRow}>
+                  <View style={styles.duration}>
+                    <Clock3
+                      size={14}
+                      color={themeColor.foreground}
+                    />
+
+                    <UIText variant="muted" style={styles.infoText}>
+                      {formatTime(item.duration)}
+                    </UIText>
+                  </View>
+
+                  <View style={styles.completed}>
+                    <Check
+                      size={11}
+                      color={themeColor.success}
+                      strokeWidth={3}
+                    />
+
+                    <UIText
+                      style={[
+                        styles.completedText,
+                        {
+                          color: themeColor.success,
+                        },
+                      ]}
+                    >
+                      Completed
+                    </UIText>
+                  </View>
+                </View>
+
+                <UIButton
+                  label="VIEW WORKOUT"
+                  variant="primary"
+                  style={styles.button}
+                  labelStyle={styles.buttonText}
+                  onPress={() => onPress?.(item)}
+                />
+              </View>
             </View>
-          </Pressable>
-        ))}
-      </View>
+          </View>
+        )}
+      />
+
+      {workouts.length > 1 && (
+        <View style={styles.indicator}>
+          {workouts.map((item, index) => (
+            <View
+              key={item.id}
+              style={[
+                styles.dot,
+                {
+                  backgroundColor:
+                    index === activeIndex
+                      ? themeColor.primary
+                      : themeColor.mutedForeground,
+                },
+              ]}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -124,65 +187,100 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 
-  list: {
-    gap: 6,
-  },
-
   card: {
-    minHeight: 66,
-    flexDirection: "row",
-    alignItems: "center",
+    height: 138,
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: 8,
     overflow: "hidden",
+    position: "relative",
   },
 
   image: {
-    width: 62,
-    height: 62,
+    position: "absolute",
+    width: "43%",
+    height: "100%",
+    left: 0,
+    top: 0,
+    resizeMode: "cover",
+  },
+
+  overlay: {
+    position: "absolute",
+    left: "43%",
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
 
   content: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 7,
+    marginLeft: "43%",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    justifyContent: "space-between",
   },
 
   workoutTitle: {
-    fontSize: 10,
+    fontSize: 16,
     fontWeight: "600",
   },
 
-  meta: {
-    fontSize: 8,
-    marginTop: 3,
+  exerciseCount: {
+    fontSize: 11,
+    marginTop: 2,
   },
 
-  info: {
-    fontSize: 8,
-    marginTop: 3,
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 4,
   },
 
-  right: {
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    alignSelf: "stretch",
-    paddingVertical: 7,
-    paddingRight: 7,
+  duration: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+
+  infoText: {
+    fontSize: 9,
   },
 
   completed: {
     flexDirection: "row",
     alignItems: "center",
     gap: 3,
-    paddingHorizontal: 7,
-    paddingVertical: 4,
-    borderRadius: 5,
   },
 
   completedText: {
-    fontSize: 8,
+    fontSize: 9,
     fontWeight: "600",
+  },
+
+  button: {
+    width: "100%",
+    height: 32,
+    minHeight: 32,
+    marginTop: 6,
+    paddingHorizontal: 5,
+    borderRadius: 6,
+  },
+
+  buttonText: {
+    fontSize: 9,
+  },
+
+  indicator: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 8,
+  },
+
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
   },
 });

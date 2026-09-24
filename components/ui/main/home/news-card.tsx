@@ -16,6 +16,7 @@ type NewsItem = {
   id: string;
   image: ImageSourcePropType;
   title: string;
+  description?: string;
 };
 
 type NewsCardProps = {
@@ -81,30 +82,55 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
               styles.card,
               {
                 width: cardWidth,
-                backgroundColor: themeColor.card,
                 borderColor: themeColor.border,
               },
             ]}
           >
-            <Image
-              source={item.image}
-              resizeMode="cover"
-              style={styles.image}
-            />
+            <Image source={item.image} style={styles.image} />
 
             <View
               style={[
                 styles.overlay,
                 {
-                  backgroundColor: themeColor.card,
+                  backgroundColor: themeColor.overlay,
                 },
               ]}
             />
 
             <View style={styles.content}>
-              <UIText style={styles.title}>{item.title}</UIText>
+              <UIText
+                style={[
+                  styles.title,
+                  {
+                    color: themeColor.white,
+                  },
+                ]}
+              >
+                {item.title}
+              </UIText>
 
-              <UIText variant="muted" style={styles.readMore}>
+              {item.description && (
+                <UIText
+                  style={[
+                    styles.description,
+                    {
+                      color: themeColor.white,
+                    },
+                  ]}
+                  numberOfLines={2}
+                >
+                  {item.description}
+                </UIText>
+              )}
+
+              <UIText
+                style={[
+                  styles.readMore,
+                  {
+                    color: themeColor.primary,
+                  },
+                ]}
+              >
                 Read More →
               </UIText>
             </View>
@@ -122,7 +148,7 @@ export default function NewsCard({ data, onPress }: NewsCardProps) {
                 {
                   backgroundColor:
                     index === activeIndex
-                      ? themeColor.danger
+                      ? themeColor.primary
                       : themeColor.mutedForeground,
                 },
               ]}
@@ -145,15 +171,16 @@ const styles = StyleSheet.create({
 
   image: {
     position: "absolute",
-    width: "46%",
+    width: "100%",
     height: "100%",
     left: 0,
     top: 0,
+    resizeMode: "cover",
   },
 
   overlay: {
     position: "absolute",
-    left: "46%",
+    left: 0,
     right: 0,
     top: 0,
     bottom: 0,
@@ -161,21 +188,28 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    marginLeft: "45%",
-    paddingHorizontal: 12,
-    paddingVertical: 9,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     justifyContent: "space-between",
   },
 
   title: {
-    maxWidth: 155,
+    maxWidth: 220,
     fontSize: 15,
     fontWeight: "600",
     lineHeight: 18,
   },
 
+  description: {
+    maxWidth: 220,
+    marginTop: 4,
+    fontSize: 10,
+    lineHeight: 14,
+  },
+
   readMore: {
     fontSize: 11,
+    fontWeight: "600",
   },
 
   indicator: {

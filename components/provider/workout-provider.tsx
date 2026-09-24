@@ -2,9 +2,23 @@ import { createContext, useContext, useState } from "react";
 
 import type { ReactNode } from "react";
 
+import type { Exercise } from "@/components/data/Exercise";
+
+export type WorkoutPackage = {
+  id: string;
+  name: string;
+  target: string;
+  bodyPart: string;
+  equipment: string;
+  category: string;
+  exercises: Exercise[];
+};
+
 type WorkoutContextType = {
-  hasCompletedWorkout: boolean;
-  setHasCompletedWorkout: (value: boolean) => void;
+  hasWorkoutPlan: boolean;
+  setHasWorkoutPlan: (value: boolean) => void;
+  workoutPackage: WorkoutPackage | null;
+  setWorkoutPackage: (value: WorkoutPackage | null) => void;
 };
 
 const WorkoutContext = createContext<WorkoutContextType | undefined>(undefined);
@@ -24,13 +38,16 @@ export default function WorkoutProvider({
 }: {
   children: ReactNode;
 }) {
-  const [hasCompletedWorkout, setHasCompletedWorkout] = useState(false);
+  const [hasWorkoutPlan, setHasWorkoutPlan] = useState(false);
+  const [workoutPackage, setWorkoutPackage] = useState<WorkoutPackage | null>(null);
 
   return (
     <WorkoutContext.Provider
       value={{
-        hasCompletedWorkout,
-        setHasCompletedWorkout,
+        hasWorkoutPlan,
+        setHasWorkoutPlan,
+        workoutPackage,
+        setWorkoutPackage,
       }}
     >
       {children}

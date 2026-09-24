@@ -3,7 +3,6 @@ import { List, Pause, Play } from "lucide-react-native";
 import { Image, StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
-
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -12,36 +11,44 @@ import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutSessionStepProps = {
   workout: Exercise;
+  exerciseIndex: number;
+  totalExercises: number;
   elapsedTime: string;
   isPaused: boolean;
   onTogglePause: () => void;
-  onFinish: () => void;
+  onFinishExercise: () => void;
 };
 
 export default function WorkoutSessionStep({
   workout,
+  exerciseIndex,
+  totalExercises,
   elapsedTime,
   isPaused,
   onTogglePause,
-  onFinish,
+  onFinishExercise,
 }: WorkoutSessionStepProps) {
   const themeColor = useThemeColor();
 
   return (
     <View style={styles.container}>
-      <UIText style={styles.title}>Workout Session</UIText>
+      <UIText style={styles.title}>
+        Exercise {exerciseIndex + 1} of {totalExercises}
+      </UIText>
+
+      <UIText style={styles.exerciseName}>
+        {workout.exercise_name}
+      </UIText>
 
       <UIText variant="muted" style={styles.subtitle}>
-        Follow the instructions and complete your exercise.
+        {workout.body_part} • {workout.equipment}
       </UIText>
 
       <Image
         source={workout.image}
         style={[
           styles.sessionImage,
-          {
-            borderColor: themeColor.border,
-          },
+          { borderColor: themeColor.border },
         ]}
       />
 
@@ -62,18 +69,24 @@ export default function WorkoutSessionStep({
 
         <View
           style={[
-            styles.timerStatus,
+            styles.status,
             {
-              backgroundColor: isPaused ? themeColor.card : themeColor.primary,
-              borderColor: isPaused ? themeColor.border : themeColor.primary,
+              backgroundColor: isPaused
+                ? themeColor.card
+                : themeColor.primary,
+              borderColor: isPaused
+                ? themeColor.border
+                : themeColor.primary,
             },
           ]}
         >
           <UIText
             style={[
-              styles.timerStatusText,
+              styles.statusText,
               {
-                color: isPaused ? themeColor.mutedForeground : themeColor.black,
+                color: isPaused
+                  ? themeColor.mutedForeground
+                  : themeColor.black,
               },
             ]}
           >
@@ -81,8 +94,6 @@ export default function WorkoutSessionStep({
           </UIText>
         </View>
       </View>
-
-      <UIText style={styles.detailTitle}>{workout.exercise_name}</UIText>
 
       <View
         style={[
@@ -94,9 +105,8 @@ export default function WorkoutSessionStep({
         ]}
       >
         <View style={styles.instructionsHeader}>
-          <List size={26} color={themeColor.foreground} />
-
-          <UIText style={styles.sectionTitle}>Instructions</UIText>
+          <List size={24} color={themeColor.foreground} />
+          <UIText style={styles.instructionsTitle}>Instructions</UIText>
         </View>
 
         <View style={styles.instructions}>
@@ -108,24 +118,20 @@ export default function WorkoutSessionStep({
               <View
                 style={[
                   styles.number,
-                  {
-                    backgroundColor: themeColor.primary,
-                  },
+                  { backgroundColor: themeColor.primary },
                 ]}
               >
                 <UIText
                   style={[
                     styles.numberText,
-                    {
-                      color: themeColor.black,
-                    },
+                    { color: themeColor.black },
                   ]}
                 >
                   {index + 1}
                 </UIText>
               </View>
 
-              <UIText variant="muted" style={styles.description}>
+              <UIText variant="muted" style={styles.instructionText}>
                 {instruction}
               </UIText>
             </View>
@@ -133,14 +139,9 @@ export default function WorkoutSessionStep({
         </View>
       </View>
 
-      <View style={styles.sessionButtons}>
+      <View style={styles.buttons}>
         <UIButton
-          style={[
-            styles.secondaryButton,
-            {
-              borderColor: themeColor.border,
-            },
-          ]}
+          style={styles.secondaryButton}
           icon={
             isPaused ? (
               <Play size={18} color={themeColor.foreground} />
@@ -154,9 +155,9 @@ export default function WorkoutSessionStep({
 
         <UIButton
           style={styles.mainButton}
-          label="Finish Workout"
+          label="Complete Exercise  →"
           variant="primary"
-          onPress={onFinish}
+          onPress={onFinishExercise}
         />
       </View>
     </View>
@@ -169,32 +170,37 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: "bold",
   },
 
+  exerciseName: {
+    fontSize: 22,
+    fontWeight: "600",
+    marginTop: 18,
+  },
+
   subtitle: {
-    fontSize: 16,
-    lineHeight: 21,
-    marginTop: 4,
+    fontSize: 12,
+    marginTop: 3,
   },
 
   sessionImage: {
     width: "100%",
-    height: 220,
+    height: 210,
     borderWidth: 1,
     borderRadius: 12,
-    marginTop: 18,
+    marginTop: 16,
   },
 
   timerCard: {
-    minHeight: 115,
+    minHeight: 110,
     borderWidth: 1,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 16,
-    paddingVertical: 12,
+    marginTop: 14,
+    paddingVertical: 10,
   },
 
   timerLabel: {
@@ -204,12 +210,12 @@ const styles = StyleSheet.create({
   },
 
   timer: {
-    fontSize: 40,
+    fontSize: 38,
     fontWeight: "bold",
     marginTop: 2,
   },
 
-  timerStatus: {
+  status: {
     borderWidth: 1,
     borderRadius: 14,
     paddingHorizontal: 10,
@@ -217,75 +223,69 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
-  timerStatusText: {
+  statusText: {
     fontSize: 9,
     fontWeight: "600",
-  },
-
-  detailTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    marginTop: 20,
   },
 
   instructionsCard: {
     borderWidth: 1,
     borderRadius: 12,
-    padding: 16,
+    padding: 14,
     marginTop: 14,
   },
 
   instructionsHeader: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 10,
   },
 
-  sectionTitle: {
+  instructionsTitle: {
     fontSize: 18,
     fontWeight: "600",
   },
 
   instructions: {
-    marginTop: 16,
     gap: 10,
+    marginTop: 14,
   },
 
   instructionItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 12,
+    gap: 10,
   },
 
   number: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
   },
 
   numberText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "600",
   },
 
-  description: {
+  instructionText: {
     flex: 1,
-    fontSize: 13,
-    lineHeight: 20,
-    paddingTop: 5,
+    fontSize: 12,
+    lineHeight: 18,
+    paddingTop: 4,
   },
 
-  sessionButtons: {
+  buttons: {
     gap: 10,
-    marginTop: 20,
+    marginTop: 18,
     marginBottom: 20,
   },
 
   secondaryButton: {
     width: "100%",
-    height: 48,
+    height: 46,
     borderRadius: 8,
   },
 
