@@ -2,7 +2,7 @@ import useThemeColor from "@/hooks/use-theme-color";
 import { Image, StyleSheet, View } from "react-native";
 import Icon from "@/assets/img/favicon.png";
 import { useEffect } from "react";
-import { useGetProfile } from "@/hooks/client/profile/use-get-profile";
+import { useGetProfile } from "@/hooks/request/profile/use-get-profile";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/stores/auth-store";
 import { useToast } from "@/hooks/use-toast";
@@ -39,7 +39,7 @@ export default function IndexPage() {
       return;
     }
 
-    auth.setUser(user);
+    auth.setUser(user.data);
     router.replace("/home");
   }
 

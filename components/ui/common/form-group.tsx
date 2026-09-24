@@ -4,18 +4,15 @@ import type { ReactNode } from "react";
 
 import UIText from "./text";
 
-type FormGroupProps = {
-  label: string;
+export type FormGroupProps = {
+  label?: string;
   children: ReactNode;
 };
 
-export default function FormGroup({
-  label,
-  children,
-}: FormGroupProps) {
+export default function FormGroup({ label, children }: FormGroupProps) {
   return (
     <View style={styles.field}>
-      <UIText style={styles.label}>{label}</UIText>
+      {label && <UIText style={styles.label}>{label}</UIText>}
       {children}
     </View>
   );

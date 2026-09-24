@@ -24,10 +24,6 @@ export default function Page() {
         },
       ]}
     >
-      <View style={styles.themeToggle}>
-        <ThemeToggler color={themeColor.foreground} />
-      </View>
-
       <Image
         source={
           theme === "dark"
@@ -53,18 +49,7 @@ export default function Page() {
               },
             ]}
           >
-            Smart
-          </UIText>
-
-          <UIText
-            style={[
-              styles.title,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            Workout
+            Smart{"\n"}Workout
           </UIText>
 
           <UIText
