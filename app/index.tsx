@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useGetProfile } from "@/hooks/client/profile/use-get-profile";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/stores/auth-store";
+import { useToast } from "@/hooks/use-toast";
 
 export default function IndexPage() {
   const color = useThemeColor();
@@ -15,12 +16,21 @@ export default function IndexPage() {
     query: { data: user, isFetched, isError },
   } = useGetProfile();
   const auth = useAuth();
+  const toast = useToast();
 
   async function checkUserAndRedirect() {
     await new Promise((res) => setTimeout(res, 1000));
 
     if (isError) {
       router.replace("/login");
+    }
+
+    if (!isFetched) {
+      toast.error({
+        title: "No Connection",
+        description: "Can't connect to server. Please check your internet",
+      });
+      return;
     }
 
     if (!user) {
