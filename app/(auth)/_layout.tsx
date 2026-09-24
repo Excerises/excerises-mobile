@@ -32,7 +32,7 @@ export default function Layout() {
   const insets = useSafeAreaInsets();
 
   const goToHome = () => {
-    router.replace("/");
+    router.back();
   };
 
   return (
@@ -51,18 +51,22 @@ export default function Layout() {
       <SafeAreaView edges={["top"]} />
 
       <View style={styles.header}>
-        <Pressable onPress={goToHome} style={styles.backButton}>
-          <UIText
-            style={[
-              styles.backText,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            ←
-          </UIText>
-        </Pressable>
+        {router.canGoBack() && (
+          <Pressable onPress={goToHome} style={styles.backButton}>
+            <UIText
+              style={[
+                styles.backText,
+                {
+                  color: themeColor.foreground,
+                },
+              ]}
+            >
+              ←
+            </UIText>
+          </Pressable>
+        )}
+
+        <View></View>
 
         <ThemeToggler color={themeColor.foreground} />
       </View>
