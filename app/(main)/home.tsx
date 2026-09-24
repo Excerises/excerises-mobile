@@ -1,23 +1,35 @@
 import { useRouter } from "expo-router";
+
 import { Gauge, Ruler, Scale } from "lucide-react-native";
+
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { exercises, type Exercise } from "@/components/data/Exercise";
+
 import { histories } from "@/components/data/History";
+
 import { news } from "@/components/data/News";
+
 import { currentUser } from "@/components/data/User";
+
 import { userProfiles } from "@/components/data/User_Profile";
 
 import { useWorkoutContext } from "@/components/provider/workout-provider";
 
 import UIText from "@/components/ui/common/text";
+
+import FloatingWorkoutButton from "@/components/ui/main/home/floating-workout-button";
+
 import HomeHeader from "@/components/ui/main/home/home-header";
+
 import NewsCard from "@/components/ui/main/home/news-card";
+
 import RecentWorkouts from "@/components/ui/main/home/recent-workouts";
-import RecommendedWorkouts from "@/components/ui/main/home/recommended-workouts";
+
 import StatCard from "@/components/ui/main/home/stat-card";
-import TodaysWorkout from "@/components/ui/main/home/todays-workout";
+
 import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
+
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -41,63 +53,44 @@ const completedHistory = userHistory
       new Date(first.created_at).getTime(),
   );
 
-const todayCompleted = userHistory.find((item) => item.status === "completed");
+const recentWorkoutGroups = [
+  completedHistory.slice(0, 3),
+  completedHistory.slice(3, 6),
+].filter((group) => group.length > 0);
 
-const todayInProgress = userHistory.find(
-  (item) => item.status === "in_progress",
-);
+const recentWorkouts = recentWorkoutGroups
+  .map((group, index) => {
+    const firstExercise = getExercise(group[0].exercise_id);
 
-const todayWorkouts = [todayCompleted, todayInProgress]
-  .map((item) => {
-    if (!item) {
-      return null;
-    }
-
-    const exercise = getExercise(item.exercise_id);
-
-    if (!exercise) {
+    if (!firstExercise) {
       return null;
     }
 
     return {
-      workout: exercise,
-      completed: item.status === "completed",
+      id: `WORKOUT-${index + 1}`,
+      title: `My Workout #${index + 1}`,
+      exerciseCount: group.length,
+      duration: group.reduce((total, item) => total + item.duration, 0),
+      image: firstExercise.image,
     };
   })
   .filter(Boolean) as {
-  workout: Exercise;
-  completed: boolean;
-}[];
-
-const recentWorkouts = [completedHistory[2], completedHistory[3]]
-  .filter(Boolean)
-  .map((item) => {
-    const exercise = getExercise(item.exercise_id);
-
-    if (!exercise) {
-      return null;
-    }
-
-    return {
-      workout: exercise,
-      duration: item.duration,
-      completedAt: new Date(item.created_at),
-    };
-  })
-  .filter(Boolean) as {
-  workout: Exercise;
+  id: string;
+  title: string;
+  exerciseCount: number;
   duration: number;
-  completedAt: Date;
+  image: Exercise["image"];
 }[];
 
-const completedDates = userHistory
-  .filter((item) => item.status === "completed")
-  .map((item) => new Date(item.created_at));
+const completedDates = completedHistory.map(
+  (item) => new Date(item.created_at),
+);
 
 const latestNews = news.map((item) => ({
   id: item.news_id,
   image: item.image,
   title: item.home_title,
+  description: item.content,
 }));
 
 const profile = currentProfile ?? userProfiles[0];
@@ -106,17 +99,20 @@ export default function Home() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
-  const { hasCompletedWorkout } = useWorkoutContext();
+  const { hasWorkoutPlan } = useWorkoutContext();
 
   const goToWorkout = () => {
     router.push("/(main)/workout-flow");
   };
 
-  const goToDetail = (exercise: (typeof exercises)[number]) => {
+
+  const goToRecentWorkoutDetail = (workoutId: string) => {
     router.push({
       pathname: "/(main)/workout-flow",
       params: {
-        workoutId: exercise.exercise_id,
+        workoutId,
+        step: "detail",
+        source: "recent",
       },
     });
   };
@@ -138,11 +134,11 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {!hasCompletedWorkout ? (
+        {!hasWorkoutPlan ? (
           <WorkoutBanner
             image={require("@/assets/images/workout-banner.jpeg")}
-            title="Ready to Workout?"
-            description="Choose your workout type and get personalized exercises."
+            title="START YOUR\nWORKOUT"
+            description="Create your workout plan and start your fitness journey today."
             onPress={goToWorkout}
           />
         ) : (
@@ -152,19 +148,16 @@ export default function Home() {
               weeklyTarget={profile.frequency_exercise}
             />
 
-            <TodaysWorkout workouts={todayWorkouts} onSelect={goToDetail} />
-
-            <RecommendedWorkouts workouts={exercises} onSelect={goToDetail} />
+            <RecentWorkouts
+              workouts={recentWorkouts}
+              onPress={(workout) => goToRecentWorkoutDetail(workout.id)}
+            />
           </>
         )}
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <UIText style={styles.sectionTitle}>Your Body Stats</UIText>
-
-            <UIText variant="muted" style={styles.seeDetails}>
-              See Details &gt;
-            </UIText>
           </View>
 
           <View style={styles.statsRow}>
@@ -185,27 +178,22 @@ export default function Home() {
             <StatCard
               icon={<Gauge size={22} color={themeColor.primary} />}
               value={profile.bmi.toFixed(1)}
-              unit={profile.bmi_status}
               label="BMI"
-              unitColor="success"
+              valueColor="success"
             />
           </View>
         </View>
 
-        {hasCompletedWorkout && <RecentWorkouts workouts={recentWorkouts} />}
-
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <UIText style={styles.sectionTitle}>Latest News</UIText>
-
-            <UIText variant="muted" style={styles.seeDetails}>
-              See All &gt;
-            </UIText>
           </View>
 
           <NewsCard data={latestNews} />
         </View>
       </ScrollView>
+
+      {hasWorkoutPlan && <FloatingWorkoutButton onPress={goToWorkout} />}
     </View>
   );
 }
@@ -233,17 +221,12 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     marginBottom: 8,
   },
 
   sectionTitle: {
     fontSize: 14,
     fontWeight: "600",
-  },
-
-  seeDetails: {
-    fontSize: 10,
   },
 
   statsRow: {

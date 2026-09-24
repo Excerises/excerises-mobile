@@ -1,11 +1,8 @@
 import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
-
 import FormGroup from "@/components/ui/common/form-group";
-
 import Selector from "@/components/ui/common/selector";
-
 import UIText from "@/components/ui/common/text";
 
 type WorkoutPreferenceStepProps = {
@@ -21,11 +18,8 @@ type WorkoutPreferenceStepProps = {
 };
 
 const bodyPartOptions = ["Chest", "Back", "Shoulders", "Arms", "Legs", "Core"];
-
 const equipmentOptions = ["Bodyweight", "Dumbbell", "Barbell", "Machine"];
-
 const categoryOptions = ["Upper Body", "Lower Body", "Core"];
-
 const targetOptions = ["Strength", "Endurance", "Flexibility", "Balance"];
 
 export default function WorkoutPreferenceStep({
@@ -40,14 +34,23 @@ export default function WorkoutPreferenceStep({
   onNext,
 }: WorkoutPreferenceStepProps) {
   return (
-    <>
-      <UIText style={styles.title}>Find Your Workout</UIText>
+    <View style={styles.container}>
+      <UIText style={styles.title}>Customize Workout</UIText>
 
       <UIText style={styles.subtitle}>
-        Choose your workout preferences to get personalized exercises.
+        Choose your workout preferences based on your needs.
       </UIText>
 
       <View style={styles.form}>
+        <FormGroup label="Target">
+          <Selector
+            placeholder="Select target"
+            options={targetOptions}
+            value={target}
+            onChange={onTargetChange}
+          />
+        </FormGroup>
+
         <FormGroup label="Body Part">
           <Selector
             placeholder="Select body part"
@@ -66,15 +69,6 @@ export default function WorkoutPreferenceStep({
           />
         </FormGroup>
 
-        <FormGroup label="Target">
-          <Selector
-            placeholder="Select target"
-            options={targetOptions}
-            value={target}
-            onChange={onTargetChange}
-          />
-        </FormGroup>
-
         <FormGroup label="Category">
           <Selector
             placeholder="Select category"
@@ -87,15 +81,19 @@ export default function WorkoutPreferenceStep({
 
       <UIButton
         style={styles.mainButton}
-        label="Find Workout"
+        label="Find My Workout  →"
         variant="primary"
         onPress={onNext}
       />
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
   title: {
     fontSize: 30,
     fontWeight: "bold",
@@ -103,6 +101,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     fontSize: 16,
+    lineHeight: 21,
     marginTop: 4,
   },
 
@@ -113,8 +112,8 @@ const styles = StyleSheet.create({
 
   mainButton: {
     width: "100%",
-    height: 48,
+    height: 52,
     marginTop: 30,
-    borderRadius: 6,
+    borderRadius: 8,
   },
 });

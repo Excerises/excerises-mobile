@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
 
-
   description: {
     fontSize: 18,
     lineHeight: 20,

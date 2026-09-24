@@ -7,9 +7,9 @@ import useThemeColor from "@/hooks/use-theme-color";
 type StatCardProps = {
   icon: ReactNode;
   value: string;
-  unit: string;
+  unit?: string;
   label: string;
-  unitColor?: "success" | "muted";
+  valueColor?: "success" | "default";
 };
 
 export default function StatCard({
@@ -17,7 +17,7 @@ export default function StatCard({
   value,
   unit,
   label,
-  unitColor = "muted",
+  valueColor = "default",
 }: StatCardProps) {
   const themeColor = useThemeColor();
 
@@ -33,23 +33,38 @@ export default function StatCard({
     >
       <View style={styles.icon}>{icon}</View>
 
-      <UIText style={styles.value}>{value}</UIText>
+      <View style={styles.valueRow}>
+        <UIText
+          style={[
+            styles.value,
+            {
+              color:
+                valueColor === "success"
+                  ? themeColor.success
+                  : themeColor.foreground,
+            },
+          ]}
+        >
+          {value}
+        </UIText>
 
-      <UIText
-        style={[
-          styles.unit,
-          {
-            color:
-              unitColor === "success"
-                ? themeColor.success
-                : themeColor.mutedForeground,
-          },
-        ]}
-      >
-        {unit}
+        {unit ? (
+          <UIText
+            style={[
+              styles.unit,
+              {
+                color: themeColor.foreground,
+              },
+            ]}
+          >
+            {unit}
+          </UIText>
+        ) : null}
+      </View>
+
+      <UIText variant="muted" style={styles.label}>
+        {label}
       </UIText>
-
-      <UIText style={styles.label}>{label}</UIText>
     </View>
   );
 }
@@ -57,35 +72,41 @@ export default function StatCard({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 118,
-    paddingVertical: 12,
+    height: 100,
+    paddingVertical: 10,
     borderWidth: 1,
-    borderRadius: 6,
-    overflow: "hidden",
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    gap: 3,
   },
 
   icon: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 2,
+    marginBottom: 6,
+  },
+
+  valueRow: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    justifyContent: "center",
   },
 
   value: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 17,
+    fontWeight: "700",
     textAlign: "center",
   },
 
   unit: {
-    fontSize: 16,
+    fontSize: 13,
+    marginLeft: 3,
     textAlign: "center",
   },
 
   label: {
-    fontSize: 16,
+    fontSize: 13,
+    marginTop: 2,
     textAlign: "center",
   },
 });
