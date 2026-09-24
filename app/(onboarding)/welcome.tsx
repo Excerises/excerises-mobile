@@ -109,7 +109,7 @@ export default function Page() {
           label="Started"
           variant="primary"
           labelStyle={styles.startButtonText}
-          onPress={() => router.push("/login")}
+          onPress={() => router.push("/register")}
         />
       </View>
     </View>

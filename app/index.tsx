@@ -6,6 +6,7 @@ import { useGetProfile } from "@/hooks/client/profile/use-get-profile";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/stores/auth-store";
 import { useToast } from "@/hooks/use-toast";
+import { useWelcome } from "@/hooks/use-welcome";
 
 export default function IndexPage() {
   const color = useThemeColor();
@@ -17,13 +18,13 @@ export default function IndexPage() {
   } = useGetProfile();
   const auth = useAuth();
   const toast = useToast();
+  const { isWelcomed, markWelcomed } = useWelcome();
 
   async function checkUserAndRedirect() {
     await new Promise((res) => setTimeout(res, 1000));
 
-    if (isError) {
-      router.replace("/login");
-    }
+    const welcomed = await isWelcomed();
+    const errorRedirectTo = welcomed ? "/login" : "/welcome";
 
     if (!isFetched) {
       toast.error({
@@ -33,8 +34,8 @@ export default function IndexPage() {
       return;
     }
 
-    if (!user) {
-      router.replace("/login");
+    if (!user || isError) {
+      router.replace(errorRedirectTo);
       return;
     }
 
