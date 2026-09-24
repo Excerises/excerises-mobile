@@ -88,7 +88,6 @@ export default function Page() {
           <UIText
             style={[
               styles.title,
-              styles.youText,
               {
                 color: themeColor.primary,
               },
@@ -159,7 +158,6 @@ const styles = StyleSheet.create({
   lightText: {
     fontWeight: "400",
   },
-
 
   description: {
     fontSize: 18,
