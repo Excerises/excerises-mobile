@@ -1,123 +1,47 @@
-import { useRouter } from "expo-router";
-
-import { Image, StyleSheet, useWindowDimensions, View } from "react-native";
-
-import { useThemeContext } from "@/components/provider/theme-provider";
-
-import ThemeToggler from "@/components/theme-toggler";
-
-import UIButton from "@/components/ui/common/button";
-
-import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
+import { Image, StyleSheet, View } from "react-native";
+import Icon from "@/assets/img/favicon.png";
+import { useEffect } from "react";
+import { useGetProfile } from "@/hooks/client/profile/use-get-profile";
+import { useRouter } from "expo-router";
+import { useAuth } from "@/stores/auth-store";
 
-export default function Page() {
+export default function IndexPage() {
+  const color = useThemeColor();
+  const size = 120;
+
   const router = useRouter();
+  const {
+    query: { data: user, isFetched, isError },
+  } = useGetProfile();
+  const auth = useAuth();
 
-  const { height } = useWindowDimensions();
+  async function checkUserAndRedirect() {
+    await new Promise((res) => setTimeout(res, 1000));
 
-  const themeColor = useThemeColor();
+    if (isError) {
+      router.replace("/login");
+    }
 
-  const { theme } = useThemeContext();
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+
+    auth.setUser(user);
+    router.replace("/home");
+  }
+
+  useEffect(() => {
+    checkUserAndRedirect();
+  }, [user, isFetched]);
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: themeColor.background,
-        },
-      ]}
-    >
-      <View style={styles.themeToggle}>
-        <ThemeToggler color={themeColor.foreground} />
-      </View>
-
+    <View style={[styles.container, { backgroundColor: color.background }]}>
       <Image
-        source={
-          theme === "dark"
-            ? require("@/assets/images/workout-dark.jpeg")
-            : require("@/assets/images/workout-light.jpeg")
-        }
-        resizeMode="cover"
-        style={[
-          styles.heroImage,
-          {
-            height: height * 0.35,
-          },
-        ]}
+        source={Icon as any}
+        style={{ width: size, height: size, backgroundColor: "transparent" }}
       />
-
-      <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <UIText
-            style={[
-              styles.title,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            Smart
-          </UIText>
-
-          <UIText
-            style={[
-              styles.title,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            Workout
-          </UIText>
-
-          <UIText
-            style={[
-              styles.title,
-              styles.lightText,
-              {
-                color: themeColor.mutedForeground,
-              },
-            ]}
-          >
-            For a Better
-          </UIText>
-
-          <UIText
-            style={[
-              styles.title,
-              {
-                color: themeColor.primary,
-              },
-            ]}
-          >
-            You
-          </UIText>
-        </View>
-
-        <UIText
-          style={[
-            styles.description,
-            {
-              color: themeColor.mutedForeground,
-            },
-          ]}
-        >
-          Get workout recommendations
-          {"\n"}tailored to your needs
-          {"\n"}using AI.
-        </UIText>
-
-        <UIButton
-          style={styles.startButton}
-          label="Started"
-          variant="primary"
-          labelStyle={styles.startButtonText}
-          onPress={() => router.push("/login")}
-        />
-      </View>
     </View>
   );
 }
@@ -125,53 +49,14 @@ export default function Page() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
-
-  themeToggle: {
-    position: "absolute",
-    top: 55,
-    right: 20,
-    zIndex: 10,
-  },
-
-  heroImage: {
-    width: "100%",
-    marginTop: 50,
-  },
-
-  content: {
-    paddingHorizontal: 20,
-    paddingTop: 30,
-  },
-
-  titleContainer: {
-    gap: 0,
-  },
-
-  title: {
-    fontSize: 36,
-    lineHeight: 36,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-  },
-
-  lightText: {
-    fontWeight: "400",
-  },
-
-  description: {
-    fontSize: 18,
-    lineHeight: 20,
-    marginTop: 16,
-  },
-
-  startButton: {
-    width: "100%",
-    height: 50,
-    marginTop: 60,
-  },
-
-  startButtonText: {
-    fontWeight: "bold",
+  circle: {
+    borderRadius: 9999,
+    height: 130,
+    width: 130,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
