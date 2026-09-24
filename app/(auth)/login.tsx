@@ -1,36 +1,54 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-
 import { useRouter } from "expo-router";
-
 import { Pressable, StyleSheet, View } from "react-native";
-
 import AuthFooter from "@/components/ui/auth/auth-footer";
-
 import OAuthButton from "@/components/ui/auth/oauth-button";
-
 import UIButton from "@/components/ui/common/button";
-
 import FormGroup from "@/components/ui/common/form-group";
-
 import Input from "@/components/ui/common/input";
-
 import Separator from "@/components/ui/common/separator";
-
 import StepHeader from "@/components/ui/common/step-header";
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
+import { useLoginForm } from "@/hooks/form/auth/use-login-form";
+import FieldControl from "@/components/ui/common/form/field-control";
+import { useLogin } from "@/hooks/request/auth/use-login";
+import { getErrorMessage } from "@/utils/error";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 export default function Login() {
   const router = useRouter();
   const themeColor = useThemeColor();
 
+  const {
+    form: { control, handleSubmit, setError },
+  } = useLoginForm();
+  const { mutation: login } = useLogin();
+  const toast = useToast();
+
+  const onLogin = handleSubmit(async (values) => {
+    try {
+      await login.mutateAsync(values);
+
+      toast.success({
+        title: "Success",
+        description: "Login successfully. Welcome back!",
+      });
+    } catch (err) {
+      setError("password", { message: getErrorMessage(err) });
+    }
+  });
+
+  useEffect(() => {
+    if (!login.data) return;
+    console.log(login.data);
+
+    router.replace("/home");
+  }, [login.data]);
+
   const goToRegister = () => {
     router.replace("/register");
-  };
-
-  const goToProfile = () => {
-    router.push("/profile");
   };
 
   return (
@@ -38,18 +56,35 @@ export default function Login() {
       <StepHeader title="Log In" subtitle="Welcome back!" />
 
       <View style={styles.form}>
-        <FormGroup label="Email">
-          <Input
-            placeholder="example@email.com"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-        </FormGroup>
+        <FieldControl
+          control={control}
+          name="email"
+          label="Email"
+          render={({ field }) => (
+            <Input
+              placeholder="example@email.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={field.value}
+              onChangeText={(v) => field.onChange(v)}
+            />
+          )}
+        />
 
-        <FormGroup label="Password">
-          <Input placeholder="Enter password" isPassword />
-        </FormGroup>
+        <FieldControl
+          control={control}
+          name="password"
+          label="Password"
+          render={({ field }) => (
+            <Input
+              placeholder="Enter password"
+              isPassword
+              value={field.value}
+              onChangeText={(v) => field.onChange(v)}
+            />
+          )}
+        />
 
         <Pressable>
           <UIText variant="link">Lupa password</UIText>
@@ -60,7 +95,7 @@ export default function Login() {
         style={styles.loginButton}
         label="Login"
         variant="primary"
-        onPress={goToProfile}
+        onPress={onLogin}
       />
 
       <View style={styles.divider}>

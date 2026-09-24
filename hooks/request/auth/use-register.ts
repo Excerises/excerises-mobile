@@ -1,4 +1,4 @@
-import { RegisterFormInput } from "@/hooks/form/use-register-form";
+import { RegisterFormInput } from "@/hooks/form/auth/use-register-form";
 import { api } from "@/network/api";
 import { ApiResponse } from "@/types/common/api";
 import { useMutation } from "@tanstack/react-query";

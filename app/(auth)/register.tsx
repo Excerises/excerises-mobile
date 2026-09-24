@@ -4,7 +4,7 @@ import AuthFooter from "@/components/ui/auth/auth-footer";
 import UIButton from "@/components/ui/common/button";
 import Input from "@/components/ui/common/input";
 import StepHeader from "@/components/ui/common/step-header";
-import { useRegisterForm } from "@/hooks/form/use-register-form";
+import { useRegisterForm } from "@/hooks/form/auth/use-register-form";
 import FieldControl from "@/components/ui/common/form/field-control";
 import { useRegister } from "@/hooks/request/auth/use-register";
 import { useToast } from "@/hooks/use-toast";
