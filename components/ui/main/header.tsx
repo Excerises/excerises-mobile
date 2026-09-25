@@ -3,27 +3,21 @@ import { StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/common/text";
 import HeaderActions from "@/components/ui/main/header-actions";
 
-type HistoryHeaderProps = {
-  onSearchPress?: () => void;
-  onNotificationPress?: () => void;
+type HeaderProps = {
+  title: string;
+  description: string;
 };
 
-export default function HistoryHeader({
-  onSearchPress,
-  onNotificationPress,
-}: HistoryHeaderProps) {
+export default function Header({ title, description }: HeaderProps) {
   return (
     <View style={styles.container}>
       <View>
-        <UIText style={styles.title}>HISTORY</UIText>
+        <UIText style={styles.title}>{title.toUpperCase()}</UIText>
 
-        <UIText style={styles.subtitle}>Track Your Progress, Keep Going</UIText>
+        <UIText style={styles.subtitle}>{description}</UIText>
       </View>
 
-      <HeaderActions
-        onSearchPress={onSearchPress}
-        onNotificationPress={onNotificationPress}
-      />
+      <HeaderActions />
     </View>
   );
 }

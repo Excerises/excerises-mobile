@@ -20,8 +20,6 @@ import UIText from "@/components/ui/common/text";
 
 import FloatingWorkoutButton from "@/components/ui/main/home/floating-workout-button";
 
-import HomeHeader from "@/components/ui/main/home/home-header";
-
 import NewsCard from "@/components/ui/main/home/news-card";
 
 import RecentWorkouts from "@/components/ui/main/home/recent-workouts";
@@ -33,6 +31,8 @@ import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
 import useThemeColor from "@/hooks/use-theme-color";
+import Header from "@/components/ui/main/header";
+import { useAuth } from "@/stores/auth-store";
 
 const currentProfile = userProfiles.find(
   (profile) => profile.user_id === currentUser.user_id,
@@ -105,6 +105,7 @@ export default function Home() {
     router.push("/(main)/workout-flow");
   };
 
+  const { user } = useAuth();
 
   const goToRecentWorkoutDetail = (workoutId: string) => {
     router.push({
@@ -127,7 +128,10 @@ export default function Home() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <HomeHeader name={currentUser.name} />
+        <Header
+          title={`Hi ${user?.name} 👋`}
+          description="Ready for a workout?"
+        />
       </View>
 
       <ScrollView

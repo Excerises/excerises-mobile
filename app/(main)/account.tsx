@@ -12,8 +12,6 @@ import { userProfiles } from "@/components/data/User_Profile";
 
 import UIText from "@/components/ui/common/text";
 
-import ProfileHeader from "@/components/ui/main/profile/profile-header";
-
 import ProfileInfoCard from "@/components/ui/main/profile/profile-info-card";
 
 import ProfileMenu from "@/components/ui/main/profile/profile-menu";
@@ -21,6 +19,7 @@ import ProfileMenu from "@/components/ui/main/profile/profile-menu";
 import ProfileStats from "@/components/ui/main/profile/profile-stats";
 
 import useThemeColor from "@/hooks/use-theme-color";
+import Header from "@/components/ui/main/header";
 
 export default function Profile() {
   const themeColor = useThemeColor();
@@ -56,7 +55,7 @@ export default function Profile() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <ProfileHeader />
+        <Header title="Profile" description="Keep going, you're doing great" />
       </View>
 
       <ScrollView

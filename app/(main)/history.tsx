@@ -8,11 +8,11 @@ import {
   createWorkoutHistoryGroups,
 } from "@/components/data/History";
 import { type Exercise } from "@/components/data/Exercise";
-import HistoryHeader from "@/components/ui/main/history/history-header";
 import WorkoutHistoryDetail from "@/components/ui/main/history/workout-history-detail";
 import WorkoutHistoryList from "@/components/ui/main/history/workout-history-list";
 
 import useThemeColor from "@/hooks/use-theme-color";
+import Header from "@/components/ui/main/header";
 
 const historyGroups = createWorkoutHistoryGroups();
 
@@ -60,7 +60,10 @@ export default function HistoryScreen() {
       ]}
     >
       <View style={styles.headerContainer}>
-        <HistoryHeader />
+        <Header
+          title="History"
+          description="Track your progress, keep your spirit"
+        />
       </View>
 
       <ScrollView
