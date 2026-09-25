@@ -7,6 +7,10 @@ import { useRouter } from "expo-router";
 import { useAuth } from "@/stores/auth-store";
 import { useToast } from "@/hooks/use-toast";
 import { useWelcome } from "@/hooks/use-welcome";
+import { getErrorMessage } from "@/utils/error";
+import { AxiosError } from "axios";
+import { useRefreshToken } from "@/hooks/request/auth/use-refresh-token";
+import { api } from "@/network/api";
 
 export default function IndexPage() {
   const color = useThemeColor();
@@ -14,24 +18,40 @@ export default function IndexPage() {
 
   const router = useRouter();
   const {
-    query: { data: user, isFetched, isError },
+    query: { data: user, isPending, isFetched, isError, error },
   } = useGetProfile();
   const auth = useAuth();
   const toast = useToast();
-  const { isWelcomed, markWelcomed } = useWelcome();
+  const { isWelcomed } = useWelcome();
+  const { savedValue: refreshToken } = useRefreshToken();
+
+  async function setRefreshToken() {
+    const value = await refreshToken();
+    if (value) {
+      api.setRefreshToken(value);
+    }
+  }
 
   async function checkUserAndRedirect() {
-    await new Promise((res) => setTimeout(res, 1000));
+    await new Promise((res) => setTimeout(res, 700));
 
     const welcomed = await isWelcomed();
     const errorRedirectTo = welcomed ? "/login" : "/welcome";
 
-    if (!isFetched) {
-      toast.error({
-        title: "No Connection",
-        description: "Can't connect to server. Please check your internet",
-      });
+    if (isPending) {
       return;
+    }
+
+    if (isError) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status != 401) {
+          toast.error({
+            title: "No Connection",
+            description: "Check your internet and try again later.",
+          });
+          return;
+        }
+      }
     }
 
     if (!user || isError) {
@@ -44,7 +64,7 @@ export default function IndexPage() {
   }
 
   useEffect(() => {
-    checkUserAndRedirect();
+    setRefreshToken().then(checkUserAndRedirect);
   }, [user, isFetched]);
 
   return (

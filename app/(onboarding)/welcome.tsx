@@ -5,15 +5,26 @@ import ThemeToggler from "@/components/theme-toggler";
 import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
+import { useWelcome } from "@/hooks/use-welcome";
 
 export default function Page() {
   const router = useRouter();
 
+  const { isWelcomed, markWelcomed } = useWelcome();
   const { height } = useWindowDimensions();
 
   const themeColor = useThemeColor();
 
   const { theme } = useThemeContext();
+
+  async function handleNextStep() {
+    if (await isWelcomed()) {
+      router.replace("/login");
+    } else {
+      await markWelcomed();
+      router.replace("/register");
+    }
+  }
 
   return (
     <View
@@ -94,7 +105,7 @@ export default function Page() {
           label="Started"
           variant="primary"
           labelStyle={styles.startButtonText}
-          onPress={() => router.push("/register")}
+          onPress={handleNextStep}
         />
       </View>
     </View>

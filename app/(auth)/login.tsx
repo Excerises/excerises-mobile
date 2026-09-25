@@ -4,7 +4,6 @@ import { Pressable, StyleSheet, View } from "react-native";
 import AuthFooter from "@/components/ui/auth/auth-footer";
 import OAuthButton from "@/components/ui/auth/oauth-button";
 import UIButton from "@/components/ui/common/button";
-import FormGroup from "@/components/ui/common/form-group";
 import Input from "@/components/ui/common/input";
 import Separator from "@/components/ui/common/separator";
 import StepHeader from "@/components/ui/common/step-header";
@@ -16,16 +15,21 @@ import { useLogin } from "@/hooks/request/auth/use-login";
 import { getErrorMessage } from "@/utils/error";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
+import { api } from "@/network/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRefreshToken } from "@/hooks/request/auth/use-refresh-token";
 
 export default function Login() {
   const router = useRouter();
   const themeColor = useThemeColor();
+  const toast = useToast();
+  const queryClient = useQueryClient();
 
   const {
     form: { control, handleSubmit, setError },
   } = useLoginForm();
   const { mutation: login } = useLogin();
-  const toast = useToast();
+  const { setValue: setRefreshToken } = useRefreshToken();
 
   const onLogin = handleSubmit(async (values) => {
     try {
@@ -42,7 +46,11 @@ export default function Login() {
 
   useEffect(() => {
     if (!login.data) return;
-    console.log(login.data);
+
+    api.setAccessToken(login.data.data.access_token);
+    setRefreshToken(login.data.data.refresh_token);
+
+    queryClient.invalidateQueries({ queryKey: ["get-profile"] });
 
     router.replace("/home");
   }, [login.data]);

@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/common/text";
 import HeaderActions from "@/components/ui/main/header-actions";
 import useThemeColor from "@/hooks/use-theme-color";
+import { useAuth } from "@/stores/auth-store";
 
 type HomeHeaderProps = {
   name: string;
@@ -12,10 +13,10 @@ type HomeHeaderProps = {
 };
 
 export default function HomeHeader({
-  name,
   onSearchPress,
   onNotificationPress,
 }: HomeHeaderProps) {
+  const { user } = useAuth();
   const themeColor = useThemeColor();
 
   return (
@@ -33,7 +34,7 @@ export default function HomeHeader({
         </View>
 
         <View>
-          <UIText style={styles.greeting}>Hi {name} 👋</UIText>
+          <UIText style={styles.greeting}>Hi {user?.name} 👋</UIText>
 
           <UIText style={styles.subtitle}>Ready for a workout?</UIText>
         </View>
