@@ -10,22 +10,16 @@ import { useRegister } from "@/hooks/request/auth/use-register";
 import { useToast } from "@/hooks/use-toast";
 import { getErrorMessage } from "@/utils/error";
 import { useLogin } from "@/hooks/request/auth/use-login";
-import { useEffect } from "react";
-import { api } from "@/network/api";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRefreshToken } from "@/hooks/request/auth/use-refresh-token";
 
 export default function Register() {
   const router = useRouter();
   const toast = useToast();
-  const queryClient = useQueryClient();
 
   const {
     form: { control, handleSubmit, setError },
   } = useRegisterForm();
   const { mutation: register } = useRegister();
   const { mutation: login } = useLogin();
-  const { setValue: setRefreshToken } = useRefreshToken();
 
   const goToLogin = () => {
     router.replace("/login");
@@ -45,8 +39,6 @@ export default function Register() {
         title: "Account registered",
         description: "Your account successfully registered",
       });
-
-      router.replace("/home");
     } catch (err: any) {
       toast.error({
         title: "Failed",
@@ -67,15 +59,6 @@ export default function Register() {
       password,
     });
   };
-
-  useEffect(() => {
-    if (!login.data) return;
-
-    api.setAccessToken(login.data.data.access_token);
-    setRefreshToken(login.data.data.refresh_token);
-
-    queryClient.invalidateQueries({ queryKey: ["get-profile"] });
-  }, [login.data]);
 
   return (
     <View style={styles.container}>

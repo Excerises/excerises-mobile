@@ -14,22 +14,16 @@ import FieldControl from "@/components/ui/common/form/field-control";
 import { useLogin } from "@/hooks/request/auth/use-login";
 import { getErrorMessage } from "@/utils/error";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
-import { api } from "@/network/api";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRefreshToken } from "@/hooks/request/auth/use-refresh-token";
 
 export default function Login() {
   const router = useRouter();
   const themeColor = useThemeColor();
   const toast = useToast();
-  const queryClient = useQueryClient();
 
   const {
     form: { control, handleSubmit, setError },
   } = useLoginForm();
   const { mutation: login } = useLogin();
-  const { setValue: setRefreshToken } = useRefreshToken();
 
   const onLogin = handleSubmit(async (values) => {
     try {
@@ -43,17 +37,6 @@ export default function Login() {
       setError("password", { message: getErrorMessage(err) });
     }
   });
-
-  useEffect(() => {
-    if (!login.data) return;
-
-    api.setAccessToken(login.data.data.access_token);
-    setRefreshToken(login.data.data.refresh_token);
-
-    queryClient.invalidateQueries({ queryKey: ["get-profile"] });
-
-    router.replace("/home");
-  }, [login.data]);
 
   const goToRegister = () => {
     router.replace("/register");

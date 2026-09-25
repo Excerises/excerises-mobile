@@ -11,8 +11,8 @@ export function useGetProfile(props?: GetProfileProps) {
   const query = useQuery({
     queryKey: ["get-profile"],
     queryFn: async () => {
-      const res = await api.client.get("/profile");
-      return res.data as ApiResponse<User>;
+      const res = await api.client.get<ApiResponse<User>>("/profile");
+      return res.data;
     },
     enabled: props?.enabled,
     retry: false,

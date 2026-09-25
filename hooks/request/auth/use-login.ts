@@ -1,7 +1,7 @@
 import { LoginInput } from "@/hooks/form/auth/use-login-form";
 import { api } from "@/network/api";
 import { ApiResponse } from "@/types/common/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface AuthResponse {
   access_token: string;
@@ -10,6 +10,8 @@ export interface AuthResponse {
 }
 
 export function useLogin() {
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationKey: ["login"],
     mutationFn: async (values: LoginInput) => {
@@ -17,6 +19,14 @@ export function useLogin() {
         "/auth/login",
         values,
       );
+
+      const { access_token, refresh_token } = res.data.data;
+
+      api.setAccessToken(access_token);
+      api.setRefreshToken(refresh_token);
+
+      await new Promise((res) => setTimeout(res, 400));
+      queryClient.invalidateQueries({ queryKey: ["get-profile"] });
 
       return res.data;
     },

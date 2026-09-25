@@ -37,6 +37,7 @@ class NetworkApi {
 
           return this.client.request(config);
         }
+
         return Promise.reject(error);
       },
     );
