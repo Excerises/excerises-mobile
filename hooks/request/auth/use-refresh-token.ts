@@ -23,13 +23,17 @@ export function useRefreshToken() {
     },
   });
 
-  async function savedValue() {
+  async function getToken() {
     return await AsyncStorage.getItem(refreshTokenKey);
   }
 
-  async function setValue(value: string) {
+  async function setToken(value: string) {
     await AsyncStorage.setItem(refreshTokenKey, value);
   }
 
-  return { mutation, savedValue, setValue };
+  async function deleteToken() {
+    await AsyncStorage.removeItem(refreshTokenKey);
+  }
+
+  return { mutation, getToken, setToken, deleteToken };
 }

@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
+import { useAuth } from "@/stores/auth-store";
 
 type ProfileInfoCardProps = {
   name: string;
@@ -15,6 +16,7 @@ export default function ProfileInfoCard({
   email,
   onEditPress,
 }: ProfileInfoCardProps) {
+  const { user } = useAuth();
   const themeColor = useThemeColor();
 
   return (
@@ -41,10 +43,10 @@ export default function ProfileInfoCard({
         </View>
 
         <View style={styles.info}>
-          <UIText style={styles.name}>{name}</UIText>
+          <UIText style={styles.name}>{user?.name}</UIText>
 
           <UIText variant="muted" style={styles.email}>
-            {email}
+            {user?.email}
           </UIText>
 
           <Pressable

@@ -40,7 +40,7 @@ function RootLayoutStack() {
   const auth = useAuth();
   const toast = useToast();
   const { isWelcomed } = useWelcome();
-  const { savedValue: refreshToken } = useRefreshToken();
+  const { getToken: refreshToken } = useRefreshToken();
 
   async function setRefreshToken() {
     const value = await refreshToken();
@@ -54,7 +54,7 @@ function RootLayoutStack() {
       return;
     }
 
-    await new Promise((res) => setTimeout(res, 700));
+    await new Promise((res) => setTimeout(res, 400));
 
     const welcomed = await isWelcomed();
     const errorRedirectTo = welcomed ? "/login" : "/welcome";
