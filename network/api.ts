@@ -25,7 +25,11 @@ class NetworkApi {
         }
 
         const statusCode = error.response?.status;
-        if (statusCode == 401 && !config.url?.includes("/refresh")) {
+        if (
+          statusCode == 401 &&
+          !config.url?.includes("/refresh") &&
+          this.refreshToken
+        ) {
           const res = await this.client.post<ApiResponse<AuthResponse>>(
             "/auth/refresh",
             { refresh_token: this.refreshToken },
