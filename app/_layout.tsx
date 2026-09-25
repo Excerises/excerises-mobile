@@ -70,6 +70,7 @@ function RootLayoutStack() {
             title: "No Connection",
             description: "Check your internet and try again later.",
           });
+          // router.replace("/home"); // NOTE: This is temporary solution to jail break auth.
           return;
         }
       }
