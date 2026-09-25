@@ -54,18 +54,22 @@ function OnboardingLayout() {
       <SafeAreaView edges={["top"]} />
 
       <View style={styles.header}>
-        <Pressable onPress={handleBack} style={styles.backButton} hitSlop={8}>
-          <UIText
-            style={[
-              styles.backText,
-              {
-                color: themeColor.foreground,
-              },
-            ]}
-          >
-            ←
-          </UIText>
-        </Pressable>
+        {false && (
+          <Pressable onPress={handleBack} style={styles.backButton} hitSlop={8}>
+            <UIText
+              style={[
+                styles.backText,
+                {
+                  color: themeColor.foreground,
+                },
+              ]}
+            >
+              ←
+            </UIText>
+          </Pressable>
+        )}
+
+        <View></View>
 
         <ThemeToggler color={themeColor.foreground} />
       </View>

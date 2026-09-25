@@ -1,20 +1,16 @@
+import moment from "moment";
 import { Mars, Venus } from "lucide-react-native";
-
 import { StyleSheet, View } from "react-native";
-
 import UIButton from "@/components/ui/common/button";
-
 import DateInput from "@/components/ui/common/date-input";
-
 import FormGroup from "@/components/ui/common/form-group";
-
 import Input from "@/components/ui/common/input";
-
 import OptionSelector from "@/components/ui/common/option-selector";
-
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
+import { useState } from "react";
+import ModalDateTimePicker from "react-native-modal-datetime-picker";
+import { useThemeContext } from "@/components/provider/theme-provider";
 
 type ProfileStepProps = {
   date: Date | null;
@@ -39,7 +35,9 @@ export default function ProfileStep({
   onWeightChange,
   onNext,
 }: ProfileStepProps) {
+  const { theme } = useThemeContext();
   const themeColor = useThemeColor();
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   return (
     <>
@@ -51,7 +49,24 @@ export default function ProfileStep({
 
       <View style={styles.form}>
         <FormGroup label="Date of birth">
-          <DateInput value={date} onChange={onDateChange} />
+          <Input
+            style={styles.input}
+            placeholder="Select Date of Birth"
+            keyboardType="numeric"
+            value={date ? moment(date).format("DD MMMM YYYY") : undefined}
+            onPress={() => setShowDatePicker(true)}
+            readOnly
+          />
+
+          <ModalDateTimePicker
+            isVisible={showDatePicker}
+            mode="date"
+            onConfirm={(date) => {
+              onDateChange(date);
+              setShowDatePicker(false);
+            }}
+            onCancel={() => setShowDatePicker(false)}
+          />
         </FormGroup>
 
         <FormGroup label="Gender">
