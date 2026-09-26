@@ -45,14 +45,16 @@ export default function ProfileStep({
       <View style={styles.form}>
         <FormGroup label="Date of birth">
           <DatetimeModalPicker
-            renderTrigger={({ value }) => (
+            renderTrigger={({ value, setShow }) => (
               <Input
                 style={styles.input}
                 placeholder="Select Date of Birth"
                 value={value ? moment(value).format("DD MMMM YYYY") : undefined}
                 readOnly
+                onPress={() => setShow(true)}
               />
             )}
+            isDarkModeEnabled={false}
             value={date || undefined}
             onValueChange={(date) => onDateChange(date || new Date())}
           />

@@ -11,7 +11,11 @@ export type DatetimeModalPickerProps = Omit<
   ReactNativeModalDateTimePickerProps,
   "isVisible" | "onCancel" | "onConfirm" | "onChange" | "onValueChange"
 > & {
-  renderTrigger: (props: { value?: Date }) => React.ReactNode;
+  renderTrigger: (props: {
+    value?: Date;
+    show: boolean;
+    setShow: (show: boolean) => void;
+  }) => React.ReactNode;
   value?: Date;
   onValueChange?: (date?: Date) => void;
 };
@@ -34,11 +38,8 @@ export default function DatetimeModalPicker({
     : theme === "dark";
 
   function handleChangeDate(date: Date) {
-    const nextValue =
-      value && moment(value).isSame(moment(date)) ? undefined : date;
-    setValue(nextValue);
-    onValueChange?.(nextValue);
-    setShow(false);
+    setValue(date);
+    onValueChange?.(date);
   }
 
   useEffect(() => {
@@ -51,12 +52,16 @@ export default function DatetimeModalPicker({
   return (
     <>
       <Pressable onPress={() => setShow(true)}>
-        {renderTrigger({ value: value })}
+        {renderTrigger({
+          value: value,
+          show,
+          setShow: (show) => setShow(show),
+        })}
       </Pressable>
       <DateTimePicker
         isVisible={show}
         onCancel={() => setShow(false)}
-        onConfirm={handleChangeDate}
+        onConfirm={() => setShow(false)}
         onValueChange={(_, date) => handleChangeDate(date)}
         isDarkModeEnabled={isDark}
         {...props}
