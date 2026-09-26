@@ -10,7 +10,7 @@ import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
-type InputProps = Omit<TextInputProps, "style"> & {
+export type InputProps = Omit<TextInputProps, "style"> & {
   prefix?: ReactNode;
   isPassword?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -31,6 +31,8 @@ export default function Input({
         styles.container,
         {
           backgroundColor: themeColor.card,
+          borderColor: themeColor.border,
+          borderWidth: 1,
         },
         style,
       ]}

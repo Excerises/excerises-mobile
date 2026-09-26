@@ -92,7 +92,7 @@ function RootLayoutStack() {
     if (await isFillInfo()) {
       router.replace("/home");
     } else {
-      router.replace("/profile");
+      router.replace("/profiling");
     }
   }
 

@@ -2,12 +2,15 @@ import moment from "moment";
 import { Mars, Venus } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 import UIButton from "@/components/ui/common/button";
-import FormGroup from "@/components/ui/common/form-group";
-import Input from "@/components/ui/common/input";
+import FormGroup from "@/components/ui/common/form/form-group";
+import Input from "@/components/ui/common/form/input";
 import OptionSelector from "@/components/ui/common/option-selector";
 import UIText from "@/components/ui/common/text";
 import useThemeColor from "@/hooks/use-theme-color";
-import DatetimeModalPicker from "@/components/ui/common/form/datetime-modal-picker";
+import DatetimePickerModal, {
+  DatetimePickerModalInput,
+  DatetimePickerModalTrigger,
+} from "@/components/ui/common/form/datetime-modal-picker";
 
 type ProfileStepProps = {
   date: Date | null;
@@ -44,20 +47,15 @@ export default function ProfileStep({
 
       <View style={styles.form}>
         <FormGroup label="Date of birth">
-          <DatetimeModalPicker
-            renderTrigger={({ value, setShow }) => (
-              <Input
-                style={styles.input}
-                placeholder="Select Date of Birth"
-                value={value ? moment(value).format("DD MMMM YYYY") : undefined}
-                readOnly
-                onPress={() => setShow(true)}
-              />
-            )}
+          <DatetimePickerModal
             isDarkModeEnabled={false}
             value={date || undefined}
             onValueChange={(date) => onDateChange(date || new Date())}
-          />
+          >
+            <DatetimePickerModalTrigger>
+              <DatetimePickerModalInput placeholder="Select date of birth" />
+            </DatetimePickerModalTrigger>
+          </DatetimePickerModal>
         </FormGroup>
 
         <FormGroup label="Gender">

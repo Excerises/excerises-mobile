@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 
 import type { ReactNode } from "react";
 
-import UIText from "./text";
+import UIText from "../text";
 
 export type FormGroupProps = {
   label?: string;

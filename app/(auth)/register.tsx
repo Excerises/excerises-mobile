@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import AuthFooter from "@/components/ui/auth/auth-footer";
 import UIButton from "@/components/ui/common/button";
-import Input from "@/components/ui/common/input";
+import Input from "@/components/ui/common/form/input";
 import StepHeader from "@/components/ui/common/step-header";
 import { useRegisterForm } from "@/hooks/form/auth/use-register-form";
 import FieldControl from "@/components/ui/common/form/field-control";

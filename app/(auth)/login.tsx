@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import AuthFooter from "@/components/ui/auth/auth-footer";
 import OAuthButton from "@/components/ui/auth/oauth-button";
 import UIButton from "@/components/ui/common/button";
-import Input from "@/components/ui/common/input";
+import Input from "@/components/ui/common/form/input";
 import Separator from "@/components/ui/common/separator";
 import StepHeader from "@/components/ui/common/step-header";
 import UIText from "@/components/ui/common/text";

@@ -4,7 +4,7 @@ import {
   FieldPath,
   FieldValues,
 } from "react-hook-form";
-import FormGroup, { FormGroupProps } from "../form-group";
+import FormGroup, { FormGroupProps } from "./form-group";
 import FieldError from "./field-error";
 
 export type FieldControlProps<

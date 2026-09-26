@@ -3,7 +3,7 @@ import { Dumbbell, List, Pencil, Target } from "lucide-react-native";
 import type { ReactNode } from "react";
 import { Image, StyleSheet, View } from "react-native";
 
-import Input from "@/components/ui/common/input";
+import Input from "@/components/ui/common/form/input";
 import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 
@@ -71,10 +71,26 @@ export default function WorkoutConfirmStep({
           },
         ]}
       >
-        <SummaryRow label="Target" value={target} icon={<Target size={20} color={themeColor.foreground} />} />
-        <SummaryRow label="Body Part" value={bodyPart} icon={<Target size={20} color={themeColor.foreground} />} />
-        <SummaryRow label="Equipment" value={equipment} icon={<Dumbbell size={20} color={themeColor.foreground} />} />
-        <SummaryRow label="Category" value={category} icon={<List size={20} color={themeColor.foreground} />} />
+        <SummaryRow
+          label="Target"
+          value={target}
+          icon={<Target size={20} color={themeColor.foreground} />}
+        />
+        <SummaryRow
+          label="Body Part"
+          value={bodyPart}
+          icon={<Target size={20} color={themeColor.foreground} />}
+        />
+        <SummaryRow
+          label="Equipment"
+          value={equipment}
+          icon={<Dumbbell size={20} color={themeColor.foreground} />}
+        />
+        <SummaryRow
+          label="Category"
+          value={category}
+          icon={<List size={20} color={themeColor.foreground} />}
+        />
       </View>
 
       <UIText style={styles.exerciseTitle}>

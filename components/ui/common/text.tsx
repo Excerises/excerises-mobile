@@ -1,14 +1,12 @@
 import { Text } from "react-native";
-
 import type { TextProps } from "react-native";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
-interface Props extends TextProps {
+export type UITextProps = TextProps & {
   variant?: "default" | "muted" | "link";
-}
+};
 
-export default function UIText({ variant = "default", ...props }: Props) {
+export default function UIText({ variant = "default", ...props }: UITextProps) {
   const themeColor = useThemeColor();
 
   const { style, ...other } = props;
