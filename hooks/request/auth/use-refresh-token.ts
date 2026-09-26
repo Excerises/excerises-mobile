@@ -15,7 +15,7 @@ export function useRefreshToken() {
     mutationKey: ["refresh-token"],
     mutationFn: async (values: RefreshTokenInput) => {
       const res = await api.client.post<ApiResponse<AuthResponse>>(
-        "/auth/refresh-token",
+        "/auth/refresh",
         values,
       );
 

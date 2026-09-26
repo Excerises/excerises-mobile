@@ -41,11 +41,15 @@ function RootLayoutStack() {
   const auth = useAuth();
   const toast = useToast();
   const { isWelcomed } = useWelcome();
-  const { getToken: refreshToken } = useRefreshToken();
+  const {
+    getToken: getRefreshToken,
+    setToken: setRefreshToken,
+    mutation: refreshToken,
+  } = useRefreshToken();
   const { isFillInfo } = useFillInfo();
 
-  async function setRefreshToken() {
-    const value = await refreshToken();
+  async function setApiRefreshToken() {
+    const value = await getRefreshToken();
     if (value) {
       api.setRefreshToken(value);
     }
@@ -92,8 +96,42 @@ function RootLayoutStack() {
     }
   }
 
+  function createApiInterceptor() {
+    api.client.interceptors.response.use(
+      (response) => response,
+      async (error: AxiosError) => {
+        const config = error.config;
+        if (!config) {
+          return Promise.reject(error);
+        }
+
+        const statusCode = error.response?.status;
+        if (
+          statusCode === 401 &&
+          !config.url?.includes("/refresh") &&
+          api.refreshToken
+        ) {
+          const res = await refreshToken.mutateAsync({
+            refresh_token: api.refreshToken,
+          });
+          const { access_token, refresh_token } = res.data;
+
+          await setRefreshToken(refresh_token);
+
+          api.setAccessToken(access_token);
+          api.setRefreshToken(refresh_token);
+
+          return api.client.request(config);
+        }
+
+        return Promise.reject(error);
+      },
+    );
+  }
+
   useEffect(() => {
-    setRefreshToken().then(() => {
+    createApiInterceptor();
+    setApiRefreshToken().then(() => {
       setReady(true);
       checkUserAndRedirect();
     });
