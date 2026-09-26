@@ -5,6 +5,7 @@ import {
   AxiosInstance,
   AxiosError,
   InternalAxiosRequestConfig,
+  AxiosResponse,
 } from "axios";
 
 class NetworkApi {
@@ -20,16 +21,24 @@ class NetworkApi {
       withCredentials: true,
     });
 
+    this.client.interceptors.request.use((config) => {
+      (config as any).metadata = {
+        startTime: Date.now(),
+      };
+
+      return config;
+    });
+
     this.client.interceptors.response.use(
       (response) => {
-        logger.info(this.logFormat(response.config));
+        logger.info(this.logFormat(response));
 
         return response;
       },
       (err: AxiosError) => {
         try {
-          if (err.config) {
-            logger.error(this.logFormat(err.config));
+          if (err.response) {
+            logger.error(this.logFormat(err.response));
           }
         } finally {
           console.log(err);
@@ -49,8 +58,11 @@ class NetworkApi {
     this.refreshToken = token;
   }
 
-  private logFormat(config: InternalAxiosRequestConfig) {
-    return `[${(config.method || "get").toUpperCase()}] ${config.url}`;
+  private logFormat(res: AxiosResponse) {
+    const config = res.config;
+    const startTime = (res.config as any).metadata?.startTime;
+    const duration = startTime ? Date.now() - startTime : 0;
+    return `[${(config.method || "get").toUpperCase()}] ${config.url} in ${duration}ms`;
   }
 }
 
