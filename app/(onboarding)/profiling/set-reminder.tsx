@@ -35,6 +35,7 @@ export default function SetReminder() {
       title="Set Your Time"
       description="Help us personalize your workout plan."
       onContinue={onContinue}
+      currentStep={4}
     >
       <View style={styles.container}>
         <FieldControl
@@ -73,9 +74,15 @@ export default function SetReminder() {
             <DatetimePickerModal
               mode="time"
               value={
-                field.value
+                field.value.includes(":")
                   ? moment(
-                      moment().format("YYYY-MM-DD") + `${field.value}`,
+                      new Date(
+                        new Date().getFullYear(),
+                        new Date().getMonth(),
+                        new Date().getDate(),
+                        Number(field.value.split(":")[0]),
+                        Number(field.value.split(":")[1]),
+                      ),
                     ).toDate()
                   : undefined
               }

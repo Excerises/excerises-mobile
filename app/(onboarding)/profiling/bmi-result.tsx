@@ -24,6 +24,7 @@ export default function BMIResultPage() {
       title="Your BMI Result"
       description="Based on your height and weight, here is your body mass index (BMI)."
       onContinue={onContinue}
+      currentStep={2}
     >
       <View style={styles.container}>
         <View style={styles.resultContainer}>

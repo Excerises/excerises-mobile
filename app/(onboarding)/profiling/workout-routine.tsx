@@ -34,6 +34,7 @@ export default function WorkoutRoutine() {
       title="Set Your Workout Routine"
       description="Choose how often you doing workout. We will give recommendation based on your level."
       onContinue={onContinue}
+      currentStep={3}
     >
       <View style={styles.container}>
         <FieldControl
