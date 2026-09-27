@@ -17,7 +17,9 @@ import WorkoutDetailStep from "@/components/ui/main/workout-flow/workout-detail-
 import WorkoutPackageCreatedStep from "@/components/ui/main/workout-flow/workout-package-created-step";
 import WorkoutPreferenceStep from "@/components/ui/main/workout-flow/workout-preference-step";
 import WorkoutRecommendationStep from "@/components/ui/main/workout-flow/workout-recommendation-step";
-import WorkoutRestStep, { type Difficulty } from "@/components/ui/main/workout-flow/workout-rest-step";
+import WorkoutRestStep, {
+  type Difficulty,
+} from "@/components/ui/main/workout-flow/workout-rest-step";
 import WorkoutSessionStep from "@/components/ui/main/workout-flow/workout-session-step";
 import WorkoutSummaryStep from "@/components/ui/main/workout-flow/workout-summary-step";
 
@@ -33,7 +35,6 @@ type WorkoutStep =
   | "rest"
   | "summary";
 
-
 const createHistoryPackage = (workoutId: string): WorkoutPackage | null => {
   if (workoutId.startsWith("WORKOUT-")) {
     const number = Number(workoutId.replace("WORKOUT-", ""));
@@ -45,8 +46,7 @@ const createHistoryPackage = (workoutId: string): WorkoutPackage | null => {
     const completedHistory = histories
       .filter(
         (item) =>
-          item.user_id === currentUser.user_id &&
-          item.status === "completed",
+          item.user_id === currentUser.user_id && item.status === "completed",
       )
       .sort(
         (first, second) =>
@@ -54,10 +54,7 @@ const createHistoryPackage = (workoutId: string): WorkoutPackage | null => {
           new Date(first.created_at).getTime(),
       );
 
-    const group = completedHistory.slice(
-      (number - 1) * 3,
-      number * 3,
-    );
+    const group = completedHistory.slice((number - 1) * 3, number * 3);
 
     const packageExercises = group
       .map((item) =>
@@ -82,9 +79,7 @@ const createHistoryPackage = (workoutId: string): WorkoutPackage | null => {
     };
   }
 
-  const exercise = exercises.find(
-    (item) => item.exercise_id === workoutId,
-  );
+  const exercise = exercises.find((item) => item.exercise_id === workoutId);
 
   if (!exercise) {
     return null;
@@ -110,13 +105,11 @@ export default function WorkoutFlow() {
     step?: WorkoutStep;
   }>();
 
-  const {
-    setHasWorkoutPlan,
-    workoutPackage,
-    setWorkoutPackage,
-  } = useWorkoutContext();
+  const { setHasWorkoutPlan, workoutPackage, setWorkoutPackage } =
+    useWorkoutContext();
 
   const routeWorkoutId = typeof workoutId === "string" ? workoutId : undefined;
+
   const routePackage = routeWorkoutId
     ? workoutPackage?.id === routeWorkoutId
       ? workoutPackage
@@ -130,19 +123,24 @@ export default function WorkoutFlow() {
   const [workoutName, setWorkoutName] = useState("My Workout #1");
 
   const [selectedWorkouts, setSelectedWorkouts] = useState<Exercise[]>([]);
+
   const [activePackage, setActivePackage] = useState<WorkoutPackage | null>(
     routePackage,
   );
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+
+  // false = timer berjalan
+  // true = timer berhenti / pause
   const [isPaused, setIsPaused] = useState(false);
+
   const [elapsedTime, setElapsedTime] = useState(0);
+
   const [difficultyFeedback, setDifficultyFeedback] = useState<
     Record<string, Difficulty>
   >({});
 
-  const step: WorkoutStep =
-    stepParam ?? (routePackage ? "detail" : "type");
+  const step: WorkoutStep = stepParam ?? (routePackage ? "detail" : "type");
 
   const changeStep = (nextStep: WorkoutStep) => {
     router.setParams({
@@ -150,11 +148,13 @@ export default function WorkoutFlow() {
     });
   };
 
-
   const recommendedWorkouts = exercises.filter((workout) => {
     const bodyPartMatch = !bodyPart || workout.body_part === bodyPart;
+
     const equipmentMatch = !equipment || workout.equipment === equipment;
+
     const categoryMatch = !category || workout.exercise_category === category;
+
     const targetMatch = !target || workout.target === target;
 
     return bodyPartMatch && equipmentMatch && categoryMatch && targetMatch;
@@ -164,14 +164,13 @@ export default function WorkoutFlow() {
     recommendedWorkouts.length > 0 ? recommendedWorkouts : exercises;
 
   const activeExercises = activePackage?.exercises ?? selectedWorkouts;
+
   const currentExercise = activeExercises[currentExerciseIndex];
 
+  // Timer hanya berjalan ketika sedang berada di exercise
+  // dan tidak dalam keadaan pause.
   useEffect(() => {
-    if (step !== "session" && step !== "rest") {
-      return;
-    }
-
-    if (isPaused) {
+    if (step !== "session" || isPaused) {
       return;
     }
 
@@ -233,8 +232,10 @@ export default function WorkoutFlow() {
     setWorkoutPackage(createdPackage);
     setHasWorkoutPlan(true);
     setActivePackage(createdPackage);
+
     setCurrentExerciseIndex(0);
     setDifficultyFeedback({});
+
     setElapsedTime(0);
     setIsPaused(false);
 
@@ -250,12 +251,21 @@ export default function WorkoutFlow() {
     setElapsedTime(0);
     setIsPaused(false);
     setDifficultyFeedback({});
+
     changeStep("session");
   };
 
   const finishExercise = () => {
-    setIsPaused(false);
+    // Timer berhenti ketika masuk ke Rest.
+    setIsPaused(true);
+
     changeStep("rest");
+  };
+
+  const resetTimer = () => {
+    // Kembali ke 00:00.
+    // Timer tetap berjalan karena isPaused tidak diubah.
+    setElapsedTime(0);
   };
 
   const continueAfterRest = () => {
@@ -269,7 +279,13 @@ export default function WorkoutFlow() {
     }
 
     setCurrentExerciseIndex((current) => current + 1);
+
+    // Exercise berikutnya selalu mulai dari 00:00.
+    setElapsedTime(0);
+
+    // Exercise berikutnya langsung berjalan.
     setIsPaused(false);
+
     changeStep("session");
   };
 
@@ -279,6 +295,7 @@ export default function WorkoutFlow() {
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
+
     const remainingSeconds = seconds % 60;
 
     return `${String(minutes).padStart(2, "0")}:${String(
@@ -290,106 +307,109 @@ export default function WorkoutFlow() {
     <View
       style={[
         styles.container,
-        { backgroundColor: themeColor.background },
+        {
+          backgroundColor: themeColor.background,
+        },
       ]}
     >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {step === "type" && (
-          <WorkoutPreferenceStep
-            bodyPart={bodyPart}
-            equipment={equipment}
-            category={category}
-            target={target}
-            onBodyPartChange={setBodyPart}
-            onEquipmentChange={setEquipment}
-            onCategoryChange={setCategory}
-            onTargetChange={setTarget}
-            onNext={goToRecommend}
-          />
-        )}
+      {step === "recommend" ? (
+        <WorkoutRecommendationStep
+          workouts={displayedWorkouts}
+          selectedWorkouts={selectedWorkouts}
+          onToggleSelect={toggleWorkout}
+          onClear={clearSelectedWorkouts}
+          onConfirm={goToConfirm}
+        />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {step === "type" && (
+            <WorkoutPreferenceStep
+              bodyPart={bodyPart}
+              equipment={equipment}
+              category={category}
+              target={target}
+              onBodyPartChange={setBodyPart}
+              onEquipmentChange={setEquipment}
+              onCategoryChange={setCategory}
+              onTargetChange={setTarget}
+              onNext={goToRecommend}
+            />
+          )}
 
-        {step === "recommend" && (
-          <WorkoutRecommendationStep
-            workouts={displayedWorkouts}
-            selectedWorkouts={selectedWorkouts}
-            onToggleSelect={toggleWorkout}
-            onClear={clearSelectedWorkouts}
-            onConfirm={goToConfirm}
-          />
-        )}
+          {step === "confirm" && (
+            <WorkoutConfirmStep
+              workoutName={workoutName}
+              target={target}
+              bodyPart={bodyPart}
+              equipment={equipment}
+              category={category}
+              workouts={selectedWorkouts}
+              onNameChange={setWorkoutName}
+              onCreate={createPackage}
+            />
+          )}
 
-        {step === "confirm" && (
-          <WorkoutConfirmStep
-            workoutName={workoutName}
-            target={target}
-            bodyPart={bodyPart}
-            equipment={equipment}
-            category={category}
-            workouts={selectedWorkouts}
-            onNameChange={setWorkoutName}
-            onCreate={createPackage}
-          />
-        )}
+          {step === "created" && activePackage && (
+            <WorkoutPackageCreatedStep
+              workoutPackage={activePackage}
+              onStart={() => changeStep("detail")}
+              onHome={goToHome}
+            />
+          )}
 
-        {step === "created" && activePackage && (
-          <WorkoutPackageCreatedStep
-            workoutPackage={activePackage}
-            onStart={() => changeStep("detail")}
-            onHome={goToHome}
-          />
-        )}
+          {step === "detail" && activePackage && (
+            <WorkoutDetailStep
+              workoutPackage={activePackage}
+              onStart={startWorkout}
+            />
+          )}
 
-        {step === "detail" && activePackage && (
-          <WorkoutDetailStep
-            workoutPackage={activePackage}
-            onStart={startWorkout}
-          />
-        )}
+          {step === "session" && currentExercise && (
+            <WorkoutSessionStep
+              workout={currentExercise}
+              exerciseIndex={currentExerciseIndex}
+              totalExercises={activeExercises.length}
+              elapsedTime={formatTime(elapsedTime)}
+              isPaused={isPaused}
+              onTogglePause={() => setIsPaused((current) => !current)}
+              onResetTimer={resetTimer}
+              onFinishExercise={finishExercise}
+            />
+          )}
 
-        {step === "session" && currentExercise && (
-          <WorkoutSessionStep
-            workout={currentExercise}
-            exerciseIndex={currentExerciseIndex}
-            totalExercises={activeExercises.length}
-            elapsedTime={formatTime(elapsedTime)}
-            isPaused={isPaused}
-            onTogglePause={() => setIsPaused((current) => !current)}
-            onFinishExercise={finishExercise}
-          />
-        )}
+          {step === "rest" && currentExercise && (
+            <WorkoutRestStep
+              key={`rest-${currentExercise.exercise_id}`}
+              workout={currentExercise}
+              exerciseIndex={currentExerciseIndex}
+              totalExercises={activeExercises.length}
+              selectedDifficulty={
+                difficultyFeedback[currentExercise.exercise_id]
+              }
+              onDifficultyChange={(value) =>
+                setDifficultyFeedback((current) => ({
+                  ...current,
+                  [currentExercise.exercise_id]: value,
+                }))
+              }
+              onContinue={continueAfterRest}
+            />
+          )}
 
-        {step === "rest" && currentExercise && (
-          <WorkoutRestStep
-            key={`rest-${currentExercise.exercise_id}`}
-            workout={currentExercise}
-            exerciseIndex={currentExerciseIndex}
-            totalExercises={activeExercises.length}
-            selectedDifficulty={
-              difficultyFeedback[currentExercise.exercise_id]
-            }
-            onDifficultyChange={(value) =>
-              setDifficultyFeedback((current) => ({
-                ...current,
-                [currentExercise.exercise_id]: value,
-              }))
-            }
-            onContinue={continueAfterRest}
-          />
-        )}
-
-        {step === "summary" && activePackage && (
-          <WorkoutSummaryStep
-            workoutName={activePackage.name}
-            exercises={activePackage.exercises}
-            difficultyFeedback={difficultyFeedback}
-            elapsedTime={formatTime(elapsedTime)}
-            onDone={goToHome}
-          />
-        )}
-      </ScrollView>
+          {step === "summary" && activePackage && (
+            <WorkoutSummaryStep
+              workoutName={activePackage.name}
+              exercises={activePackage.exercises}
+              difficultyFeedback={difficultyFeedback}
+              elapsedTime={formatTime(elapsedTime)}
+              onDone={goToHome}
+            />
+          )}
+        </ScrollView>
+      )}
     </View>
   );
 }

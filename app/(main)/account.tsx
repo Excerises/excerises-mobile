@@ -19,17 +19,26 @@ import ProfileMenu from "@/components/ui/main/profile/profile-menu";
 import ProfileStats from "@/components/ui/main/profile/profile-stats";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
 import Header from "@/components/ui/main/header";
 
 export default function Profile() {
   const themeColor = useThemeColor();
+
   const profile =
     userProfiles.find((item) => item.user_id === currentUser.user_id) ??
     userProfiles[0];
 
+  const handleEditProfile = () => {
+    router.push("/(main)/edit-profile");
+  };
+
   const handleLogout = () => {
     Alert.alert("Confirm Logout", "Are you sure you want to log out?", [
-      { text: "Cancel", style: "cancel" },
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
       {
         text: "Log Out",
         style: "destructive",
@@ -62,7 +71,11 @@ export default function Profile() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <ProfileInfoCard name={currentUser.name} email={currentUser.email} />
+        <ProfileInfoCard
+          name={currentUser.name}
+          email={currentUser.email}
+          onEditPress={handleEditProfile}
+        />
 
         <ProfileStats
           workoutCount={profile.workout_count}

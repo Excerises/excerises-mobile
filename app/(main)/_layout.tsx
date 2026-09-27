@@ -53,7 +53,12 @@ function MainLayout() {
   }>();
 
   const isWorkoutFlow = pathname === "/workout-flow";
-  const isHistoryDetail = pathname === "/history" && typeof workoutId === "string";
+
+  const isHistoryDetail =
+    pathname === "/history" && typeof workoutId === "string";
+
+  const isEditProfile = pathname === "/edit-profile";
+
   const hasWorkoutHeader = isWorkoutFlow || isHistoryDetail;
 
   const currentWorkoutStep: WorkoutStep =
@@ -194,57 +199,59 @@ function MainLayout() {
         </View>
       </View>
 
-      <View
-        style={[
-          styles.navigationContainer,
-          {
-            paddingBottom: insets.bottom,
-            backgroundColor: themeColor.card,
-            borderTopColor: themeColor.border,
-            borderTopWidth: 1,
-          },
-        ]}
-      >
-        <View style={styles.bottomNavigation}>
-          {menus.map((menu) => {
-            const isActive = isWorkoutFlow
-              ? menu.path === "/home"
-              : isHistoryDetail
-                ? menu.path === "/history"
-                : pathname === menu.path;
+      {!isEditProfile && (
+        <View
+          style={[
+            styles.navigationContainer,
+            {
+              paddingBottom: insets.bottom,
+              backgroundColor: themeColor.card,
+              borderTopColor: themeColor.border,
+              borderTopWidth: 1,
+            },
+          ]}
+        >
+          <View style={styles.bottomNavigation}>
+            {menus.map((menu) => {
+              const isActive = isWorkoutFlow
+                ? menu.path === "/home"
+                : isHistoryDetail
+                  ? menu.path === "/history"
+                  : pathname === menu.path;
 
-            const Icon = menu.icon;
+              const Icon = menu.icon;
 
-            return (
-              <Pressable
-                key={menu.route}
-                style={styles.navItem}
-                onPress={() => router.replace(menu.route)}
-              >
-                <Icon
-                  size={21}
-                  color={
-                    isActive ? themeColor.primary : themeColor.mutedForeground
-                  }
-                />
-
-                <UIText
-                  style={[
-                    styles.navLabel,
-                    {
-                      color: isActive
-                        ? themeColor.primary
-                        : themeColor.mutedForeground,
-                    },
-                  ]}
+              return (
+                <Pressable
+                  key={menu.route}
+                  style={styles.navItem}
+                  onPress={() => router.replace(menu.route)}
                 >
-                  {menu.label}
-                </UIText>
-              </Pressable>
-            );
-          })}
+                  <Icon
+                    size={21}
+                    color={
+                      isActive ? themeColor.primary : themeColor.mutedForeground
+                    }
+                  />
+
+                  <UIText
+                    style={[
+                      styles.navLabel,
+                      {
+                        color: isActive
+                          ? themeColor.primary
+                          : themeColor.mutedForeground,
+                      },
+                    ]}
+                  >
+                    {menu.label}
+                  </UIText>
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 }
