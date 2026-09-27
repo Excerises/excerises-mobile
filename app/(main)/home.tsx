@@ -129,7 +129,7 @@ export default function Home() {
     >
       <View style={styles.headerContainer}>
         <Header
-          title={`Hi ${user?.name} 👋`}
+          title={`Hi, ${user?.name?.split(" ")[0]} 👋`}
           description="Ready for a workout?"
         />
       </View>

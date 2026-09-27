@@ -12,7 +12,7 @@ export default function Header({ title, description }: HeaderProps) {
   return (
     <View style={styles.container}>
       <View>
-        <UIText style={styles.title}>{title.toUpperCase()}</UIText>
+        <UIText style={styles.title}>{title}</UIText>
 
         <UIText style={styles.subtitle}>{description}</UIText>
       </View>
