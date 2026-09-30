@@ -1,13 +1,20 @@
 import { Check, X } from "lucide-react-native";
 
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+
+import type { Exercise } from "@/components/data/Exercise";
 
 import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
-
-import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutRecommendationStepProps = {
   workouts: Exercise[];
@@ -40,6 +47,7 @@ export default function WorkoutRecommendationStep({
       <View style={styles.sectionHeader}>
         <View>
           <UIText style={styles.sectionTitle}>Recommended Workout</UIText>
+
           <UIText variant="muted" style={styles.sectionSubtitle}>
             Based on your preferences
           </UIText>
@@ -50,13 +58,17 @@ export default function WorkoutRecommendationStep({
         </UIText>
       </View>
 
-      <View style={styles.list}>
-        {workouts.map((workout) => {
-          const selected = isSelected(workout.exercise_id);
+      <FlatList
+        data={workouts}
+        keyExtractor={(item) => item.exercise_id}
+        style={styles.recommendedList}
+        contentContainerStyle={styles.recommendedListContent}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => {
+          const selected = isSelected(item.exercise_id);
 
           return (
             <Pressable
-              key={workout.exercise_id}
               style={[
                 styles.workoutCard,
                 {
@@ -66,17 +78,17 @@ export default function WorkoutRecommendationStep({
                     : themeColor.border,
                 },
               ]}
-              onPress={() => onToggleSelect(workout)}
+              onPress={() => onToggleSelect(item)}
             >
-              <Image source={workout.image} style={styles.workoutImage} />
+              <Image source={item.image} style={styles.workoutImage} />
 
               <View style={styles.workoutContent}>
                 <UIText style={styles.workoutTitle} numberOfLines={1}>
-                  {workout.exercise_name}
+                  {item.exercise_name}
                 </UIText>
 
                 <UIText variant="muted" style={styles.infoText}>
-                  {workout.body_part} • {workout.equipment}
+                  {item.body_part} • {item.equipment}
                 </UIText>
               </View>
 
@@ -94,69 +106,81 @@ export default function WorkoutRecommendationStep({
                 ]}
               >
                 {selected && (
-                  <Check
-                    size={17}
-                    color={themeColor.black}
-                    strokeWidth={3}
-                  />
+                  <Check size={17} color={themeColor.black} strokeWidth={3} />
                 )}
               </View>
             </Pressable>
           );
-        })}
-      </View>
+        }}
+      />
 
-      <View style={styles.selectedHeader}>
-        <UIText style={styles.selectedTitle}>
-          Selected Workout ({selectedWorkouts.length})
-        </UIText>
+      <View
+        style={[
+          styles.selectedSection,
+          {
+            borderTopColor: themeColor.border,
+          },
+        ]}
+      >
+        <View style={styles.selectedHeader}>
+          <UIText style={styles.selectedTitle}>
+            Selected Workout ({selectedWorkouts.length})
+          </UIText>
 
-        {selectedWorkouts.length > 0 && (
-          <Pressable onPress={onClear}>
-            <UIText
+          {selectedWorkouts.length > 0 && (
+            <Pressable onPress={onClear}>
+              <UIText
+                style={[
+                  styles.clearText,
+                  {
+                    color: themeColor.primary,
+                  },
+                ]}
+              >
+                Clear All
+              </UIText>
+            </Pressable>
+          )}
+        </View>
+
+        <ScrollView
+          style={styles.selectedList}
+          contentContainerStyle={styles.selectedListContent}
+          showsVerticalScrollIndicator={false}
+          nestedScrollEnabled
+        >
+          {selectedWorkouts.map((workout) => (
+            <View
+              key={workout.exercise_id}
               style={[
-                styles.clearText,
-                { color: themeColor.primary },
+                styles.selectedItem,
+                {
+                  backgroundColor: themeColor.card,
+                  borderColor: themeColor.border,
+                },
               ]}
             >
-              Clear All
-            </UIText>
-          </Pressable>
-        )}
+              <Image source={workout.image} style={styles.selectedImage} />
+
+              <UIText style={styles.selectedItemText} numberOfLines={1}>
+                {workout.exercise_name}
+              </UIText>
+
+              <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
+                <X size={21} color={themeColor.foreground} />
+              </Pressable>
+            </View>
+          ))}
+        </ScrollView>
+
+        <UIButton
+          label="Confirm Workout  →"
+          variant="primary"
+          style={styles.mainButton}
+          disabled={selectedWorkouts.length === 0}
+          onPress={onConfirm}
+        />
       </View>
-
-      <View style={styles.selectedList}>
-        {selectedWorkouts.map((workout) => (
-          <View
-            key={workout.exercise_id}
-            style={[
-              styles.selectedItem,
-              {
-                backgroundColor: themeColor.card,
-                borderColor: themeColor.border,
-              },
-            ]}
-          >
-            <Image source={workout.image} style={styles.selectedImage} />
-
-            <UIText style={styles.selectedItemText} numberOfLines={1}>
-              {workout.exercise_name}
-            </UIText>
-
-            <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
-              <X size={21} color={themeColor.foreground} />
-            </Pressable>
-          </View>
-        ))}
-      </View>
-
-      <UIButton
-        label="Confirm Workout  →"
-        variant="primary"
-        style={styles.mainButton}
-        disabled={selectedWorkouts.length === 0}
-        onPress={onConfirm}
-      />
     </View>
   );
 }
@@ -164,6 +188,7 @@ export default function WorkoutRecommendationStep({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    minHeight: 0,
   },
 
   title: {
@@ -199,8 +224,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
-  list: {
+  recommendedList: {
+    flex: 1,
+    minHeight: 0,
+  },
+
+  recommendedListContent: {
     gap: 8,
+    paddingBottom: 12,
   },
 
   workoutCard: {
@@ -243,11 +274,17 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
 
+  selectedSection: {
+    height: 250,
+    flexShrink: 0,
+    paddingTop: 10,
+    borderTopWidth: 1,
+  },
+
   selectedHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 22,
     marginBottom: 10,
   },
 
@@ -262,7 +299,13 @@ const styles = StyleSheet.create({
   },
 
   selectedList: {
+    flex: 1,
+    minHeight: 0,
+  },
+
+  selectedListContent: {
     gap: 8,
+    paddingBottom: 4,
   },
 
   selectedItem: {
@@ -291,8 +334,8 @@ const styles = StyleSheet.create({
   mainButton: {
     width: "100%",
     height: 50,
-    marginTop: 18,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 4,
     borderRadius: 8,
   },
 });

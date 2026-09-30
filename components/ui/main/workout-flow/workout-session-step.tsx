@@ -1,13 +1,13 @@
-import { List, Pause, Play } from "lucide-react-native";
+import { List, Pause, Play, RotateCcw } from "lucide-react-native";
 
 import { Image, StyleSheet, View } from "react-native";
+
+import type { Exercise } from "@/components/data/Exercise";
 
 import UIButton from "@/components/ui/common/button";
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
-
-import type { Exercise } from "@/components/data/Exercise";
 
 type WorkoutSessionStepProps = {
   workout: Exercise;
@@ -16,6 +16,7 @@ type WorkoutSessionStepProps = {
   elapsedTime: string;
   isPaused: boolean;
   onTogglePause: () => void;
+  onResetTimer: () => void;
   onFinishExercise: () => void;
 };
 
@@ -26,6 +27,7 @@ export default function WorkoutSessionStep({
   elapsedTime,
   isPaused,
   onTogglePause,
+  onResetTimer,
   onFinishExercise,
 }: WorkoutSessionStepProps) {
   const themeColor = useThemeColor();
@@ -36,9 +38,7 @@ export default function WorkoutSessionStep({
         Exercise {exerciseIndex + 1} of {totalExercises}
       </UIText>
 
-      <UIText style={styles.exerciseName}>
-        {workout.exercise_name}
-      </UIText>
+      <UIText style={styles.exerciseName}>{workout.exercise_name}</UIText>
 
       <UIText variant="muted" style={styles.subtitle}>
         {workout.body_part} • {workout.equipment}
@@ -48,7 +48,9 @@ export default function WorkoutSessionStep({
         source={workout.image}
         style={[
           styles.sessionImage,
-          { borderColor: themeColor.border },
+          {
+            borderColor: themeColor.border,
+          },
         ]}
       />
 
@@ -71,12 +73,8 @@ export default function WorkoutSessionStep({
           style={[
             styles.status,
             {
-              backgroundColor: isPaused
-                ? themeColor.card
-                : themeColor.primary,
-              borderColor: isPaused
-                ? themeColor.border
-                : themeColor.primary,
+              backgroundColor: isPaused ? themeColor.card : themeColor.primary,
+              borderColor: isPaused ? themeColor.border : themeColor.primary,
             },
           ]}
         >
@@ -84,9 +82,7 @@ export default function WorkoutSessionStep({
             style={[
               styles.statusText,
               {
-                color: isPaused
-                  ? themeColor.mutedForeground
-                  : themeColor.black,
+                color: isPaused ? themeColor.mutedForeground : themeColor.black,
               },
             ]}
           >
@@ -106,6 +102,7 @@ export default function WorkoutSessionStep({
       >
         <View style={styles.instructionsHeader}>
           <List size={24} color={themeColor.foreground} />
+
           <UIText style={styles.instructionsTitle}>Instructions</UIText>
         </View>
 
@@ -118,13 +115,17 @@ export default function WorkoutSessionStep({
               <View
                 style={[
                   styles.number,
-                  { backgroundColor: themeColor.primary },
+                  {
+                    backgroundColor: themeColor.primary,
+                  },
                 ]}
               >
                 <UIText
                   style={[
                     styles.numberText,
-                    { color: themeColor.black },
+                    {
+                      color: themeColor.black,
+                    },
                   ]}
                 >
                   {index + 1}
@@ -140,18 +141,27 @@ export default function WorkoutSessionStep({
       </View>
 
       <View style={styles.buttons}>
-        <UIButton
-          style={styles.secondaryButton}
-          icon={
-            isPaused ? (
-              <Play size={18} color={themeColor.foreground} />
-            ) : (
-              <Pause size={18} color={themeColor.foreground} />
-            )
-          }
-          label={isPaused ? "Resume" : "Pause"}
-          onPress={onTogglePause}
-        />
+        <View style={styles.timerButtons}>
+          <UIButton
+            style={styles.secondaryButton}
+            icon={
+              isPaused ? (
+                <Play size={18} color={themeColor.foreground} />
+              ) : (
+                <Pause size={18} color={themeColor.foreground} />
+              )
+            }
+            label={isPaused ? "Resume" : "Pause"}
+            onPress={onTogglePause}
+          />
+
+          <UIButton
+            style={styles.secondaryButton}
+            icon={<RotateCcw size={18} color={themeColor.foreground} />}
+            label="Reset"
+            onPress={onResetTimer}
+          />
+        </View>
 
         <UIButton
           style={styles.mainButton}
@@ -283,8 +293,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  timerButtons: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
   secondaryButton: {
-    width: "100%",
+    flex: 1,
     height: 46,
     borderRadius: 8,
   },
