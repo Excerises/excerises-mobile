@@ -13,6 +13,7 @@ import { useCalculateFitness } from "@/hooks/request/fitness/use-calculate-fitne
 import { useProfiling } from "@/components/provider/onboarding/profiling-provider";
 import moment from "moment";
 import { UserGender } from "@/types/entity";
+import { useUpdateProfile } from "@/hooks/request/profile/use-update-profile";
 
 export default function Result() {
   const {
@@ -23,11 +24,16 @@ export default function Result() {
     workoutFrequencyPerWeek,
     workoutDurationPerSession,
     waterIntakeDaily,
+    bmi,
+    reminderDays,
+    reminderTime,
   } = useProfiling();
   const router = useRouter();
   const themeColor = useThemeColor();
 
   const { mutation: calculateFitness } = useCalculateFitness();
+  const { mutation: updateProfile } = useUpdateProfile();
+  const [isUpdated, setIsUpdated] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -57,6 +63,23 @@ export default function Result() {
 
   useEffect(() => {
     if (isComplete) {
+      updateProfile
+        .mutateAsync({
+          birth_date: birthDate,
+          gender,
+          height,
+          weight,
+          bmi,
+          workout_freq_per_week: workoutFrequencyPerWeek,
+          workout_duration_per_day: workoutDurationPerSession,
+          water_intake_daily: waterIntakeDaily,
+          reminder_days: reminderDays,
+          reminder_time: reminderTime,
+        })
+        .then(() => {
+          setIsUpdated(true);
+        });
+
       return;
     }
 
@@ -160,6 +183,7 @@ export default function Result() {
           />
 
           <UIButton
+            disabled={isUpdated}
             style={styles.mainButton}
             label="Go to Home"
             variant="primary"
