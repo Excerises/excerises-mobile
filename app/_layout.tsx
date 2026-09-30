@@ -11,7 +11,6 @@ import { useWelcome } from "@/hooks/use-welcome";
 import { useRefreshToken } from "@/hooks/request/auth/use-refresh-token";
 import { AxiosError } from "axios";
 import { api } from "@/network/api";
-import { useFillInfo } from "@/hooks/use-fill-info";
 
 export default function RootLayout() {
   const queryClient = useMemo(() => {
@@ -46,7 +45,6 @@ function RootLayoutStack() {
     setToken: setRefreshToken,
     mutation: refreshToken,
   } = useRefreshToken();
-  const { isFillInfo } = useFillInfo();
 
   async function setApiRefreshToken() {
     const value = await getRefreshToken();
@@ -89,7 +87,7 @@ function RootLayoutStack() {
 
     auth.setUser(user.data);
 
-    if (await isFillInfo()) {
+    if (!!user.data?.profile) {
       router.replace("/home");
     } else {
       router.replace("/profiling");
