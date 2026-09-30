@@ -1,5 +1,5 @@
 import { genderOptions } from "@/constant/gender";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type ProfilingContext = {
   birthDate: string;
@@ -9,6 +9,7 @@ export type ProfilingContext = {
   bmi: number;
   workoutFrequencyPerWeek: number;
   workoutDurationPerSession: number;
+  waterIntakeDaily: number;
   reminderDays: number[];
   reminderTime: string;
   setBirthDate: (v: string) => void;
@@ -20,6 +21,7 @@ export type ProfilingContext = {
   setWorkoutDurationPerSession: (v: number) => void;
   setReminderDays: (v: number[]) => void;
   setReminderTime: (v: string) => void;
+  setWaterIntakeDaily: (v: number) => void;
 };
 
 export const ProfilingContext = createContext<ProfilingContext>(
@@ -42,6 +44,7 @@ export function ProfilingProvider({ children }: ProfilingProviderProps) {
   const [bmi, setBmi] = useState(0);
   const [workoutFrequencyPerWeek, setWorkoutFrequencyPerWeek] = useState(0);
   const [workoutDurationPerSession, setWorkoutDurationPerSession] = useState(0);
+  const [waterIntakeDaily, setWaterIntakeDaily] = useState(0);
   const [reminderDays, setReminderDays] = useState<number[]>([]);
   const [reminderTime, setReminderTime] = useState("");
 
@@ -63,6 +66,7 @@ export function ProfilingProvider({ children }: ProfilingProviderProps) {
         bmi,
         workoutFrequencyPerWeek,
         workoutDurationPerSession,
+        waterIntakeDaily,
         reminderDays,
         reminderTime,
         setBirthDate,
@@ -72,6 +76,7 @@ export function ProfilingProvider({ children }: ProfilingProviderProps) {
         calculateBmi,
         setWorkoutFrequencyPerWeek,
         setWorkoutDurationPerSession,
+        setWaterIntakeDaily,
         setReminderDays,
         setReminderTime,
       }}

@@ -1,42 +1,59 @@
 import { useRouter } from "expo-router";
-
 import { useEffect, useState } from "react";
-
 import { StyleSheet, View } from "react-native";
-
 import UIButton from "@/components/ui/common/button";
-
 import UIText from "@/components/ui/common/text";
-
 import AILoader from "@/components/ui/onboarding/result/ai-loader";
-
 import CompleteIllustration from "@/components/ui/onboarding/result/complete-illustration";
-
 import FitnessLevelCard from "@/components/ui/onboarding/result/fitness-level-card";
-
 import ProgressBar from "@/components/ui/onboarding/result/progress-bar";
-
 import ProgressItem from "@/components/ui/onboarding/result/progress-item";
-
-import { currentUser } from "@/components/data/User";
-
-import { userProfiles } from "@/components/data/User_Profile";
-
 import useThemeColor from "@/hooks/use-theme-color";
+import { useCalculateFitness } from "@/hooks/request/fitness/use-calculate-fitness";
+import { useProfiling } from "@/components/provider/onboarding/profiling-provider";
+import moment from "moment";
+import { UserGender } from "@/types/entity";
 
 export default function Result() {
+  const {
+    birthDate,
+    gender,
+    height,
+    weight,
+    workoutFrequencyPerWeek,
+    workoutDurationPerSession,
+    waterIntakeDaily,
+  } = useProfiling();
   const router = useRouter();
   const themeColor = useThemeColor();
-  const profile = userProfiles.find(
-    (item) => item.user_id === currentUser.user_id,
-  ) ?? userProfiles[0];
 
+  const { mutation: calculateFitness } = useCalculateFitness();
   const [isComplete, setIsComplete] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const goToHome = () => {
     router.replace("/home");
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const age = moment().diff(moment(birthDate), "years");
+      const data = {
+        age: age || 25,
+        gender: (gender as UserGender) || "male",
+        height: height || 170,
+        weight: weight || 65,
+        workout_duration_per_day: workoutDurationPerSession || 0,
+        workout_freq_per_week: workoutFrequencyPerWeek || 0,
+        water_intake_daily: waterIntakeDaily || 1.5,
+      };
+      calculateFitness.mutateAsync(data);
+    }, 400);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   useEffect(() => {
     if (isComplete) {
@@ -98,25 +115,19 @@ export default function Result() {
           <View style={styles.progressContainer}>
             <ProgressItem
               completed={progress >= 25}
-              text="Calculating your BMI"
+              text="Analyzing your identity"
               color={themeColor.primary}
             />
 
             <ProgressItem
               completed={progress >= 50}
-              text="Analyzing workout preferences"
+              text="Calculating your BMI"
               color={themeColor.primary}
             />
 
             <ProgressItem
               completed={progress >= 75}
               text="Determining fitness level"
-              color={themeColor.primary}
-            />
-
-            <ProgressItem
-              completed={progress >= 100}
-              text="Generating recommendations"
               color={themeColor.primary}
             />
           </View>
@@ -142,8 +153,8 @@ export default function Result() {
           </UIText>
 
           <FitnessLevelCard
-            level={profile.fitness_level}
-            description={profile.fitness_level_description}
+            level={calculateFitness.data?.data.level || "unknown"}
+            description={"Let's keep going \nand stay consistent!"}
             backgroundColor={themeColor.card}
             foregroundColor={themeColor.foreground}
           />

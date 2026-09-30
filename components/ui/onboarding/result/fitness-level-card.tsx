@@ -17,6 +17,8 @@ export default function FitnessLevelCard({
   backgroundColor,
   foregroundColor,
 }: FitnessLevelCardProps) {
+  const fitnessLevel = level[0].toUpperCase() + level.slice(1);
+
   return (
     <View
       style={[
@@ -41,7 +43,7 @@ export default function FitnessLevelCard({
         </View>
 
         <View style={styles.textContainer}>
-          <UIText style={styles.level}>{level}</UIText>
+          <UIText style={styles.level}>{fitnessLevel}</UIText>
 
           <UIText style={styles.description}>{description}</UIText>
         </View>

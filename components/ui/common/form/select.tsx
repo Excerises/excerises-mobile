@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   Pressable,
+  ScrollView,
   StyleSheet,
   TextInputProps,
   TouchableOpacity,
@@ -105,7 +106,7 @@ export function SelectContent({ children }: { children: React.ReactNode }) {
       style={[styles.content, { borderColor: color.border }]}
       variant="card"
     >
-      {children}
+      <ScrollView>{children}</ScrollView>
     </UIView>
   );
 }
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   content: {
+    maxHeight: 200,
     position: "absolute",
     bottom: -2,
     paddingTop: 3,

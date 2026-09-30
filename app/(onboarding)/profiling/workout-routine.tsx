@@ -1,7 +1,6 @@
 import { useProfiling } from "@/components/provider/onboarding/profiling-provider";
 import UIButton from "@/components/ui/common/button";
 import FieldControl from "@/components/ui/common/form/field-control";
-import Input from "@/components/ui/common/form/input";
 import Select, {
   SelectContent,
   SelectInput,
@@ -14,8 +13,11 @@ import { workoutDurationOptions } from "@/constant/workout_duration";
 import { useProfilingWorkoutRoutineForm } from "@/hooks/form/auth/profiling/use-profiling-workout-routine-form";
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import Slider from "@react-native-community/slider";
+import useThemeColor from "@/hooks/use-theme-color";
 
 export default function WorkoutRoutine() {
+  const color = useThemeColor();
   const router = useRouter();
   const p = useProfiling();
   const {
@@ -25,6 +27,7 @@ export default function WorkoutRoutine() {
   const onContinue = handleSubmit((val) => {
     p.setWorkoutFrequencyPerWeek(val.frequencyPerWeek);
     p.setWorkoutDurationPerSession(val.durationPerSession);
+    p.setWaterIntakeDaily(val.waterIntakeDaily);
 
     router.push("/profiling/set-reminder");
   });
@@ -90,6 +93,26 @@ export default function WorkoutRoutine() {
                 ))}
               </SelectContent>
             </Select>
+          )}
+        />
+
+        <FieldControl
+          control={control}
+          name="waterIntakeDaily"
+          label="Water Consumtion Daily (liter)"
+          render={({ field }) => (
+            <View style={{ alignItems: "flex-end" }}>
+              <Slider
+                style={{ width: "100%" }}
+                minimumValue={0}
+                maximumValue={4}
+                value={field.value}
+                onValueChange={(v) => field.onChange(v)}
+                minimumTrackTintColor={color.primary}
+                maximumTrackTintColor={color.border}
+              />
+              <UIText>{field.value.toFixed(1)} liter</UIText>
+            </View>
           )}
         />
       </View>

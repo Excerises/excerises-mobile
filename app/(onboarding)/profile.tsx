@@ -91,7 +91,7 @@ export default function Profile() {
   };
 
   const goToResult = () => {
-    router.push("/result");
+    router.push("/profiling/result");
   };
 
   return (

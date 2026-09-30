@@ -27,7 +27,7 @@ export default function SetReminder() {
     p.setReminderDays(val.reminderDays);
     p.setReminderTime(val.reminderTime);
 
-    router.push("/result");
+    router.push("/profiling/result");
   });
 
   return (
