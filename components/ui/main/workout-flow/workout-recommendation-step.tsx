@@ -1,8 +1,7 @@
-import { Check, X } from "lucide-react-native";
+import { Check, Dumbbell, UserRound, X } from "lucide-react-native";
 
 import {
   FlatList,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,6 +11,7 @@ import {
 import type { Exercise } from "@/components/data/Exercise";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -23,6 +23,9 @@ type WorkoutRecommendationStepProps = {
   onConfirm: () => void;
   onClear: () => void;
 };
+
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
 
 export default function WorkoutRecommendationStep({
   workouts,
@@ -67,6 +70,8 @@ export default function WorkoutRecommendationStep({
         renderItem={({ item }) => {
           const selected = isSelected(item.exercise_id);
 
+          const EquipmentIcon = getEquipmentIcon(item.equipment);
+
           return (
             <Pressable
               style={[
@@ -80,7 +85,17 @@ export default function WorkoutRecommendationStep({
               ]}
               onPress={() => onToggleSelect(item)}
             >
-              <Image source={item.image} style={styles.workoutImage} />
+              <View
+                style={[
+                  styles.workoutIcon,
+                  {
+                    backgroundColor: themeColor.background,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <EquipmentIcon size={28} color={themeColor.primary} />
+              </View>
 
               <View style={styles.workoutContent}>
                 <UIText style={styles.workoutTitle} numberOfLines={1}>
@@ -149,28 +164,42 @@ export default function WorkoutRecommendationStep({
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled
         >
-          {selectedWorkouts.map((workout) => (
-            <View
-              key={workout.exercise_id}
-              style={[
-                styles.selectedItem,
-                {
-                  backgroundColor: themeColor.card,
-                  borderColor: themeColor.border,
-                },
-              ]}
-            >
-              <Image source={workout.image} style={styles.selectedImage} />
+          {selectedWorkouts.map((workout) => {
+            const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
-              <UIText style={styles.selectedItemText} numberOfLines={1}>
-                {workout.exercise_name}
-              </UIText>
+            return (
+              <View
+                key={workout.exercise_id}
+                style={[
+                  styles.selectedItem,
+                  {
+                    backgroundColor: themeColor.card,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    styles.selectedIcon,
+                    {
+                      backgroundColor: themeColor.background,
+                      borderColor: themeColor.border,
+                    },
+                  ]}
+                >
+                  <EquipmentIcon size={21} color={themeColor.primary} />
+                </View>
 
-              <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
-                <X size={21} color={themeColor.foreground} />
-              </Pressable>
-            </View>
-          ))}
+                <UIText style={styles.selectedItemText} numberOfLines={1}>
+                  {workout.exercise_name}
+                </UIText>
+
+                <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
+                  <X size={21} color={themeColor.foreground} />
+                </Pressable>
+              </View>
+            );
+          })}
         </ScrollView>
 
         <UIButton
@@ -243,10 +272,13 @@ const styles = StyleSheet.create({
     padding: 6,
   },
 
-  workoutImage: {
+  workoutIcon: {
     width: 54,
     height: 54,
     borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   workoutContent: {
@@ -318,10 +350,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 
-  selectedImage: {
+  selectedIcon: {
     width: 42,
     height: 42,
-    borderRadius: 6,
+    borderRadius: 21,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   selectedItemText: {

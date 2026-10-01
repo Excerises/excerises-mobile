@@ -1,19 +1,25 @@
-import { Dumbbell, List, Target } from "lucide-react-native";
+import { Dumbbell, List, Target, UserRound } from "lucide-react-native";
 
 import type { ReactNode } from "react";
-import { Image, StyleSheet, View } from "react-native";
+
+import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type { WorkoutPackage } from "@/components/provider/workout-provider";
 
+
 type WorkoutDetailStepProps = {
   workoutPackage: WorkoutPackage;
   onStart: () => void;
 };
+
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
 
 export default function WorkoutDetailStep({
   workoutPackage,
@@ -25,9 +31,7 @@ export default function WorkoutDetailStep({
     <View style={styles.container}>
       <UIText style={styles.title}>Workout Detail</UIText>
 
-      <UIText style={styles.packageName}>
-        {workoutPackage.name}
-      </UIText>
+      <UIText style={styles.packageName}>{workoutPackage.name}</UIText>
 
       <UIText variant="muted" style={styles.subtitle}>
         {workoutPackage.exercises.length} Exercises
@@ -47,16 +51,19 @@ export default function WorkoutDetailStep({
           label="Target"
           value={workoutPackage.target}
         />
+
         <DetailRow
           icon={<Target size={22} color={themeColor.primary} />}
           label="Body Part"
           value={workoutPackage.bodyPart}
         />
+
         <DetailRow
           icon={<Dumbbell size={22} color={themeColor.primary} />}
           label="Equipment"
           value={workoutPackage.equipment}
         />
+
         <DetailRow
           icon={<List size={22} color={themeColor.primary} />}
           label="Category"
@@ -69,30 +76,44 @@ export default function WorkoutDetailStep({
       </UIText>
 
       <View style={styles.exerciseList}>
-        {workoutPackage.exercises.map((workout, index) => (
-          <View
-            key={workout.exercise_id}
-            style={[
-              styles.exerciseCard,
-              {
-                backgroundColor: themeColor.card,
-                borderColor: themeColor.border,
-              },
-            ]}
-          >
-            <Image source={workout.image} style={styles.exerciseImage} />
+        {workoutPackage.exercises.map((workout, index) => {
+          const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
-            <View style={styles.exerciseContent}>
-              <UIText style={styles.exerciseName}>
-                {index + 1}. {workout.exercise_name}
-              </UIText>
+          return (
+            <View
+              key={workout.exercise_id}
+              style={[
+                styles.exerciseCard,
+                {
+                  backgroundColor: themeColor.card,
+                  borderColor: themeColor.border,
+                },
+              ]}
+            >
+              <View
+                style={[
+                  styles.exerciseIcon,
+                  {
+                    backgroundColor: themeColor.background,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <EquipmentIcon size={28} color={themeColor.primary} />
+              </View>
 
-              <UIText variant="muted" style={styles.exerciseMeta}>
-                {workout.body_part} • {workout.equipment}
-              </UIText>
+              <View style={styles.exerciseContent}>
+                <UIText style={styles.exerciseName}>
+                  {index + 1}. {workout.exercise_name}
+                </UIText>
+
+                <UIText variant="muted" style={styles.exerciseMeta}>
+                  {workout.body_part} • {workout.equipment}
+                </UIText>
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
 
       <UIButton
@@ -115,10 +136,12 @@ function DetailRow({ icon, label, value }: DetailRowProps) {
   return (
     <View style={styles.detailRow}>
       {icon}
+
       <View style={styles.detailText}>
         <UIText variant="muted" style={styles.detailLabel}>
           {label}
         </UIText>
+
         <UIText style={styles.detailValue}>{value || "—"}</UIText>
       </View>
     </View>
@@ -193,10 +216,13 @@ const styles = StyleSheet.create({
     padding: 7,
   },
 
-  exerciseImage: {
+  exerciseIcon: {
     width: 58,
     height: 58,
     borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   exerciseContent: {

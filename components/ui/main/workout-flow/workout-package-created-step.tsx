@@ -1,9 +1,17 @@
-import { CheckCircle, List, Target, Dumbbell } from "lucide-react-native";
+import {
+  CheckCircle,
+  Dumbbell,
+  List,
+  Target,
+  UserRound,
+} from "lucide-react-native";
 
 import type { ReactNode } from "react";
-import { Image, StyleSheet, View } from "react-native";
+
+import { StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -16,13 +24,15 @@ type WorkoutPackageCreatedStepProps = {
   onHome: () => void;
 };
 
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
+
 export default function WorkoutPackageCreatedStep({
   workoutPackage,
   onStart,
   onHome,
 }: WorkoutPackageCreatedStepProps) {
   const themeColor = useThemeColor();
-  const coverExercise = workoutPackage.exercises[0];
 
   return (
     <View style={styles.container}>
@@ -36,38 +46,47 @@ export default function WorkoutPackageCreatedStep({
         Your workout package has been created and is ready to use.
       </UIText>
 
-      {coverExercise && (
-        <View style={styles.coverContainer}>
-          <Image source={coverExercise.image} style={styles.coverImage} />
+      <View
+        style={[
+          styles.coverContainer,
+          {
+            backgroundColor: themeColor.card,
+            borderColor: themeColor.border,
+          },
+        ]}
+      >
+        <View style={styles.coverIcons}>
+          {workoutPackage.exercises.map((workout, index) => {
+            const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
-          <View
-            style={[
-              styles.coverOverlay,
-              { backgroundColor: themeColor.overlay },
-            ]}
-          />
-
-          <View style={styles.coverContent}>
-            <UIText
-              style={[
-                styles.packageName,
-                { color: themeColor.white },
-              ]}
-            >
-              {workoutPackage.name}
-            </UIText>
-
-            <UIText
-              style={[
-                styles.exerciseCount,
-                { color: themeColor.white },
-              ]}
-            >
-              {workoutPackage.exercises.length} Exercises
-            </UIText>
-          </View>
+            return (
+              <View
+                key={`${workout.exercise_id}-${index}`}
+                style={[
+                  styles.coverIcon,
+                  {
+                    backgroundColor: themeColor.background,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <EquipmentIcon
+                  size={workoutPackage.exercises.length === 1 ? 48 : 32}
+                  color={themeColor.primary}
+                />
+              </View>
+            );
+          })}
         </View>
-      )}
+
+        <View style={styles.coverContent}>
+          <UIText style={styles.packageName}>{workoutPackage.name}</UIText>
+
+          <UIText variant="muted" style={styles.exerciseCount}>
+            {workoutPackage.exercises.length} Exercises
+          </UIText>
+        </View>
+      </View>
 
       <View
         style={[
@@ -82,14 +101,17 @@ export default function WorkoutPackageCreatedStep({
           icon={<Target size={20} color={themeColor.foreground} />}
           value={workoutPackage.target}
         />
+
         <DetailRow
           icon={<Dumbbell size={20} color={themeColor.foreground} />}
           value={workoutPackage.bodyPart}
         />
+
         <DetailRow
           icon={<Dumbbell size={20} color={themeColor.foreground} />}
           value={workoutPackage.equipment}
         />
+
         <DetailRow
           icon={<List size={20} color={themeColor.foreground} />}
           value={workoutPackage.category}
@@ -121,6 +143,7 @@ function DetailRow({ icon, value }: DetailRowProps) {
   return (
     <View style={styles.detailRow}>
       {icon}
+
       <UIText style={styles.detailValue}>{value}</UIText>
     </View>
   );
@@ -152,32 +175,35 @@ const styles = StyleSheet.create({
 
   coverContainer: {
     width: "100%",
-    height: 190,
+    minHeight: 190,
     borderRadius: 10,
     overflow: "hidden",
-    position: "relative",
+    borderWidth: 1,
     marginTop: 18,
+    padding: 16,
+    justifyContent: "space-between",
   },
 
-  coverImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
+  coverIcons: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
   },
 
-  coverOverlay: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+  coverIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   coverContent: {
-    position: "absolute",
-    left: 16,
-    right: 16,
-    bottom: 14,
+    marginTop: 12,
   },
 
   packageName: {

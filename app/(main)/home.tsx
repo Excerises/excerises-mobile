@@ -31,7 +31,9 @@ import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
 
 import useThemeColor from "@/hooks/use-theme-color";
+
 import Header from "@/components/ui/main/header";
+
 import { useAuth } from "@/stores/auth-store";
 
 const currentProfile = userProfiles.find(
@@ -60,9 +62,11 @@ const recentWorkoutGroups = [
 
 const recentWorkouts = recentWorkoutGroups
   .map((group, index) => {
-    const firstExercise = getExercise(group[0].exercise_id);
+    const equipment = group
+      .map((item) => getExercise(item.exercise_id)?.equipment)
+      .filter((value): value is string => Boolean(value));
 
-    if (!firstExercise) {
+    if (equipment.length === 0) {
       return null;
     }
 
@@ -71,7 +75,7 @@ const recentWorkouts = recentWorkoutGroups
       title: `My Workout #${index + 1}`,
       exerciseCount: group.length,
       duration: group.reduce((total, item) => total + item.duration, 0),
-      image: firstExercise.image,
+      equipment,
     };
   })
   .filter(Boolean) as {
@@ -79,7 +83,7 @@ const recentWorkouts = recentWorkoutGroups
   title: string;
   exerciseCount: number;
   duration: number;
-  image: Exercise["image"];
+  equipment: string[];
 }[];
 
 const completedDates = completedHistory.map(
@@ -97,15 +101,16 @@ const profile = currentProfile ?? userProfiles[0];
 
 export default function Home() {
   const router = useRouter();
+
   const themeColor = useThemeColor();
 
   const { hasWorkoutPlan } = useWorkoutContext();
 
+  const { user } = useAuth();
+
   const goToWorkout = () => {
     router.push("/(main)/workout-flow");
   };
-
-  const { user } = useAuth();
 
   const goToRecentWorkoutDetail = (workoutId: string) => {
     router.push({

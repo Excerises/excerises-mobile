@@ -1,19 +1,13 @@
-import { Check, Clock3 } from "lucide-react-native";
+import { Check, Clock3, Dumbbell, UserRound } from "lucide-react-native";
 
 import { useState } from "react";
 
-import type { ImageSourcePropType } from "react-native";
-
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 type RecentWorkoutItem = {
@@ -21,7 +15,7 @@ type RecentWorkoutItem = {
   title: string;
   exerciseCount: number;
   duration: number;
-  image: ImageSourcePropType;
+  equipment: string[];
 };
 
 type RecentWorkoutsProps = {
@@ -31,17 +25,22 @@ type RecentWorkoutsProps = {
 
 const { width } = Dimensions.get("window");
 
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
+
 export default function RecentWorkouts({
   workouts,
   onPress,
 }: RecentWorkoutsProps) {
   const themeColor = useThemeColor();
+
   const cardWidth = width - 40;
 
   const [activeIndex, setActiveIndex] = useState(0);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
+
     const remainingSeconds = seconds % 60;
 
     return `${String(minutes).padStart(2, "0")}:${String(
@@ -69,7 +68,11 @@ export default function RecentWorkouts({
           setActiveIndex(index);
         }}
         renderItem={({ item }) => (
-          <View style={{ width: cardWidth }}>
+          <View
+            style={{
+              width: cardWidth,
+            }}
+          >
             <View
               style={[
                 styles.card,
@@ -79,18 +82,47 @@ export default function RecentWorkouts({
                 },
               ]}
             >
-              <Image source={item.image} style={styles.image} />
+              <View
+                style={[
+                  styles.iconArea,
+                  {
+                    backgroundColor: themeColor.background,
+                  },
+                ]}
+              >
+                <View style={styles.iconRow}>
+                  {item.equipment.map((equipment, index) => {
+                    const EquipmentIcon = getEquipmentIcon(equipment);
+
+                    return (
+                      <View
+                        key={`${equipment}-${index}`}
+                        style={[
+                          styles.equipmentIcon,
+                          {
+                            backgroundColor: themeColor.card,
+                            borderColor: themeColor.border,
+                          },
+                        ]}
+                      >
+                        <EquipmentIcon
+                          size={item.equipment.length === 1 ? 38 : 28}
+                          color={themeColor.primary}
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
 
               <View
                 style={[
-                  styles.overlay,
+                  styles.content,
                   {
                     backgroundColor: themeColor.card,
                   },
                 ]}
-              />
-
-              <View style={styles.content}>
+              >
                 <UIText style={styles.workoutTitle} numberOfLines={1}>
                   {item.title}
                 </UIText>
@@ -101,10 +133,7 @@ export default function RecentWorkouts({
 
                 <View style={styles.infoRow}>
                   <View style={styles.duration}>
-                    <Clock3
-                      size={14}
-                      color={themeColor.foreground}
-                    />
+                    <Clock3 size={14} color={themeColor.foreground} />
 
                     <UIText variant="muted" style={styles.infoText}>
                       {formatTime(item.duration)}
@@ -183,38 +212,40 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  seeAll: {
-    fontSize: 10,
-  },
-
   card: {
     height: 138,
     borderWidth: 1,
     borderRadius: 8,
     overflow: "hidden",
-    position: "relative",
+    flexDirection: "row",
   },
 
-  image: {
-    position: "absolute",
+  iconArea: {
     width: "43%",
-    height: "100%",
-    left: 0,
-    top: 0,
-    resizeMode: "cover",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 6,
   },
 
-  overlay: {
-    position: "absolute",
-    left: "43%",
-    right: 0,
-    top: 0,
-    bottom: 0,
+  iconRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    flexWrap: "wrap",
+  },
+
+  equipmentIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   content: {
     flex: 1,
-    marginLeft: "43%",
     paddingHorizontal: 12,
     paddingVertical: 10,
     justifyContent: "space-between",

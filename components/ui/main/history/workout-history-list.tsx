@@ -1,27 +1,41 @@
-import { CalendarDays, Check, ChevronRight, Clock3 } from "lucide-react-native";
+import {
+  CalendarDays,
+  Check,
+  ChevronRight,
+  Clock3,
+  Dumbbell,
+  UserRound,
+} from "lucide-react-native";
 
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+
+import { exercises } from "@/components/data/Exercise";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
 
 import type {
-    WorkoutHistoryGroup,
-    WorkoutHistoryItem,
+  WorkoutHistoryGroup,
+  WorkoutHistoryItem,
 } from "../../../data/History";
+
 import { formatDate, formatTime } from "../../../data/History";
 
 export type {
-    WorkoutHistoryGroup,
-    WorkoutHistoryItem
+  WorkoutHistoryGroup,
+  WorkoutHistoryItem
 } from "../../../data/History";
 
 export type WorkoutHistoryListProps = {
   groups: WorkoutHistoryGroup[];
   onViewWorkout: (workout: WorkoutHistoryItem) => void;
 };
+
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
 
 export default function WorkoutHistoryList({
   groups,
@@ -73,6 +87,14 @@ type HistoryCardProps = {
 function HistoryCard({ workout, onViewWorkout }: HistoryCardProps) {
   const themeColor = useThemeColor();
 
+  const equipmentList = workout.historyItems
+    .map(
+      (item) =>
+        exercises.find((exercise) => exercise.exercise_id === item.exercise_id)
+          ?.equipment,
+    )
+    .filter((value): value is string => Boolean(value));
+
   return (
     <View
       style={[
@@ -83,7 +105,38 @@ function HistoryCard({ workout, onViewWorkout }: HistoryCardProps) {
         },
       ]}
     >
-      <Image source={workout.image} style={styles.image} />
+      <View
+        style={[
+          styles.iconArea,
+          {
+            backgroundColor: themeColor.background,
+          },
+        ]}
+      >
+        <View style={styles.iconRow}>
+          {equipmentList.map((equipment, index) => {
+            const EquipmentIcon = getEquipmentIcon(equipment);
+
+            return (
+              <View
+                key={`${equipment}-${index}`}
+                style={[
+                  styles.equipmentIcon,
+                  {
+                    backgroundColor: themeColor.card,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <EquipmentIcon
+                  size={equipmentList.length === 1 ? 30 : 23}
+                  color={themeColor.primary}
+                />
+              </View>
+            );
+          })}
+        </View>
+      </View>
 
       <View style={styles.content}>
         <View>
@@ -112,7 +165,14 @@ function HistoryCard({ workout, onViewWorkout }: HistoryCardProps) {
           <View style={styles.statusRow}>
             <Check size={15} color={themeColor.success} strokeWidth={3} />
 
-            <UIText style={[styles.statusText, { color: themeColor.success }]}>
+            <UIText
+              style={[
+                styles.statusText,
+                {
+                  color: themeColor.success,
+                },
+              ]}
+            >
               Completed
             </UIText>
           </View>
@@ -164,10 +224,28 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
 
-  image: {
+  iconArea: {
     width: 102,
-    height: 112,
-    resizeMode: "cover",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 6,
+  },
+
+  iconRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+  },
+
+  equipmentIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   content: {
