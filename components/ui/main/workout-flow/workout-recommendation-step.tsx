@@ -1,4 +1,13 @@
-import { Check, Dumbbell, UserRound, X } from "lucide-react-native";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Dumbbell,
+  UserRound,
+  X,
+} from "lucide-react-native";
+
+import { useState } from "react";
 
 import {
   FlatList,
@@ -36,6 +45,8 @@ export default function WorkoutRecommendationStep({
 }: WorkoutRecommendationStepProps) {
   const themeColor = useThemeColor();
 
+  const [isSelectedExpanded, setIsSelectedExpanded] = useState(false);
+
   const isSelected = (exerciseId: string) =>
     selectedWorkouts.some((workout) => workout.exercise_id === exerciseId);
 
@@ -49,8 +60,6 @@ export default function WorkoutRecommendationStep({
 
       <View style={styles.sectionHeader}>
         <View>
-          <UIText style={styles.sectionTitle}>Recommended Workout</UIText>
-
           <UIText variant="muted" style={styles.sectionSubtitle}>
             Based on your preferences
           </UIText>
@@ -138,12 +147,23 @@ export default function WorkoutRecommendationStep({
         ]}
       >
         <View style={styles.selectedHeader}>
-          <UIText style={styles.selectedTitle}>
-            Selected Workout ({selectedWorkouts.length})
-          </UIText>
+          <Pressable
+            style={styles.selectedTitleButton}
+            onPress={() => setIsSelectedExpanded((current) => !current)}
+          >
+            <UIText style={styles.selectedTitle}>
+              Selected Workout ({selectedWorkouts.length})
+            </UIText>
+
+            {isSelectedExpanded ? (
+              <ChevronUp size={18} color={themeColor.foreground} />
+            ) : (
+              <ChevronDown size={18} color={themeColor.foreground} />
+            )}
+          </Pressable>
 
           {selectedWorkouts.length > 0 && (
-            <Pressable onPress={onClear}>
+            <Pressable onPress={onClear} hitSlop={8}>
               <UIText
                 style={[
                   styles.clearText,
@@ -158,49 +178,54 @@ export default function WorkoutRecommendationStep({
           )}
         </View>
 
-        <ScrollView
-          style={styles.selectedList}
-          contentContainerStyle={styles.selectedListContent}
-          showsVerticalScrollIndicator={false}
-          nestedScrollEnabled
-        >
-          {selectedWorkouts.map((workout) => {
-            const EquipmentIcon = getEquipmentIcon(workout.equipment);
+        {isSelectedExpanded && (
+          <ScrollView
+            style={styles.selectedList}
+            contentContainerStyle={styles.selectedListContent}
+            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled
+          >
+            {selectedWorkouts.map((workout) => {
+              const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
-            return (
-              <View
-                key={workout.exercise_id}
-                style={[
-                  styles.selectedItem,
-                  {
-                    backgroundColor: themeColor.card,
-                    borderColor: themeColor.border,
-                  },
-                ]}
-              >
+              return (
                 <View
+                  key={workout.exercise_id}
                   style={[
-                    styles.selectedIcon,
+                    styles.selectedItem,
                     {
-                      backgroundColor: themeColor.background,
+                      backgroundColor: themeColor.card,
                       borderColor: themeColor.border,
                     },
                   ]}
                 >
-                  <EquipmentIcon size={21} color={themeColor.primary} />
+                  <View
+                    style={[
+                      styles.selectedIcon,
+                      {
+                        backgroundColor: themeColor.background,
+                        borderColor: themeColor.border,
+                      },
+                    ]}
+                  >
+                    <EquipmentIcon size={21} color={themeColor.primary} />
+                  </View>
+
+                  <UIText style={styles.selectedItemText} numberOfLines={1}>
+                    {workout.exercise_name}
+                  </UIText>
+
+                  <Pressable
+                    onPress={() => onToggleSelect(workout)}
+                    hitSlop={8}
+                  >
+                    <X size={21} color={themeColor.foreground} />
+                  </Pressable>
                 </View>
-
-                <UIText style={styles.selectedItemText} numberOfLines={1}>
-                  {workout.exercise_name}
-                </UIText>
-
-                <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
-                  <X size={21} color={themeColor.foreground} />
-                </Pressable>
-              </View>
-            );
-          })}
-        </ScrollView>
+              );
+            })}
+          </ScrollView>
+        )}
 
         <UIButton
           label="Confirm Workout  →"
@@ -235,13 +260,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginTop: 26,
+    marginTop: 14,
     marginBottom: 12,
-  },
-
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
   },
 
   sectionSubtitle: {
@@ -307,7 +327,6 @@ const styles = StyleSheet.create({
   },
 
   selectedSection: {
-    height: 250,
     flexShrink: 0,
     paddingTop: 10,
     borderTopWidth: 1,
@@ -318,6 +337,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+  },
+
+  selectedTitleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
 
   selectedTitle: {
@@ -331,7 +356,7 @@ const styles = StyleSheet.create({
   },
 
   selectedList: {
-    flex: 1,
+    maxHeight: 150,
     minHeight: 0,
   },
 
@@ -370,7 +395,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     marginTop: 10,
-    marginBottom: 4,
+    marginBottom: 16,
     borderRadius: 8,
   },
 });
