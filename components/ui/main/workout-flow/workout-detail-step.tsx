@@ -1,4 +1,4 @@
-import { Dumbbell, List, Target, UserRound } from "lucide-react-native";
+import { Dumbbell, List, Target, UserRound, PersonStanding } from "lucide-react-native";
 
 import type { ReactNode } from "react";
 
@@ -53,7 +53,7 @@ export default function WorkoutDetailStep({
         />
 
         <DetailRow
-          icon={<Target size={22} color={themeColor.primary} />}
+          icon={<PersonStanding size={22} color={themeColor.primary} />}
           label="Body Part"
           value={workoutPackage.bodyPart}
         />
