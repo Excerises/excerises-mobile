@@ -67,6 +67,7 @@ export const styles = StyleSheet.create({
     gap: 20,
   },
   header: {
+    marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

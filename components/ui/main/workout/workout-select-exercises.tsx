@@ -16,7 +16,6 @@ import {
   LucideIcon,
   PillIcon,
   SportShoeIcon,
-  TextCursorIcon,
   WeightIcon,
   ZapIcon,
 } from "lucide-react-native";
@@ -72,7 +71,7 @@ function ExerciseCard({
           value={isSelected}
           color={color.primary}
           onValueChange={onPress}
-          style={{ borderWidth: 1.2 }}
+          style={{ borderWidth: 1.1, marginRight: 5 }}
         />
       </UIView>
     </Pressable>
