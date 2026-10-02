@@ -1,10 +1,10 @@
-import { Dumbbell, List, Pencil, Target } from "lucide-react-native";
+import { Dumbbell, List, Pencil, Target, UserRound } from "lucide-react-native";
 
 import type { ReactNode } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import Input from "@/components/ui/common/form/input";
 import UIButton from "@/components/ui/common/button";
+import Input from "@/components/ui/common/form/input";
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -21,6 +21,9 @@ type WorkoutConfirmStepProps = {
   onNameChange: (value: string) => void;
   onCreate: () => void;
 };
+
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
 
 export default function WorkoutConfirmStep({
   workoutName,
@@ -45,6 +48,7 @@ export default function WorkoutConfirmStep({
       <View style={styles.formGroup}>
         <View style={styles.labelRow}>
           <UIText style={styles.label}>Workout Name</UIText>
+
           <Pencil size={17} color={themeColor.foreground} />
         </View>
 
@@ -76,16 +80,19 @@ export default function WorkoutConfirmStep({
           value={target}
           icon={<Target size={20} color={themeColor.foreground} />}
         />
+
         <SummaryRow
           label="Body Part"
           value={bodyPart}
           icon={<Target size={20} color={themeColor.foreground} />}
         />
+
         <SummaryRow
           label="Equipment"
           value={equipment}
           icon={<Dumbbell size={20} color={themeColor.foreground} />}
         />
+
         <SummaryRow
           label="Category"
           value={category}
@@ -98,30 +105,44 @@ export default function WorkoutConfirmStep({
       </UIText>
 
       <View style={styles.exerciseList}>
-        {workouts.map((workout) => (
-          <View
-            key={workout.exercise_id}
-            style={[
-              styles.exerciseItem,
-              {
-                backgroundColor: themeColor.card,
-                borderColor: themeColor.border,
-              },
-            ]}
-          >
-            <Image source={workout.image} style={styles.exerciseImage} />
+        {workouts.map((workout) => {
+          const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
-            <View style={styles.exerciseContent}>
-              <UIText style={styles.exerciseName} numberOfLines={1}>
-                {workout.exercise_name}
-              </UIText>
+          return (
+            <View
+              key={workout.exercise_id}
+              style={[
+                styles.exerciseItem,
+                {
+                  backgroundColor: themeColor.card,
+                  borderColor: themeColor.border,
+                },
+              ]}
+            >
+              <View
+                style={[
+                  styles.exerciseIcon,
+                  {
+                    backgroundColor: themeColor.background,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <EquipmentIcon size={27} color={themeColor.primary} />
+              </View>
 
-              <UIText variant="muted" style={styles.exerciseMeta}>
-                {workout.body_part} • {workout.equipment}
-              </UIText>
+              <View style={styles.exerciseContent}>
+                <UIText style={styles.exerciseName} numberOfLines={1}>
+                  {workout.exercise_name}
+                </UIText>
+
+                <UIText variant="muted" style={styles.exerciseMeta}>
+                  {workout.body_part} • {workout.equipment}
+                </UIText>
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
 
       <UIButton
@@ -145,10 +166,12 @@ function SummaryRow({ label, value, icon }: SummaryRowProps) {
   return (
     <View style={styles.summaryRow}>
       {icon}
+
       <View style={styles.summaryText}>
         <UIText variant="muted" style={styles.summaryLabel}>
           {label}
         </UIText>
+
         <UIText style={styles.summaryValue}>{value || "—"}</UIText>
       </View>
     </View>
@@ -239,10 +262,13 @@ const styles = StyleSheet.create({
     padding: 7,
   },
 
-  exerciseImage: {
+  exerciseIcon: {
     width: 52,
     height: 52,
     borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   exerciseContent: {

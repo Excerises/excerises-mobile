@@ -1,24 +1,27 @@
 import {
-    CalendarDays,
-    Check,
-    Clock3,
-    Frown,
-    Meh,
-    Smile,
-    Trophy,
+  CalendarDays,
+  Check,
+  Clock3,
+  Dumbbell,
+  Frown,
+  Meh,
+  Smile,
+  Trophy,
+  UserRound,
 } from "lucide-react-native";
 
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
 
 import type { Exercise } from "@/components/data/Exercise";
+
 import useThemeColor from "@/hooks/use-theme-color";
 
 import {
-    formatDate,
-    formatTime,
-    type WorkoutHistoryItem,
+  formatDate,
+  formatTime,
+  type WorkoutHistoryItem,
 } from "../../../data/History";
 
 type Difficulty = "Too Easy" | "Just Right" | "Too Hard";
@@ -39,6 +42,9 @@ const difficultyRank: Record<Difficulty, number> = {
   "Just Right": 2,
   "Too Hard": 3,
 };
+
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
 
 const getOverallDifficulty = (
   difficulties: (Difficulty | undefined)[],
@@ -73,11 +79,12 @@ export default function WorkoutHistoryDetail({
   exercises,
 }: WorkoutHistoryDetailProps) {
   const themeColor = useThemeColor();
+
   const overallDifficulty = getOverallDifficulty(
     workout.historyItems.map((item) => item.difficulty),
   );
+
   const OverallIcon = difficultyIcons[overallDifficulty];
-  const firstExercise = exercises[0];
 
   return (
     <View style={styles.container}>
@@ -85,30 +92,63 @@ export default function WorkoutHistoryDetail({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {firstExercise && (
-          <View style={styles.hero}>
-            <Image source={firstExercise.image} style={styles.heroImage} />
+        <View
+          style={[
+            styles.hero,
+            {
+              backgroundColor: themeColor.card,
+              borderColor: themeColor.border,
+            },
+          ]}
+        >
+          <View style={styles.heroIcons}>
+            {exercises.map((exercise, index) => {
+              const EquipmentIcon = getEquipmentIcon(exercise.equipment);
 
-            <View
-              style={[
-                styles.heroOverlay,
-                { backgroundColor: themeColor.overlay },
-              ]}
-            />
-
-            <View style={styles.heroContent}>
-              <UIText style={[styles.heroTitle, { color: themeColor.white }]}>
-                {workout.title}
-              </UIText>
-
-              <UIText
-                style={[styles.heroSubtitle, { color: themeColor.white }]}
-              >
-                {workout.target} • {workout.bodyPart}
-              </UIText>
-            </View>
+              return (
+                <View
+                  key={`${exercise.exercise_id}-${index}`}
+                  style={[
+                    styles.heroIcon,
+                    {
+                      backgroundColor: themeColor.background,
+                      borderColor: themeColor.border,
+                    },
+                  ]}
+                >
+                  <EquipmentIcon
+                    size={exercises.length === 1 ? 54 : 38}
+                    color={themeColor.primary}
+                  />
+                </View>
+              );
+            })}
           </View>
-        )}
+
+          <View style={styles.heroContent}>
+            <UIText
+              style={[
+                styles.heroTitle,
+                {
+                  color: themeColor.foreground,
+                },
+              ]}
+            >
+              {workout.title}
+            </UIText>
+
+            <UIText
+              style={[
+                styles.heroSubtitle,
+                {
+                  color: themeColor.mutedForeground,
+                },
+              ]}
+            >
+              {workout.target} • {workout.bodyPart}
+            </UIText>
+          </View>
+        </View>
 
         <View
           style={[
@@ -121,10 +161,12 @@ export default function WorkoutHistoryDetail({
         >
           <View style={styles.infoItem}>
             <CalendarDays size={20} color={themeColor.foreground} />
+
             <View style={styles.infoText}>
               <UIText variant="muted" style={styles.infoLabel}>
                 Date
               </UIText>
+
               <UIText style={styles.infoValue}>
                 {formatDate(workout.createdAt)}
               </UIText>
@@ -133,10 +175,12 @@ export default function WorkoutHistoryDetail({
 
           <View style={styles.infoItem}>
             <Clock3 size={20} color={themeColor.foreground} />
+
             <View style={styles.infoText}>
               <UIText variant="muted" style={styles.infoLabel}>
                 Time
               </UIText>
+
               <UIText style={styles.infoValue}>
                 {formatTime(workout.createdAt)}
               </UIText>
@@ -145,11 +189,20 @@ export default function WorkoutHistoryDetail({
 
           <View style={styles.infoItem}>
             <Check size={20} color={themeColor.success} strokeWidth={3} />
+
             <View style={styles.infoText}>
               <UIText variant="muted" style={styles.infoLabel}>
                 Status
               </UIText>
-              <UIText style={[styles.infoValue, { color: themeColor.success }]}>
+
+              <UIText
+                style={[
+                  styles.infoValue,
+                  {
+                    color: themeColor.success,
+                  },
+                ]}
+              >
                 Completed
               </UIText>
             </View>
@@ -170,7 +223,9 @@ export default function WorkoutHistoryDetail({
           <View
             style={[
               styles.overallIcon,
-              { backgroundColor: themeColor.success },
+              {
+                backgroundColor: themeColor.success,
+              },
             ]}
           >
             <Trophy size={21} color={themeColor.black} strokeWidth={2.5} />
@@ -178,7 +233,12 @@ export default function WorkoutHistoryDetail({
 
           <View style={styles.overallContent}>
             <UIText
-              style={[styles.overallValue, { color: themeColor.success }]}
+              style={[
+                styles.overallValue,
+                {
+                  color: themeColor.success,
+                },
+              ]}
             >
               {overallDifficulty}
             </UIText>
@@ -196,8 +256,12 @@ export default function WorkoutHistoryDetail({
         <View style={styles.feedbackList}>
           {exercises.map((exercise, index) => {
             const history = workout.historyItems[index];
+
             const difficulty = history?.difficulty ?? "Just Right";
+
             const Icon = difficultyIcons[difficulty];
+
+            const EquipmentIcon = getEquipmentIcon(exercise.equipment);
 
             return (
               <View
@@ -210,7 +274,17 @@ export default function WorkoutHistoryDetail({
                   },
                 ]}
               >
-                <Image source={exercise.image} style={styles.exerciseImage} />
+                <View
+                  style={[
+                    styles.exerciseIcon,
+                    {
+                      backgroundColor: themeColor.background,
+                      borderColor: themeColor.border,
+                    },
+                  ]}
+                >
+                  <EquipmentIcon size={28} color={themeColor.primary} />
+                </View>
 
                 <View style={styles.exerciseContent}>
                   <UIText style={styles.exerciseName} numberOfLines={1}>
@@ -276,27 +350,35 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 175,
+    minHeight: 175,
     borderRadius: 12,
     overflow: "hidden",
     marginTop: 2,
+    borderWidth: 1,
+    padding: 14,
+    justifyContent: "space-between",
   },
 
-  heroImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
+  heroIcons: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
   },
 
-  heroOverlay: {
-    ...StyleSheet.absoluteFillObject,
+  heroIcon: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   heroContent: {
-    position: "absolute",
-    left: 14,
-    right: 14,
-    bottom: 14,
+    marginTop: 10,
   },
 
   heroTitle: {
@@ -392,10 +474,13 @@ const styles = StyleSheet.create({
     padding: 7,
   },
 
-  exerciseImage: {
+  exerciseIcon: {
     width: 58,
     height: 58,
     borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   exerciseContent: {

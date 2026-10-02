@@ -1,4 +1,4 @@
-import { Bell, Search } from "lucide-react-native";
+import { Bell } from "lucide-react-native";
 
 import { useRouter } from "expo-router";
 
@@ -18,10 +18,6 @@ export default function HeaderActions() {
 
   return (
     <View style={styles.actions}>
-      <Pressable style={styles.actionButton} hitSlop={8}>
-        <Search size={22} color={themeColor.foreground} />
-      </Pressable>
-
       <ThemeToggler />
 
       <Pressable

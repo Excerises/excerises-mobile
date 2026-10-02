@@ -1,10 +1,18 @@
-import { List, Pause, Play, RotateCcw } from "lucide-react-native";
+import {
+  Dumbbell,
+  List,
+  Pause,
+  Play,
+  RotateCcw,
+  UserRound,
+} from "lucide-react-native";
 
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import type { Exercise } from "@/components/data/Exercise";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -20,6 +28,9 @@ type WorkoutSessionStepProps = {
   onFinishExercise: () => void;
 };
 
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
+
 export default function WorkoutSessionStep({
   workout,
   exerciseIndex,
@@ -31,6 +42,8 @@ export default function WorkoutSessionStep({
   onFinishExercise,
 }: WorkoutSessionStepProps) {
   const themeColor = useThemeColor();
+
+  const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
   return (
     <View style={styles.container}>
@@ -44,15 +57,17 @@ export default function WorkoutSessionStep({
         {workout.body_part} • {workout.equipment}
       </UIText>
 
-      <Image
-        source={workout.image}
+      <View
         style={[
-          styles.sessionImage,
+          styles.sessionIconArea,
           {
+            backgroundColor: themeColor.card,
             borderColor: themeColor.border,
           },
         ]}
-      />
+      >
+        <EquipmentIcon size={90} color={themeColor.primary} />
+      </View>
 
       <View
         style={[
@@ -195,11 +210,13 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 
-  sessionImage: {
+  sessionIconArea: {
     width: "100%",
     height: 210,
     borderWidth: 1,
     borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 16,
   },
 

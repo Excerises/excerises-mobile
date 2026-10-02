@@ -1,8 +1,16 @@
-import { Check, X } from "lucide-react-native";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Dumbbell,
+  UserRound,
+  X,
+} from "lucide-react-native";
+
+import { useState } from "react";
 
 import {
   FlatList,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,6 +20,7 @@ import {
 import type { Exercise } from "@/components/data/Exercise";
 
 import UIButton from "@/components/ui/common/button";
+
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
@@ -24,6 +33,9 @@ type WorkoutRecommendationStepProps = {
   onClear: () => void;
 };
 
+const getEquipmentIcon = (equipment: string) =>
+  equipment === "Dumbbell" ? Dumbbell : UserRound;
+
 export default function WorkoutRecommendationStep({
   workouts,
   selectedWorkouts,
@@ -32,6 +44,8 @@ export default function WorkoutRecommendationStep({
   onClear,
 }: WorkoutRecommendationStepProps) {
   const themeColor = useThemeColor();
+
+  const [isSelectedExpanded, setIsSelectedExpanded] = useState(false);
 
   const isSelected = (exerciseId: string) =>
     selectedWorkouts.some((workout) => workout.exercise_id === exerciseId);
@@ -46,8 +60,6 @@ export default function WorkoutRecommendationStep({
 
       <View style={styles.sectionHeader}>
         <View>
-          <UIText style={styles.sectionTitle}>Recommended Workout</UIText>
-
           <UIText variant="muted" style={styles.sectionSubtitle}>
             Based on your preferences
           </UIText>
@@ -67,6 +79,8 @@ export default function WorkoutRecommendationStep({
         renderItem={({ item }) => {
           const selected = isSelected(item.exercise_id);
 
+          const EquipmentIcon = getEquipmentIcon(item.equipment);
+
           return (
             <Pressable
               style={[
@@ -80,7 +94,17 @@ export default function WorkoutRecommendationStep({
               ]}
               onPress={() => onToggleSelect(item)}
             >
-              <Image source={item.image} style={styles.workoutImage} />
+              <View
+                style={[
+                  styles.workoutIcon,
+                  {
+                    backgroundColor: themeColor.background,
+                    borderColor: themeColor.border,
+                  },
+                ]}
+              >
+                <EquipmentIcon size={28} color={themeColor.primary} />
+              </View>
 
               <View style={styles.workoutContent}>
                 <UIText style={styles.workoutTitle} numberOfLines={1}>
@@ -123,12 +147,23 @@ export default function WorkoutRecommendationStep({
         ]}
       >
         <View style={styles.selectedHeader}>
-          <UIText style={styles.selectedTitle}>
-            Selected Workout ({selectedWorkouts.length})
-          </UIText>
+          <Pressable
+            style={styles.selectedTitleButton}
+            onPress={() => setIsSelectedExpanded((current) => !current)}
+          >
+            <UIText style={styles.selectedTitle}>
+              Selected Workout ({selectedWorkouts.length})
+            </UIText>
+
+            {isSelectedExpanded ? (
+              <ChevronUp size={18} color={themeColor.foreground} />
+            ) : (
+              <ChevronDown size={18} color={themeColor.foreground} />
+            )}
+          </Pressable>
 
           {selectedWorkouts.length > 0 && (
-            <Pressable onPress={onClear}>
+            <Pressable onPress={onClear} hitSlop={8}>
               <UIText
                 style={[
                   styles.clearText,
@@ -143,35 +178,54 @@ export default function WorkoutRecommendationStep({
           )}
         </View>
 
-        <ScrollView
-          style={styles.selectedList}
-          contentContainerStyle={styles.selectedListContent}
-          showsVerticalScrollIndicator={false}
-          nestedScrollEnabled
-        >
-          {selectedWorkouts.map((workout) => (
-            <View
-              key={workout.exercise_id}
-              style={[
-                styles.selectedItem,
-                {
-                  backgroundColor: themeColor.card,
-                  borderColor: themeColor.border,
-                },
-              ]}
-            >
-              <Image source={workout.image} style={styles.selectedImage} />
+        {isSelectedExpanded && (
+          <ScrollView
+            style={styles.selectedList}
+            contentContainerStyle={styles.selectedListContent}
+            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled
+          >
+            {selectedWorkouts.map((workout) => {
+              const EquipmentIcon = getEquipmentIcon(workout.equipment);
 
-              <UIText style={styles.selectedItemText} numberOfLines={1}>
-                {workout.exercise_name}
-              </UIText>
+              return (
+                <View
+                  key={workout.exercise_id}
+                  style={[
+                    styles.selectedItem,
+                    {
+                      backgroundColor: themeColor.card,
+                      borderColor: themeColor.border,
+                    },
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.selectedIcon,
+                      {
+                        backgroundColor: themeColor.background,
+                        borderColor: themeColor.border,
+                      },
+                    ]}
+                  >
+                    <EquipmentIcon size={21} color={themeColor.primary} />
+                  </View>
 
-              <Pressable onPress={() => onToggleSelect(workout)} hitSlop={8}>
-                <X size={21} color={themeColor.foreground} />
-              </Pressable>
-            </View>
-          ))}
-        </ScrollView>
+                  <UIText style={styles.selectedItemText} numberOfLines={1}>
+                    {workout.exercise_name}
+                  </UIText>
+
+                  <Pressable
+                    onPress={() => onToggleSelect(workout)}
+                    hitSlop={8}
+                  >
+                    <X size={21} color={themeColor.foreground} />
+                  </Pressable>
+                </View>
+              );
+            })}
+          </ScrollView>
+        )}
 
         <UIButton
           label="Confirm Workout  →"
@@ -206,13 +260,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginTop: 26,
+    marginTop: 14,
     marginBottom: 12,
-  },
-
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
   },
 
   sectionSubtitle: {
@@ -243,10 +292,13 @@ const styles = StyleSheet.create({
     padding: 6,
   },
 
-  workoutImage: {
+  workoutIcon: {
     width: 54,
     height: 54,
     borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   workoutContent: {
@@ -275,7 +327,6 @@ const styles = StyleSheet.create({
   },
 
   selectedSection: {
-    height: 250,
     flexShrink: 0,
     paddingTop: 10,
     borderTopWidth: 1,
@@ -286,6 +337,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+  },
+
+  selectedTitleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
 
   selectedTitle: {
@@ -299,7 +356,7 @@ const styles = StyleSheet.create({
   },
 
   selectedList: {
-    flex: 1,
+    maxHeight: 150,
     minHeight: 0,
   },
 
@@ -318,10 +375,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 
-  selectedImage: {
+  selectedIcon: {
     width: 42,
     height: 42,
-    borderRadius: 6,
+    borderRadius: 21,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   selectedItemText: {
@@ -335,7 +395,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     marginTop: 10,
-    marginBottom: 4,
+    marginBottom: 16,
     borderRadius: 8,
   },
 });
