@@ -1,9 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-
 import { useEffect, useState } from "react";
-
 import { ScrollView, StyleSheet, View } from "react-native";
-
 import { exercises, type Exercise } from "@/components/data/Exercise";
 import { histories } from "@/components/data/History";
 import { currentUser } from "@/components/data/User";

@@ -1,4 +1,4 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack, usePathname, useRouter } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ThemeProvider from "@/components/provider/theme-provider";
@@ -37,6 +37,7 @@ function RootLayoutStack() {
     query: { data: user, isPending, isError, isFetched, error },
   } = useGetProfile({ enabled: ready });
   const router = useRouter();
+  const pathname = usePathname();
   const auth = useAuth();
   const toast = useToast();
   const { isWelcomed } = useWelcome();
@@ -68,7 +69,7 @@ function RootLayoutStack() {
     }
 
     if (isError) {
-      console.log(error)
+      console.log(error);
       if (error instanceof AxiosError) {
         if (error.response?.status != 401) {
           toast.error({
@@ -89,7 +90,15 @@ function RootLayoutStack() {
     auth.setUser(user.data);
 
     if (!!user.data?.profile) {
-      router.replace("/home");
+      if (
+        pathname === "/" ||
+        pathname.includes("login") ||
+        pathname.includes("register") ||
+        pathname.includes("profiling") ||
+        pathname.includes("welcome")
+      ) {
+        router.replace("/home");
+      }
     } else {
       router.replace("/profiling");
     }

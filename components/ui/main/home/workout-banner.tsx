@@ -4,6 +4,7 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import UIText from "@/components/ui/common/text";
 
 import useThemeColor from "@/hooks/use-theme-color";
+import { useRouter } from "expo-router";
 
 type WorkoutBannerProps = {
   image: ImageSourcePropType;
@@ -18,6 +19,7 @@ export default function WorkoutBanner({
   onPress,
 }: WorkoutBannerProps) {
   const themeColor = useThemeColor();
+  const router = useRouter();
 
   return (
     <View
@@ -77,7 +79,7 @@ export default function WorkoutBanner({
         </View>
 
         <Pressable
-          onPress={onPress}
+          onPress={() => router.push("/workout")}
           style={[
             styles.button,
             {
