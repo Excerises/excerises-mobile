@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   header: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: "bold",
   },
   description: {
-    fontSize: 20,
+    fontSize: 18,
   },
 });

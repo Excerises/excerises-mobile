@@ -9,9 +9,11 @@ export interface StartWorkoutContext {
   step: number;
   preference: StartWorkoutPreference;
   recommendedExercises: Exercise[];
+  selectedExercises: Exercise[];
   setPreference: (preference: StartWorkoutPreference) => void;
   setStep: (step: number) => void;
   setRecommendedExercises: (exercises: Exercise[]) => void;
+  setSelectedExercises: (exercises: Exercise[]) => void;
 }
 
 export const StartWorkoutContext = createContext({} as StartWorkoutContext);
@@ -30,6 +32,7 @@ export function StartWorkoutProvider({
   const [recommendedExercises, setRecommendedExercises] = useState<Exercise[]>(
     [],
   );
+  const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
   const [preference, setPreference] = useState<StartWorkoutPreference>({
     body_part: "" as any,
     category: "" as any,
@@ -44,9 +47,11 @@ export function StartWorkoutProvider({
         preference,
         step,
         recommendedExercises,
+        selectedExercises,
         setPreference,
         setStep,
         setRecommendedExercises,
+        setSelectedExercises,
       }}
     >
       {children}

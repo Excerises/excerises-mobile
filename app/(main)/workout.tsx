@@ -4,11 +4,12 @@ import {
 } from "@/components/provider/main/start-workout-provider";
 import UIView from "@/components/ui/common/view";
 import WorkoutPreferenceStep from "@/components/ui/main/workout/workout-preference";
+import WorkoutSelectExercises from "@/components/ui/main/workout/workout-select-exercises";
 import useThemeColor from "@/hooks/use-theme-color";
 import { useRouter } from "expo-router";
 import { ArrowLeftIcon, View } from "lucide-react-native";
 import { useMemo } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 export default function WorkoutPage() {
   return (
@@ -27,6 +28,7 @@ function WorkoutPageContent() {
     try {
       return {
         1: WorkoutPreferenceStep,
+        2: WorkoutSelectExercises,
       }[step] as any;
     } catch (_) {
       return WorkoutPreferenceStep;
@@ -45,9 +47,12 @@ function WorkoutPageContent() {
   return (
     <UIView style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={handleBack}>
-          <ArrowLeftIcon color={color.foreground} />
-        </Pressable>
+        <TouchableOpacity
+          style={{ height: 30, width: 30 }}
+          onPress={handleBack}
+        >
+          <ArrowLeftIcon size={24} color={color.foreground} />
+        </TouchableOpacity>
       </View>
       <Component />
     </UIView>
