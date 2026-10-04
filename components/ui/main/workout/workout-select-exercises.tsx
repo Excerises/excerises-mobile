@@ -1,86 +1,20 @@
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import StartWorkoutLayout from "./start-workout-layout";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UIButton from "../../common/button";
 import UIText from "../../common/text";
 import { useStartWorkout } from "@/components/provider/main/start-workout-provider";
-import UIView from "../../common/view";
-import { Exercise, ExerciseCategory } from "@/types/entity";
-import useThemeColor from "@/hooks/use-theme-color";
-import { Checkbox } from "expo-checkbox";
-import { useMemo } from "react";
-import {
-  ActivityIcon,
-  BoneIcon,
-  DnaIcon,
-  LucideIcon,
-  PillIcon,
-  SportShoeIcon,
-  WeightIcon,
-  ZapIcon,
-} from "lucide-react-native";
-
-function ExerciseCard({
-  exercise,
-  onPress,
-  isSelected,
-}: {
-  exercise: Exercise;
-  isSelected?: boolean;
-  onPress?: () => void;
-}) {
-  const color = useThemeColor();
-  const Icon = useMemo(() => {
-    const availables: Record<ExerciseCategory, LucideIcon> = {
-      stretching: DnaIcon,
-      cardio: SportShoeIcon,
-      balance: WeightIcon,
-      mobility: ZapIcon,
-      rehabilitation: PillIcon,
-      strength: ActivityIcon,
-      plyometrics: BoneIcon,
-    };
-
-    return availables[exercise.category];
-  }, []);
-
-  return (
-    <Pressable onPress={onPress}>
-      <UIView
-        variant="card"
-        style={[
-          styles.exerciseCard,
-          {
-            borderWidth: 1,
-            borderColor: isSelected ? color.primary : "transparent",
-          },
-        ]}
-      >
-        <UIView style={styles.exerciseCardIconContainer}>
-          <Icon color={color.primary} size={30} />
-        </UIView>
-        <View style={styles.exerciseCardContent}>
-          <UIText style={styles.exerciseCardContentTitle} numberOfLines={1}>
-            {exercise.name}
-          </UIText>
-          <UIText variant="muted">
-            {exercise.target} - {exercise.equipment}
-          </UIText>
-        </View>
-        <Checkbox
-          value={isSelected}
-          color={color.primary}
-          onValueChange={onPress}
-          style={{ borderWidth: 1.1, marginRight: 5 }}
-        />
-      </UIView>
-    </Pressable>
-  );
-}
+import { Exercise } from "@/types/entity";
+import { SelectExerciseCard } from "../exercise/exercise-card";
 
 export default function WorkoutSelectExercises() {
-  const { recommendedExercises, selectedExercises, setSelectedExercises } =
-    useStartWorkout();
+  const {
+    recommendedExercises,
+    selectedExercises,
+    setSelectedExercises,
+    step,
+    setStep,
+  } = useStartWorkout();
 
   function handleToggleSelected(exercise: Exercise) {
     if (selectedExercises.map((s) => s.id).includes(exercise.id)) {
@@ -90,6 +24,10 @@ export default function WorkoutSelectExercises() {
     } else {
       setSelectedExercises([...selectedExercises, exercise]);
     }
+  }
+
+  function onContinue() {
+    setStep(step + 1);
   }
 
   return (
@@ -111,7 +49,7 @@ export default function WorkoutSelectExercises() {
         <ScrollView style={styles.content}>
           <View style={{ gap: 10 }}>
             {recommendedExercises.map((exercise) => (
-              <ExerciseCard
+              <SelectExerciseCard
                 key={exercise.id}
                 exercise={exercise}
                 onPress={() => handleToggleSelected(exercise)}
@@ -131,6 +69,7 @@ export default function WorkoutSelectExercises() {
           disabled={selectedExercises.length <= 0}
           label="Confirm Workout"
           variant="primary"
+          onPress={onContinue}
         />
       </SafeAreaView>
     </StartWorkoutLayout>
@@ -145,29 +84,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-
-  exerciseCard: {
-    padding: 10,
-    borderRadius: 6,
-    gap: 14,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  exerciseCardIconContainer: {
-    height: 60,
-    width: 60,
-    borderRadius: 11,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  exerciseCardContent: {
-    flex: 1,
-  },
-  exerciseCardContentTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-    width: 200,
   },
 });

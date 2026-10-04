@@ -3,6 +3,7 @@ import {
   useStartWorkout,
 } from "@/components/provider/main/start-workout-provider";
 import UIView from "@/components/ui/common/view";
+import WorkoutConfirm from "@/components/ui/main/workout/workout-confirm";
 import WorkoutPreferenceStep from "@/components/ui/main/workout/workout-preference";
 import WorkoutSelectExercises from "@/components/ui/main/workout/workout-select-exercises";
 import useThemeColor from "@/hooks/use-theme-color";
@@ -29,6 +30,7 @@ function WorkoutPageContent() {
       return {
         1: WorkoutPreferenceStep,
         2: WorkoutSelectExercises,
+        3: WorkoutConfirm,
       }[step] as any;
     } catch (_) {
       return WorkoutPreferenceStep;
