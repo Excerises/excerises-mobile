@@ -58,8 +58,9 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.4",
-    "eslint": "^9.25.0",
     "eslint-config-expo": "~57.0.2",
+    "oxlint": "^1.87.0",
+    "oxlint-config-universe": "^0.2.0",
     "typescript": "~6.0.3"
   },
   "private": true

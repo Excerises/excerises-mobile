@@ -1,39 +1,21 @@
 import { useRouter } from "expo-router";
-
 import { Gauge, Ruler, Scale } from "lucide-react-native";
-
 import { ScrollView, StyleSheet, View } from "react-native";
-
 import { exercises, type Exercise } from "@/components/data/Exercise";
-
 import { histories } from "@/components/data/History";
-
 import { news } from "@/components/data/News";
-
 import { currentUser } from "@/components/data/User";
-
 import { userProfiles } from "@/components/data/User_Profile";
-
 import { useWorkoutContext } from "@/components/provider/workout-provider";
-
 import UIText from "@/components/ui/common/text";
-
 import FloatingWorkoutButton from "@/components/ui/main/home/floating-workout-button";
-
 import NewsCard from "@/components/ui/main/home/news-card";
-
 import RecentWorkouts from "@/components/ui/main/home/recent-workouts";
-
 import StatCard from "@/components/ui/main/home/stat-card";
-
 import WeeklyWorkout from "@/components/ui/main/home/weekly-workout";
-
 import WorkoutBanner from "@/components/ui/main/home/workout-banner";
-
 import useThemeColor from "@/hooks/use-theme-color";
-
 import Header from "@/components/ui/main/header";
-
 import { useAuth } from "@/stores/auth-store";
 
 const currentProfile = userProfiles.find(
@@ -147,7 +129,7 @@ export default function Home() {
           <WorkoutBanner
             image={require("@/assets/images/workout-banner.jpeg")}
             title="START YOUR\nWORKOUT"
-            description="Create your workout plan and start your fitness journey today."
+            description="Create your workout plan and start your fitness journey."
             onPress={goToWorkout}
           />
         ) : (
