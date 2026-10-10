@@ -1,13 +1,18 @@
 import { Button, Input, Separator, Text, View } from "@/component/ui";
 import { FormGroup } from "@/component/ui/form/group";
 import { Fonts } from "@/constant/theme";
-import { Image, StyleSheet } from "react-native";
+import { Alert, Image, Pressable, StyleSheet } from "react-native";
 import GoogleIcon from "@/assets/images/auth/google.png";
 import AppleIcon from "@/assets/images/auth/apple.png";
+import { useRouter } from "expo-router";
 
 function OauthButton({ icon, label }: { icon: any; label: string }) {
+  function onPress() {
+    Alert.alert("This feature will be available soon.");
+  }
+
   return (
-    <Button size="lg" variant="secondary" style={{ flex: 1 }}>
+    <Button size="lg" variant="secondary" style={{ flex: 1 }} onPress={onPress}>
       <Image
         source={icon}
         style={{ width: Fonts.size.sm, height: Fonts.size.sm }}
@@ -18,6 +23,8 @@ function OauthButton({ icon, label }: { icon: any; label: string }) {
 }
 
 export default function Login() {
+  const router = useRouter();
+
   return (
     <View style={styles.content}>
       <View variant="ghost">
@@ -61,8 +68,10 @@ export default function Login() {
       </View>
 
       <View style={styles.action}>
-        <Text variant="muted">Doesn't have an account yet? </Text>
-        <Text variant="primary">Register here</Text>
+        <Text variant="muted">Doesn't have an account? </Text>
+        <Pressable onPress={() => router.replace("/register")}>
+          <Text variant="primary">Sign up</Text>
+        </Pressable>
       </View>
     </View>
   );
