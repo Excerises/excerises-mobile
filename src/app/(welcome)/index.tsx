@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Banner from "@/assets/images/welcome/banner-alt.jpg";
 import { Colors } from "@/constant/theme";
 import { useRouter } from "expo-router";
+import { ThemeToggler } from "@/component/common/theme-toggler";
 
 export default function Index() {
   const { height, width } = useWindowDimensions();
@@ -15,10 +16,13 @@ export default function Index() {
 
   return (
     <View style={[styles.container, { paddingHorizontal: 0 }]}>
-      <Image source={Banner} style={[styles.banner, { height, width }]} />
-      <SafeAreaView style={styles.container} edges={["bottom", "top"]}>
+      <SafeAreaView style={styles.container} edges={["bottom"]}>
         <View style={styles.content} variant="ghost">
-          <View variant="ghost">
+          <Image source={Banner} style={styles.banner} />
+          <View
+            variant="ghost"
+            style={{ paddingHorizontal: 20, paddingBottom: 20 }}
+          >
             <Text size="xl5" weight="bold" style={{ color: Colors.white }}>
               SMART{"\n"}WORKOUT{"\n"}FOR A
             </Text>
@@ -26,20 +30,37 @@ export default function Index() {
               BETTER YOU
             </Text>
           </View>
-          <View variant="ghost">
-            <Text style={{ color: Colors.white }}>
-              Get workout recommendations
-              {"\n"}tailored to your needs
-              {"\n"}using AI.
-            </Text>
-          </View>
         </View>
-        <Button style={{ alignSelf: "stretch" }} size="xl" onPress={getStarted}>
-          <Text weight="bold" size="xl">
-            Get Started
+        <View variant="ghost" style={{ paddingHorizontal: 20, gap: 10 }}>
+          <Text size="xl" weight="bold">
+            Find Best Exercises
           </Text>
-        </Button>
+          <Text variant="muted">
+            Get workout recommendations
+            {"\n"}tailored to your needs using AI.
+          </Text>
+        </View>
+        <View
+          variant="ghost"
+          style={{ paddingHorizontal: 20, paddingBottom: 25, paddingTop: 14 }}
+        >
+          <Button
+            style={{ alignSelf: "stretch" }}
+            size="xl"
+            onPress={getStarted}
+          >
+            <Text weight="bold" size="lg">
+              GET STARTED
+            </Text>
+          </Button>
+        </View>
       </SafeAreaView>
+
+      <View variant="ghost" style={styles.themeToggler}>
+        <SafeAreaView>
+          <ThemeToggler color={Colors.white} />
+        </SafeAreaView>
+      </View>
     </View>
   );
 }
@@ -47,13 +68,12 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
+    gap: 20,
   },
   content: {
     flex: 1,
     gap: 18,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     position: "relative",
   },
   banner: {
@@ -61,6 +81,13 @@ const styles = StyleSheet.create({
     filter: "brightness(0.65)",
     top: 0,
     left: 0,
+    width: "100%",
+    height: "100%",
     objectFit: "cover",
+  },
+  themeToggler: {
+    position: "absolute",
+    top: 20,
+    right: 20,
   },
 });
