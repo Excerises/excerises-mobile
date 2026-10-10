@@ -19,65 +19,56 @@ function OauthButton({ icon, label }: { icon: any; label: string }) {
 
 export default function Login() {
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View variant="ghost">
-          <Text size="xl3" weight="bold">
-            Welcome Back
-          </Text>
-          <Text variant="muted">
-            Glad to see you again! Enter your account to start.
-          </Text>
-        </View>
-        <View variant="ghost" style={styles.form}>
-          <FormGroup>
-            <Text>Email</Text>
-            <Input placeholder="me@example.com" />
-          </FormGroup>
-          <FormGroup>
-            <Text>Password</Text>
-            <Input placeholder="Enter Password" />
-          </FormGroup>
-        </View>
-
-        <Text weight="semibold" variant="primary">
-          Forgot password?
+    <View style={styles.content}>
+      <View variant="ghost">
+        <Text size="xl3" weight="bold">
+          Sign In
         </Text>
+        <Text variant="muted">
+          Glad to see you again! Enter your account to start.
+        </Text>
+      </View>
+      <View variant="ghost" style={styles.form}>
+        <FormGroup>
+          <Text>Email</Text>
+          <Input placeholder="me@example.com" />
+        </FormGroup>
+        <FormGroup>
+          <Text>Password</Text>
+          <Input placeholder="Enter Password" />
+        </FormGroup>
+      </View>
 
-        <Button size="lg" style={{ alignSelf: "stretch" }}>
-          <Text weight="semibold" size="lg">
-            LOGIN
-          </Text>
-        </Button>
+      <Text weight="semibold" variant="primary">
+        Forgot password?
+      </Text>
 
-        <View style={styles.or}>
-          <Separator />
-          <Text variant="muted">OR</Text>
-          <Separator />
-        </View>
+      <Button size="lg" style={{ alignSelf: "stretch" }}>
+        <Text weight="semibold" size="lg">
+          LOGIN
+        </Text>
+      </Button>
 
-        <View style={styles.or}>
-          <OauthButton icon={GoogleIcon} label="Google" />
-          <OauthButton icon={AppleIcon} label="Apple" />
-        </View>
+      <View style={styles.or}>
+        <Separator />
+        <Text variant="muted">OR</Text>
+        <Separator />
+      </View>
 
-        <View style={styles.action}>
-          <Text variant="muted">Doesn't have an account yet? </Text>
-          <Text variant="primary">Register here</Text>
-        </View>
+      <View style={styles.or}>
+        <OauthButton icon={GoogleIcon} label="Google" />
+        <OauthButton icon={AppleIcon} label="Apple" />
+      </View>
+
+      <View style={styles.action}>
+        <Text variant="muted">Doesn't have an account yet? </Text>
+        <Text variant="primary">Register here</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   content: {
     gap: 26,
   },

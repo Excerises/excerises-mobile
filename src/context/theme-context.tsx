@@ -14,10 +14,11 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("system");
+  const [theme, setTheme] = useState<Theme>("dark");
 
   function rotateTheme() {
-    const themes = ["system", "light", "dark"];
+    // const themes = ["system", "light", "dark"];
+    const themes = ["light", "dark"];
     const nextIndex = themes.indexOf(theme) + 1;
     setTheme(themes[nextIndex > themes.length - 1 ? 0 : nextIndex] as any);
   }
