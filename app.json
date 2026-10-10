@@ -29,7 +29,8 @@
           "image": "./assets/images/favicon.png",
           "imageWidth": 76
         }
-      ]
+      ],
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true,
