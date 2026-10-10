@@ -25,8 +25,9 @@ function Content() {
       case "system":
         return "auto";
       case "light":
+        return "dark";
       case "dark":
-        return theme;
+        return "light";
     }
   }, [theme]);
 

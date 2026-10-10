@@ -21,7 +21,7 @@ export default function Index() {
           <Image source={Banner} style={styles.banner} />
           <View
             variant="ghost"
-            style={{ paddingHorizontal: 20, paddingBottom: 20 }}
+            style={{ paddingHorizontal: 30, paddingBottom: 50 }}
           >
             <Text size="xl5" weight="bold" style={{ color: Colors.white }}>
               SMART{"\n"}WORKOUT{"\n"}FOR A
@@ -31,8 +31,8 @@ export default function Index() {
             </Text>
           </View>
         </View>
-        <View variant="ghost" style={{ paddingHorizontal: 20, gap: 10 }}>
-          <Text size="xl" weight="bold">
+        <View variant="ghost" style={{ paddingHorizontal: 30, gap: 10 }}>
+          <Text size="xl" weight="bold" style={{ paddingTop: 14 }}>
             Find Best Exercises
           </Text>
           <Text variant="muted">
@@ -84,6 +84,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     objectFit: "cover",
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
   },
   themeToggler: {
     position: "absolute",
