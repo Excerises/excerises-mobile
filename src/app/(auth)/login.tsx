@@ -42,7 +42,7 @@ export default function Login() {
         </FormGroup>
         <FormGroup>
           <Text>Password</Text>
-          <Input placeholder="Enter Password" />
+          <Input placeholder="Enter Password" password />
         </FormGroup>
       </View>
 

@@ -27,11 +27,11 @@ export default function Register() {
         </FormGroup>
         <FormGroup>
           <Text>Password</Text>
-          <Input placeholder="Enter Password" />
+          <Input placeholder="Enter Password" password />
         </FormGroup>
         <FormGroup>
           <Text>Confirm Password</Text>
-          <Input placeholder="Confirm Password" />
+          <Input placeholder="Confirm Password" password />
         </FormGroup>
       </View>
 
