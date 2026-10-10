@@ -7,6 +7,6 @@ export function FormGroup({ children }: { children: ReactNode }) {
 
 const styles = StyleSheet.create({
   group: {
-    gap: 8,
+    gap: 6,
   },
 });

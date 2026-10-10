@@ -14,6 +14,7 @@ export type NButtonProps = TouchableOpacityProps & {
   variant?: "default" | "secondary" | "ghost" | "destructive";
   size?: keyof typeof Buttons.size;
   style?: StyleProp<ViewStyle>;
+  full?: boolean;
 };
 
 export function NButton({
@@ -21,6 +22,7 @@ export function NButton({
   disabled,
   style,
   size = "md",
+  full,
   ...props
 }: NButtonProps) {
   const themeColor = useThemeColor();
@@ -43,6 +45,7 @@ export function NButton({
         {
           borderRadius: Borders.radius[size],
           backgroundColor,
+          alignSelf: full ? "stretch" : "flex-start",
         },
         style,
       ]}
@@ -57,7 +60,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "flex-start",
     gap: 8,
   },
 

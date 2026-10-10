@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { TextProps, Text } from "react-native";
 
 export type NTextProps = TextProps & {
-  variant?: "default" | "muted" | "primary";
+  variant?: "default" | "muted" | "primary" | "destructive";
   size?: keyof typeof Fonts.size | number;
   weight?: keyof typeof Fonts.weight | number;
 };
@@ -23,6 +23,7 @@ export function NText({
       default: themeColor.foreground,
       muted: themeColor.mutedForeground,
       primary: themeColor.primary,
+      destructive: themeColor.danger,
     }[variant];
   }, [variant, themeColor]);
 

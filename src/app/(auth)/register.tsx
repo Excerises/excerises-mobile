@@ -1,10 +1,13 @@
-import { Button, Input, Text, View } from "@/component/ui";
-import { FormGroup } from "@/component/ui/form/group";
+import { Button, FormGroup, Input, Label, Text, View } from "@/component/ui";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet } from "react-native";
 
 export default function Register() {
   const router = useRouter();
+
+  function register() {
+    router.push("/onboarding");
+  }
 
   return (
     <View style={styles.content}>
@@ -18,24 +21,24 @@ export default function Register() {
       </View>
       <View variant="ghost" style={styles.form}>
         <FormGroup>
-          <Text>Full Name</Text>
+          <Label required>Full Name</Label>
           <Input placeholder="Enter your full name" />
         </FormGroup>
         <FormGroup>
-          <Text>Email</Text>
+          <Label required>Email</Label>
           <Input placeholder="me@example.com" />
         </FormGroup>
         <FormGroup>
-          <Text>Password</Text>
+          <Label required>Password</Label>
           <Input placeholder="Enter Password" password />
         </FormGroup>
         <FormGroup>
-          <Text>Confirm Password</Text>
+          <Label required>Confirm Password</Label>
           <Input placeholder="Confirm Password" password />
         </FormGroup>
       </View>
 
-      <Button size="lg" style={{ alignSelf: "stretch" }}>
+      <Button size="lg" style={{ alignSelf: "stretch" }} onPress={register}>
         <Text weight="semibold" size="lg">
           REGISTER
         </Text>

@@ -1,5 +1,12 @@
-import { Button, Input, Separator, Text, View } from "@/component/ui";
-import { FormGroup } from "@/component/ui/form/group";
+import {
+  Button,
+  FormGroup,
+  Input,
+  Label,
+  Separator,
+  Text,
+  View,
+} from "@/component/ui";
 import { Fonts } from "@/constant/theme";
 import { Alert, Image, Pressable, StyleSheet } from "react-native";
 import GoogleIcon from "@/assets/images/auth/google.png";
@@ -37,11 +44,11 @@ export default function Login() {
       </View>
       <View variant="ghost" style={styles.form}>
         <FormGroup>
-          <Text>Email</Text>
+          <Label required>Email</Label>
           <Input placeholder="me@example.com" />
         </FormGroup>
         <FormGroup>
-          <Text>Password</Text>
+          <Label required>Password</Label>
           <Input placeholder="Enter Password" password />
         </FormGroup>
       </View>
