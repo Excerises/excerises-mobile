@@ -1,11 +1,11 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { CalculateFitnessRequest } from "../../type/request/onboarding/calculate-fitness-level";
+import { UpdateProfile } from "../../type/request/profile/update-profile";
 
 export type OnboardingContext = {
   step: number;
   setStep: (step: number) => void;
-  data: Partial<CalculateFitnessRequest>;
-  setData: (key: keyof CalculateFitnessRequest, value: any) => void;
+  data: Partial<UpdateProfile>;
+  setData: (key: keyof UpdateProfile, value: any) => void;
 };
 
 const OnboardingContext = createContext({} as OnboardingContext);
@@ -16,9 +16,9 @@ export function useOnboarding() {
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [step, setStep] = useState(1);
-  const [data, setData] = useState({} as Partial<CalculateFitnessRequest>);
+  const [data, setData] = useState({} as Partial<UpdateProfile>);
 
-  function handleChangeData(key: keyof CalculateFitnessRequest, value: any) {
+  function handleChangeData(key: keyof UpdateProfile, value: any) {
     setData((v) => {
       v[key] = value;
       return v;

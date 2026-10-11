@@ -7,6 +7,7 @@ const schema = z.object({
   workoutDurationPerSession: z
     .number()
     .min(0.1, "Duration per session is required"),
+  waterIntakeDaily: z.number().min(0.1, "Water Intake Daily is required"),
 });
 
 export function useOnboardingWorkoutForm() {
@@ -15,6 +16,7 @@ export function useOnboardingWorkoutForm() {
     defaultValues: {
       workoutFreqPerWeek: 0,
       workoutDurationPerSession: 0,
+      waterIntakeDaily: 0,
     },
   });
 }

@@ -13,10 +13,15 @@ import {
 import { workoutDurationOptions } from "@/constant/fitness/workout-duration-per-session";
 import { useOnboarding } from "@/context/onboarding-context";
 import { useOnboardingWorkoutForm } from "@/hook/form/onboarding/use-onboarding-workout-form";
+import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet } from "react-native";
+import Slider from "@react-native-community/slider";
+import { useThemeColor } from "@/hook/use-theme-color";
 
 export default function Page() {
+  const themeColor = useThemeColor();
+  const router = useRouter();
   const { setStep, setData } = useOnboarding();
   const { control, handleSubmit } = useOnboardingWorkoutForm();
 
@@ -27,8 +32,11 @@ export default function Page() {
   const onContinue = handleSubmit((v) => {
     setData("workout_freq_per_week", v.workoutFreqPerWeek);
     setData("workout_duration_per_day", v.workoutDurationPerSession);
+    setData("water_intake_daily", v.waterIntakeDaily);
 
     console.log(v);
+
+    router.push("/onboarding/reminder");
   });
 
   return (
@@ -92,6 +100,28 @@ export default function Page() {
                 ))}
               </SelectContent>
             </Select>
+          )}
+        />
+
+        <FormControl
+          control={control}
+          name="waterIntakeDaily"
+          label="Water Intake Daily"
+          required
+          render={({ field }) => (
+            <View variant="ghost" style={{ alignItems: "flex-end" }}>
+              <Slider
+                value={field.value}
+                onValueChange={(v) => field.onChange(v)}
+                maximumValue={4}
+                minimumValue={0}
+                minimumTrackTintColor={themeColor.primary}
+                style={{ width: "100%" }}
+              />
+              <Text size="sm" variant="muted">
+                {(field.value || 0).toFixed(1)} liter
+              </Text>
+            </View>
           )}
         />
       </View>
