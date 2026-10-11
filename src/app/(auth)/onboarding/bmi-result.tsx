@@ -5,10 +5,12 @@ import { LinearGauge } from "@/component/visual/gauge/linear-gauge";
 import { bmiCategories } from "@/constant/fitness/bmi-categories";
 import { useOnboarding } from "@/context/onboarding-context";
 import { getBmiCategory } from "@/utils/fitness/bmi-category";
+import { useRouter } from "expo-router";
 import { useEffect, useMemo } from "react";
 import { StyleSheet } from "react-native";
 
 export default function Page() {
+  const router = useRouter();
   const { setStep, data } = useOnboarding();
 
   useEffect(() => {
@@ -19,10 +21,15 @@ export default function Page() {
     return getBmiCategory(data.bmi || 0);
   }, [data.bmi]);
 
+  function onContinue() {
+    router.push("/onboarding/workout");
+  }
+
   return (
     <OnboardingScreen
       title="Your BMI Result"
       description="Based on your data, here is your BMI (Body Mass Index)."
+      onContinue={onContinue}
     >
       <View variant="ghost" style={styles.value}>
         <Text weight="bold" size="xl7">
