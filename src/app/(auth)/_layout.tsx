@@ -3,12 +3,13 @@ import { Stack } from "expo-router";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { ThemeToggler } from "@/component/common/theme-toggler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { OnboardingProvider } from "@/context/onboarding-context";
 
 export default function Layout() {
   const themeColor = useThemeColor();
 
   return (
-    <>
+    <OnboardingProvider>
       <Stack
         screenOptions={{
           headerShown: false,
@@ -23,7 +24,7 @@ export default function Layout() {
           <ThemeToggler />
         </SafeAreaView>
       </View>
-    </>
+    </OnboardingProvider>
   );
 }
 
