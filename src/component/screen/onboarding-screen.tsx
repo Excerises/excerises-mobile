@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     gap: 3,
     alignItems: "center",
     height: 30,
-    width: "50%",
+    width: "60%",
     marginHorizontal: "auto",
   },
   step: {

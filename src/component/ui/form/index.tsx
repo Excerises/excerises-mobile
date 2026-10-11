@@ -4,3 +4,4 @@ export * from "./label";
 export * from "./toggle";
 export * from "./control";
 export * from "./date-picker";
+export * from "./select";
