@@ -7,7 +7,7 @@ import { useOnboarding } from "@/context/onboarding-context";
 export type OnboardingScreenProps = {
   title: string;
   description: string;
-  children: ReactNode;
+  children?: ReactNode;
   steps?: number;
   onContinue?: () => void;
   continueText?: string;
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     gap: 3,
     alignItems: "center",
     height: 30,
-    width: "65%",
+    width: "50%",
     marginHorizontal: "auto",
   },
   step: {

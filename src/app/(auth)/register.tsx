@@ -24,7 +24,7 @@ export default function Register() {
     }
 
     console.log(v);
-    router.push("/onboarding");
+    router.replace("/onboarding");
   });
 
   return (

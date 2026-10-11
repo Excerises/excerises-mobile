@@ -19,11 +19,13 @@ import { useOnboardingIdentityForm } from "@/hook/form/onboarding/use-onboarding
 import { useThemeColor } from "@/hook/use-theme-color";
 import { calculateAge } from "@/utils/fitness/calculate-age";
 import { calculateBmi } from "@/utils/fitness/calculate-bmi";
+import { useRouter } from "expo-router";
 import { MarsIcon, VenusIcon } from "lucide-react-native";
 import moment from "moment";
 import { useEffect } from "react";
 
 export default function Onboarding() {
+  const router = useRouter();
   const themeColor = useThemeColor();
   const { setData, setStep } = useOnboarding();
   const { control, handleSubmit } = useOnboardingIdentityForm();
@@ -37,6 +39,8 @@ export default function Onboarding() {
     setData("height", v.height);
     setData("weight", v.weight);
     setData("bmi", bmi);
+
+    router.push("/onboarding/bmi-result");
   });
 
   useEffect(() => {
