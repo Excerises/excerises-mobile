@@ -15,7 +15,7 @@ export function NView({ variant = "default", ...props }: NViewProps) {
       default: themeColor.background,
       card: themeColor.card,
       primary: themeColor.primary,
-      ghost: "transparent",
+      ghost: undefined,
     }[variant];
   }, [themeColor, variant]);
 
