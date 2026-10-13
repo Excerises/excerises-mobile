@@ -12,11 +12,13 @@ import {
 import { days } from "@/constant/data/days";
 import { useOnboarding } from "@/context/onboarding-context";
 import { useOnboardingReminderForm } from "@/hook/form/onboarding/use-onboarding-reminder-form";
+import { useRouter } from "expo-router";
 import moment from "moment";
 import { useEffect } from "react";
 import { StyleSheet } from "react-native";
 
 export default function Page() {
+  const router = useRouter();
   const { control, handleSubmit } = useOnboardingReminderForm();
   const { setStep, setData } = useOnboarding();
 
@@ -29,6 +31,7 @@ export default function Page() {
     setData("reminder_time", v.reminderTime);
 
     console.log(v);
+    router.push("/onboarding/measurement");
   });
 
   return (
@@ -57,6 +60,7 @@ export default function Page() {
 
                 return (
                   <Button
+                    key={value}
                     variant={isActive ? "default" : "secondary"}
                     style={{ width: "22%" }}
                     onPress={() => {
@@ -81,7 +85,11 @@ export default function Page() {
           required
           render={({ field }) => (
             <ModalDatePicker
-              value={moment(`1970-01-01 ${field.value}`).toDate()}
+              value={
+                field.value
+                  ? moment(`1970-01-01 ${field.value}:00`).toDate()
+                  : null
+              }
               onValueChange={(v) => {
                 field.onChange(moment(v).format("HH:mm"));
               }}
