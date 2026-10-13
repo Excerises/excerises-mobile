@@ -1,15 +1,23 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { Stack, usePathname, useRouter } from "expo-router";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { ThemeToggler } from "@/component/common/theme-toggler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OnboardingProvider } from "@/context/onboarding-context";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { Fonts } from "@/constant/theme";
+import { useEffect, useState } from "react";
 
 export default function Layout() {
   const router = useRouter();
+  const pathname = usePathname();
   const themeColor = useThemeColor();
+
+  const [canBack, setCanBack] = useState(false);
+
+  useEffect(() => {
+    setCanBack(router.canGoBack());
+  }, [pathname]);
 
   return (
     <OnboardingProvider>
@@ -22,7 +30,7 @@ export default function Layout() {
           },
         }}
       />
-      {router.canGoBack() && (
+      {canBack && (
         <View style={styles.backButton}>
           <SafeAreaView>
             <Pressable onPress={() => router.back()} style={{ padding: 6 }}>
