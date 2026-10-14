@@ -1,5 +1,5 @@
 import { Button, Text, View } from "@/component/ui";
-import { Image, StyleSheet, useWindowDimensions } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Banner from "@/assets/images/welcome/banner-alt.jpg";
 import { Colors } from "@/constant/theme";
@@ -7,7 +7,6 @@ import { useRouter } from "expo-router";
 import { ThemeToggler } from "@/component/common/theme-toggler";
 
 export default function Index() {
-  const { height, width } = useWindowDimensions();
   const router = useRouter();
 
   function getStarted() {

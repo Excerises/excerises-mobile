@@ -37,6 +37,7 @@ export default function Login() {
 
   const handleLogin = handleSubmit((v) => {
     console.log(v);
+    router.push("/home");
   });
 
   return (
