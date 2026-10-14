@@ -1,4 +1,5 @@
 import { ExerciseCard } from "@/component/fitness";
+import { NewsCard } from "@/component/news/news-card";
 import {
   HomeScreen,
   HomeScreenTitle,
@@ -87,14 +88,20 @@ export default function Page() {
           </View>
           <View variant="ghost" style={{ gap: 12 }}>
             <RecentItem title="Recent News" onSeeAll={() => {}} />
-            <View
-              variant="card"
-              style={{ height: 130, borderRadius: Borders.radius.lg }}
-            ></View>
-            <View
-              variant="card"
-              style={{ height: 130, borderRadius: Borders.radius.lg }}
-            ></View>
+            {Array.from({ length: 2 }).map((_, i) => (
+              <NewsCard
+                key={i}
+                news={{
+                  id: i,
+                  title: "Good Food",
+                  content: "",
+                  created_at: "2024-01-01",
+                  updated_at: "2024-01-01",
+                  created_by_id: "1",
+                  viewed_count: 0,
+                }}
+              />
+            ))}
           </View>
         </View>
       </ScrollView>
