@@ -1,25 +1,32 @@
 import { View } from "@/component/ui";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { Tabs } from "expo-router";
-import { HistoryIcon, HomeIcon, UserIcon } from "lucide-react-native";
+import {
+  HistoryIcon,
+  HomeIcon,
+  SportShoeIcon,
+  UserIcon,
+} from "lucide-react-native";
 
 const menus = [
   {
     title: "Home",
     icon: HomeIcon,
-    url: "/",
     name: "index",
+  },
+  {
+    title: "Explore",
+    icon: SportShoeIcon,
+    name: "explore",
   },
   {
     title: "History",
     icon: HistoryIcon,
-    url: "/history",
     name: "history",
   },
   {
     title: "Account",
     icon: UserIcon,
-    url: "/account",
     name: "account",
   },
 ];

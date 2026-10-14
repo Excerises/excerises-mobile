@@ -1,6 +1,7 @@
 export * from "./color";
 export * from "./font";
 export * from "./border";
+export * from "./spacing";
 
 export type Theme = "system" | "light" | "dark";
 type ThemeColor = {
