@@ -30,16 +30,14 @@ export function HomeScreen({ title, actions, children }: HomeScreenProps) {
           <View variant="ghost" style={{ flex: 1 }}>
             {title}
           </View>
-          {actions && (
-            <View variant="ghost" style={styles.headerActions}>
-              {actions.map((action, i) => (
-                <Button variant="ghost" key={i} onPress={action.onTap}>
-                  {action.icon}
-                </Button>
-              ))}
-              <ThemeToggler size={Fonts.size.xl} />
-            </View>
-          )}
+          <View variant="ghost" style={styles.headerActions}>
+            {actions?.map((action, i) => (
+              <Button variant="ghost" key={i} onPress={action.onTap}>
+                {action.icon}
+              </Button>
+            ))}
+            <ThemeToggler size={Fonts.size.xl} />
+          </View>
         </View>
       </SafeAreaView>
       <View variant="ghost" style={{ flex: 1 }}>
