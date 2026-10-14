@@ -1,4 +1,3 @@
-import { ExerciseCard } from "@/component/fitness";
 import { NewsCard } from "@/component/news/news-card";
 import {
   HomeScreen,
@@ -11,6 +10,7 @@ import { BellIcon } from "lucide-react-native";
 import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
 import { StatsBannerCard } from "@/component/home/stats-banner-card";
+import { NoRecordCard } from "@/component/common/no-record";
 
 function RecentItem({
   title,
@@ -63,26 +63,8 @@ export default function Page() {
         <View variant="ghost" style={styles.container}>
           <StatsBannerCard />
           <View variant="ghost" style={{ gap: 12 }}>
-            <RecentItem title="Recent Activities" onSeeAll={() => {}} />
-            {Array.from({ length: 2 }).map((_, i) => (
-              <ExerciseCard
-                key={i}
-                exercise={{
-                  id: i,
-                  name: "Push-up",
-                  body_part: "chest",
-                  category: "strength",
-                  description: "description",
-                  difficulty: "beginner",
-                  equipment: "band",
-                  instruction: ["instruction 1", "instruction 2"],
-                  secondary_muscles: [],
-                  target: "abs",
-                  created_at: "2024-01-01",
-                  updated_at: "2024-01-01",
-                }}
-              />
-            ))}
+            <RecentItem title="Recent Sessions" onSeeAll={() => {}} />
+            <NoRecordCard message="No recent sessions" />
           </View>
           <View variant="ghost" style={{ gap: 12 }}>
             <RecentItem title="Recent News" onSeeAll={() => {}} />
