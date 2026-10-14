@@ -14,13 +14,17 @@ export function StatsBannerCard() {
           variant="primary"
           style={{ textTransform: "uppercase", marginBottom: 5 }}
         >
-          Ready to {"\n"}get stronger?
+          Ready to be stronger?
         </Text>
         <Text size="sm" style={{ color: Colors.white }}>
           Start with a workout plan designed just for you.
         </Text>
         <Button style={{ marginTop: 20 }}>
-          <Text style={{ textTransform: "uppercase" }} weight="semibold">
+          <Text
+            size="sm"
+            style={{ textTransform: "uppercase" }}
+            weight="semibold"
+          >
             Get Started
           </Text>
         </Button>
@@ -56,5 +60,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: `rgba(0, 0, 0, 0.2)`,
+    justifyContent: "center",
   },
 });

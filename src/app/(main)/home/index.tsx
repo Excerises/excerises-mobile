@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
 import { StatsBannerCard } from "@/component/home/stats-banner-card";
 import { NoRecordCard } from "@/component/common/no-record";
+import { useRouter } from "expo-router";
 
 function RecentItem({
   title,
@@ -48,6 +49,7 @@ function RecentItem({
 }
 
 export default function Page() {
+  const router = useRouter();
   const themeColor = useThemeColor();
 
   return (
@@ -63,7 +65,12 @@ export default function Page() {
         <View variant="ghost" style={styles.container}>
           <StatsBannerCard />
           <View variant="ghost" style={{ gap: 12 }}>
-            <RecentItem title="Recent Sessions" onSeeAll={() => {}} />
+            <RecentItem
+              title="Recent Sessions"
+              onSeeAll={() => {
+                router.push("/home/history");
+              }}
+            />
             <NoRecordCard message="No recent sessions" />
           </View>
           <View variant="ghost" style={{ gap: 12 }}>

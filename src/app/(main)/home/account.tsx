@@ -1,11 +1,17 @@
+import {
+  HomeScreen,
+  HomeScreenTitle,
+} from "@/component/screen/main/home-screen";
 import { Text, View } from "@/component/ui";
 import { StyleSheet } from "react-native";
 
 export default function Page() {
   return (
-    <View style={styles.container}>
-      <Text>Account Page</Text>
-    </View>
+    <HomeScreen title={<HomeScreenTitle>Account</HomeScreenTitle>}>
+      <View style={styles.container}>
+        <Text>Account Page</Text>
+      </View>
+    </HomeScreen>
   );
 }
 
