@@ -5,11 +5,12 @@ import {
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
 import { Text, View } from "@/component/ui";
-import { Borders, Fonts } from "@/constant/theme";
+import { Fonts } from "@/constant/theme";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { BellIcon } from "lucide-react-native";
 import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
+import { StatsBannerCard } from "@/component/home/stats-banner-card";
 
 function RecentItem({
   title,
@@ -51,19 +52,16 @@ export default function Page() {
 
   return (
     <HomeScreen
-      title={<HomeScreenTitle>Hi, Alfiansyah</HomeScreenTitle>}
+      title={<HomeScreenTitle>Hi, Alfiansyah 👋</HomeScreenTitle>}
       actions={[
         {
           icon: <BellIcon color={themeColor.foreground} size={Fonts.size.xl} />,
         },
       ]}
     >
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={styles.container}>
-          <View
-            variant="card"
-            style={{ height: 170, borderRadius: Borders.radius.xl }}
-          ></View>
+          <StatsBannerCard />
           <View variant="ghost" style={{ gap: 12 }}>
             <RecentItem title="Recent Activities" onSeeAll={() => {}} />
             {Array.from({ length: 2 }).map((_, i) => (

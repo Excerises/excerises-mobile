@@ -46,7 +46,7 @@ export function ExerciseCard({
             style={[
               styles.category,
               {
-                backgroundColor: `${difficultyColors[exercise.difficulty]}22`,
+                backgroundColor: `${difficultyColors[exercise.difficulty]}24`,
               },
             ]}
           >
