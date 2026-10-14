@@ -5,7 +5,13 @@ import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react-native";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { Fonts } from "@/constant/theme";
 
-export function ThemeToggler({ color }: { color?: string }) {
+export function ThemeToggler({
+  color,
+  size,
+}: {
+  size?: number;
+  color?: string;
+}) {
   const { theme, rotateTheme } = useTheme();
   const themeColor = useThemeColor();
 
@@ -22,7 +28,10 @@ export function ThemeToggler({ color }: { color?: string }) {
 
   return (
     <Pressable onPress={rotateTheme} style={{ padding: 6 }}>
-      <Icon color={color || themeColor.foreground} size={Fonts.size.xl} />
+      <Icon
+        color={color || themeColor.foreground}
+        size={size || Fonts.size.xl}
+      />
     </Pressable>
   );
 }
