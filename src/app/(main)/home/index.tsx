@@ -68,7 +68,7 @@ export default function Page() {
             <RecentItem
               title="Recent Sessions"
               onSeeAll={() => {
-                router.push("/home/history");
+                router.push("/home/report");
               }}
             />
             <NoRecordCard message="No recent sessions" />
