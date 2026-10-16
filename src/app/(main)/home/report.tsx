@@ -52,7 +52,7 @@ export default function Page() {
   );
 
   return (
-    <HomeScreen title={<HomeScreenTitle>Your History</HomeScreenTitle>}>
+    <HomeScreen title={<HomeScreenTitle>Report</HomeScreenTitle>}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={styles.container}>
           <View variant="card" style={styles.stats}>

@@ -21,9 +21,9 @@ const menus = [
     hidden: true,
   },
   {
-    title: "History",
+    title: "Report",
     icon: HistoryIcon,
-    name: "history",
+    name: "report",
   },
   {
     title: "Account",
