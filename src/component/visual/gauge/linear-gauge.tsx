@@ -25,7 +25,7 @@ export function LinearGauge({
   const markPosition = ((normalizedValue - min) / (max - min)) * 100;
 
   return (
-    <View style={styles.container}>
+    <View variant="ghost" style={styles.container}>
       <View variant="card" style={[styles.gauge, style]}>
         {ranges.map((r, i) => {
           const width = ((r - min) / (max - min)) * 100;
@@ -46,6 +46,7 @@ export function LinearGauge({
         })}
       </View>
       <View
+        variant="ghost"
         style={[
           styles.mark,
           {
