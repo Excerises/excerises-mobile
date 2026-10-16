@@ -18,6 +18,7 @@ const menus = [
     title: "Explore",
     icon: SportShoeIcon,
     name: "explore",
+    hidden: true,
   },
   {
     title: "History",
@@ -53,6 +54,7 @@ export default function Layout() {
             options={{
               title: menu.title,
               tabBarIcon: ({ color }) => <menu.icon size={22} color={color} />,
+              href: menu.hidden ? null : undefined,
             }}
           />
         ))}

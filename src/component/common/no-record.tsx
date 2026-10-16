@@ -26,7 +26,11 @@ export function NoRecord({ icon, message, actions }: NoRecordProps) {
       <Text variant="muted" size="sm">
         {message || "No record founds"}
       </Text>
-      {actions}
+      {actions && (
+        <View variant="ghost" style={{ marginTop: 8 }}>
+          {actions}
+        </View>
+      )}
     </View>
   );
 }
