@@ -3,7 +3,7 @@ import {
   HomeScreen,
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
-import { Button, Text, View } from "@/component/ui";
+import { Text, View } from "@/component/ui";
 import { LinearGauge } from "@/component/visual/gauge/linear-gauge";
 import { bmiCategories } from "@/constant/fitness/bmi-categories";
 import { Borders, Fonts } from "@/constant/theme";
