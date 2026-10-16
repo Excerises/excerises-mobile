@@ -1,14 +1,23 @@
 import { StyleSheet, Pressable } from "react-native";
 import { Text, View } from "../ui";
-import { Borders, Spacing } from "@/constant/theme";
+import { Borders } from "@/constant/theme";
 import {
   Exercise,
   ExerciseDifficulty,
   ExerciseCategory,
 } from "@/../type/entity";
 import { capitalize } from "@/utils/common/text";
-import { useThemeColor } from "@/hook/use-theme-color";
-import { ReactNode } from "react";
+import { ComponentType, ReactNode } from "react";
+import {
+  Dumbbell,
+  HeartPulse,
+  Scale,
+  Cross,
+  PersonStanding,
+  Zap,
+  StretchHorizontal,
+  LucideProps,
+} from "lucide-react-native";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -22,14 +31,14 @@ const difficultyColors: Record<ExerciseDifficulty, string> = {
   advanced: "#FF2C2C",
 };
 
-const categoryIcons: Record<ExerciseCategory, string> = {
-  strength: "💪",
-  cardio: "🏃",
-  balance: "⚖️",
-  rehabilitation: "🏥",
-  mobility: "🧘",
-  plyometrics: "🏋️",
-  stretching: "🤸",
+const categoryIcons: Record<ExerciseCategory, ComponentType<LucideProps>> = {
+  strength: Dumbbell,
+  cardio: HeartPulse,
+  balance: Scale,
+  rehabilitation: Cross,
+  mobility: PersonStanding,
+  plyometrics: Zap,
+  stretching: StretchHorizontal,
 };
 
 export function ExerciseCard({
@@ -37,6 +46,9 @@ export function ExerciseCard({
   onPress,
   trailing,
 }: ExerciseCardProps) {
+  const CategoryIcon = categoryIcons[exercise.category];
+  const iconColor = difficultyColors[exercise.difficulty];
+
   return (
     <Pressable onPress={onPress}>
       <View variant="card" style={styles.card}>
@@ -46,11 +58,11 @@ export function ExerciseCard({
             style={[
               styles.category,
               {
-                backgroundColor: `${difficultyColors[exercise.difficulty]}24`,
+                backgroundColor: `${iconColor}24`,
               },
             ]}
           >
-            <Text size="xl">{categoryIcons[exercise.category]}</Text>
+            <CategoryIcon size={22} color={iconColor} />
           </View>
           <View variant="ghost" style={styles.content}>
             <Text size="lg" weight="semibold">
