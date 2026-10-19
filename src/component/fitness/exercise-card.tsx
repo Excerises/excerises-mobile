@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable } from "react-native";
+import { StyleSheet, Pressable, StyleProp, ViewStyle } from "react-native";
 import { Text, View } from "../ui";
 import { Borders } from "@/constant/theme";
 import {
@@ -23,6 +23,7 @@ interface ExerciseCardProps {
   exercise: Exercise;
   onPress?: () => void;
   trailing?: ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
 const difficultyColors: Record<ExerciseDifficulty, string> = {
@@ -45,13 +46,14 @@ export function ExerciseCard({
   exercise,
   onPress,
   trailing,
+  style,
 }: ExerciseCardProps) {
   const CategoryIcon = categoryIcons[exercise.category];
   const iconColor = difficultyColors[exercise.difficulty];
 
   return (
     <Pressable onPress={onPress}>
-      <View variant="card" style={styles.card}>
+      <View variant="card" style={[styles.card, style]}>
         <View variant="ghost" style={styles.row}>
           <View
             variant="ghost"

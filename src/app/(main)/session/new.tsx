@@ -116,7 +116,6 @@ export default function NewSession() {
         body_part: values.body_part,
         equipment: values.equipment,
         target: values.target,
-        difficulty: values.difficulty,
         category: values.category,
       },
     });

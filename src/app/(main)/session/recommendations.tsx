@@ -1,5 +1,8 @@
-import { HomeScreen, HomeScreenTitle } from "@/component/screen/main/home-screen";
-import { ExerciseCard } from "@/component/fitness";
+import {
+  HomeScreen,
+  HomeScreenTitle,
+} from "@/component/screen/main/home-screen";
+import { SelectExerciseCard } from "@/component/fitness";
 import { Button, Text, View } from "@/component/ui";
 import { Fonts } from "@/constant/theme";
 import { useThemeColor } from "@/hook/use-theme-color";
@@ -9,21 +12,21 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Recommendations() {
   const router = useRouter();
   const themeColor = useThemeColor();
-  const { body_part, equipment, target, difficulty, category } =
-    useLocalSearchParams<{
-      body_part: string;
-      equipment: string;
-      target: string;
-      difficulty: string;
-      category: string;
-    }>();
+  const { body_part, equipment, target, category } = useLocalSearchParams<{
+    body_part: string;
+    equipment: string;
+    target: string;
+    category: string;
+  }>();
 
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -42,8 +45,7 @@ export default function Recommendations() {
             "Crunch forward by contracting your abs.",
             "Slowly return to the starting position.",
           ],
-          difficulty:
-            (difficulty as Exercise["difficulty"]) || "beginner",
+          difficulty: "beginner",
           category: (category as Exercise["category"]) || "strength",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -51,8 +53,7 @@ export default function Recommendations() {
         {
           id: "2",
           name: "Cable Crunch",
-          description:
-            "A cable-based crunch for building core strength.",
+          description: "A cable-based crunch for building core strength.",
           body_part: (body_part as Exercise["body_part"]) || "waist",
           equipment: (equipment as Exercise["equipment"]) || "cable",
           target: (target as Exercise["target"]) || "abs",
@@ -62,8 +63,7 @@ export default function Recommendations() {
             "Hold the rope beside your head.",
             "Crunch downward, bringing your elbows toward your knees.",
           ],
-          difficulty:
-            (difficulty as Exercise["difficulty"]) || "intermediate",
+          difficulty: "intermediate",
           category: (category as Exercise["category"]) || "strength",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -74,8 +74,7 @@ export default function Recommendations() {
           description:
             "A sit-up performed on a decline bench to increase resistance.",
           body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment:
-            (equipment as Exercise["equipment"]) || "body weight",
+          equipment: (equipment as Exercise["equipment"]) || "body weight",
           target: (target as Exercise["target"]) || "abs",
           secondary_muscles: ["hip flexors", "obliques"],
           instruction: [
@@ -83,8 +82,7 @@ export default function Recommendations() {
             "Cross your arms over your chest.",
             "Sit up by contracting your abs.",
           ],
-          difficulty:
-            (difficulty as Exercise["difficulty"]) || "intermediate",
+          difficulty: "intermediate",
           category: (category as Exercise["category"]) || "strength",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -95,21 +93,15 @@ export default function Recommendations() {
           description:
             "An isometric core exercise that strengthens the entire midsection.",
           body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment:
-            (equipment as Exercise["equipment"]) || "body weight",
+          equipment: (equipment as Exercise["equipment"]) || "body weight",
           target: (target as Exercise["target"]) || "abs",
-          secondary_muscles: [
-            "shoulders",
-            "glutes",
-            "lower back",
-          ],
+          secondary_muscles: ["shoulders", "glutes", "lower back"],
           instruction: [
             "Get into a push-up position with forearms on the ground.",
             "Keep your body in a straight line from head to heels.",
             "Hold the position for the desired duration.",
           ],
-          difficulty:
-            (difficulty as Exercise["difficulty"]) || "beginner",
+          difficulty: "beginner",
           category: (category as Exercise["category"]) || "strength",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -120,8 +112,7 @@ export default function Recommendations() {
           description:
             "A rotational core exercise targeting the obliques and abs.",
           body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment:
-            (equipment as Exercise["equipment"]) || "body weight",
+          equipment: (equipment as Exercise["equipment"]) || "body weight",
           target: (target as Exercise["target"]) || "abs",
           secondary_muscles: ["obliques", "hip flexors"],
           instruction: [
@@ -129,8 +120,7 @@ export default function Recommendations() {
             "Lean back slightly and hold your hands together.",
             "Rotate your torso from side to side.",
           ],
-          difficulty:
-            (difficulty as Exercise["difficulty"]) || "intermediate",
+          difficulty: "intermediate",
           category: (category as Exercise["category"]) || "strength",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -142,9 +132,24 @@ export default function Recommendations() {
     }, 1500);
 
     return () => clearTimeout(timeout);
-  }, [body_part, equipment, target, difficulty, category]);
+  }, [body_part, equipment, target, category]);
 
-  const filters = [body_part, target, difficulty].filter(Boolean);
+  const filters = [body_part, target].filter(Boolean);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const selectedCount = selectedIds.size;
+  const selectedExercises = exercises.filter((e) => selectedIds.has(e.id));
 
   return (
     <HomeScreen
@@ -152,10 +157,7 @@ export default function Recommendations() {
       actions={[
         {
           icon: (
-            <ArrowLeftIcon
-              size={Fonts.size.xl}
-              color={themeColor.foreground}
-            />
+            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
           ),
           onTap: () => router.back(),
         },
@@ -170,17 +172,11 @@ export default function Recommendations() {
       </View>
 
       {loading ? (
-        <View
-          variant="ghost"
-          style={styles.centered}
-        >
+        <View variant="ghost" style={styles.centered}>
           <ActivityIndicator size="large" color={themeColor.primary} />
         </View>
       ) : exercises.length === 0 ? (
-        <View
-          variant="ghost"
-          style={styles.centered}
-        >
+        <View variant="ghost" style={styles.centered}>
           <Text variant="muted" size="lg">
             No exercises found
           </Text>
@@ -194,13 +190,51 @@ export default function Recommendations() {
           </Button>
         </View>
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View variant="ghost" style={styles.list}>
+        <>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.list}
+          >
             {exercises.map((exercise) => (
-              <ExerciseCard key={exercise.id} exercise={exercise} />
+              <SelectExerciseCard
+                key={exercise.id}
+                exercise={exercise}
+                selected={selectedIds.has(exercise.id)}
+                onToggle={() => toggleSelect(exercise.id)}
+              />
             ))}
-          </View>
-        </ScrollView>
+          </ScrollView>
+
+          {selectedCount > 0 && (
+            <View
+              variant="ghost"
+              style={[styles.bottomBar, { borderTopColor: themeColor.border }]}
+            >
+              <View variant="ghost" style={styles.bottomBarContent}>
+                <Text weight="semibold" size="lg">
+                  {selectedCount} exercise{selectedCount > 1 ? "s" : ""}{" "}
+                  selected
+                </Text>
+                <SafeAreaView edges={["bottom"]}>
+                  <Button
+                    full
+                    size="lg"
+                    onPress={() =>
+                      router.push({
+                        pathname: "/session/active",
+                        params: {
+                          exercises: JSON.stringify(selectedExercises),
+                        },
+                      })
+                    }
+                  >
+                    <Text weight="semibold">Start Exercises</Text>
+                  </Button>
+                </SafeAreaView>
+              </View>
+            </View>
+          )}
+        </>
       )}
     </HomeScreen>
   );
@@ -225,6 +259,18 @@ const styles = StyleSheet.create({
   },
   list: {
     gap: 12,
-    paddingBottom: 40,
+    paddingBottom: 100,
+  },
+  bottomBar: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderTopWidth: 1,
+  },
+  bottomBarContent: {
+    gap: 12,
   },
 });
