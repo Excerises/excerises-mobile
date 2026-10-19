@@ -5,7 +5,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Modal, Pressable, StyleSheet } from "react-native";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  ScrollView,
+} from "react-native";
 import { Input, Text, View } from "..";
 import { NInputProps } from "./input";
 import { Borders } from "@/constant/theme";
@@ -39,7 +45,9 @@ export function Select<T = unknown>({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (baseValue && baseValue != value) setValue(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseValue]);
 
   useEffect(() => {
@@ -105,6 +113,7 @@ export function SelectInput({
 
 export function SelectContent({ children }: { children?: ReactNode }) {
   const { show, setShow } = useSelect();
+  const { height } = useWindowDimensions();
 
   return (
     <Modal
@@ -116,8 +125,13 @@ export function SelectContent({ children }: { children?: ReactNode }) {
       }}
     >
       <Pressable style={styles.mask} onPress={() => setShow(false)} />
-      <View style={styles.content} variant="card">
-        <SafeAreaView>{children}</SafeAreaView>
+      <View
+        style={[styles.content, { maxHeight: height * 0.65 }]}
+        variant="card"
+      >
+        <ScrollView>
+          <SafeAreaView>{children}</SafeAreaView>
+        </ScrollView>
       </View>
     </Modal>
   );

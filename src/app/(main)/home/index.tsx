@@ -63,7 +63,7 @@ export default function Page() {
     >
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={styles.container}>
-          <StatsBannerCard />
+          <StatsBannerCard onPress={() => router.push("/session/new")} />
           <View variant="ghost" style={{ gap: 12 }}>
             <RecentItem
               title="Recent Sessions"
