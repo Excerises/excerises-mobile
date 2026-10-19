@@ -3,7 +3,7 @@ import { Button, Text, View } from "../ui";
 import { Borders, Colors } from "@/constant/theme";
 import Banner from "@/assets/images/home/banner.png";
 
-export function StatsBannerCard() {
+export function StatsBannerCard({ onPress }: { onPress?: () => void }) {
   return (
     <View variant="card" style={styles.card}>
       <Image source={Banner} style={styles.img} />
@@ -19,7 +19,7 @@ export function StatsBannerCard() {
         <Text size="sm" style={{ color: Colors.white }}>
           Start with a workout plan designed just for you.
         </Text>
-        <Button style={{ marginTop: 20 }}>
+        <Button style={{ marginTop: 20 }} onPress={onPress}>
           <Text
             size="sm"
             style={{ textTransform: "uppercase" }}
