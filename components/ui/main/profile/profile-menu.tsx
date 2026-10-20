@@ -1,29 +1,19 @@
 import {
-    Bell,
-    ChevronRight,
-    CircleHelp,
-    FileText,
+  Bell,
+  ChevronRight,
+  CircleHelp,
+  FileText,
 } from "lucide-react-native";
 
 import { Pressable, StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
 
 const menuItems = [
-  {
-    label: "Notifications",
-    icon: Bell,
-  },
-  {
-    label: "Help & Support",
-    icon: CircleHelp,
-  },
-  {
-    label: "Terms & Privacy",
-    icon: FileText,
-  },
+  { label: "Notifications", icon: Bell },
+  { label: "Help & Support", icon: CircleHelp },
+  { label: "Terms & Privacy", icon: FileText },
 ];
 
 type ProfileMenuProps = {
@@ -53,20 +43,24 @@ export default function ProfileMenu({ onPress }: ProfileMenuProps) {
           return (
             <Pressable
               key={item.label}
-              style={[
+              style={({ pressed }) => [
                 styles.item,
                 !isLast && {
                   borderBottomColor: themeColor.border,
                   borderBottomWidth: 1,
                 },
+                { opacity: pressed ? 0.7 : 1 },
               ]}
               onPress={() => onPress?.(item.label)}
             >
-              <Icon size={21} color={themeColor.foreground} />
+              <Icon size={22} color={themeColor.foreground} />
 
               <UIText style={styles.label}>{item.label}</UIText>
 
-              <ChevronRight size={19} color={themeColor.foreground} />
+              <ChevronRight
+                size={21}
+                color={themeColor.foreground}
+              />
             </Pressable>
           );
         })}
@@ -77,31 +71,32 @@ export default function ProfileMenu({ onPress }: ProfileMenuProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 18,
+    marginTop: 20,
   },
 
   title: {
-    fontSize: 14,
-    fontWeight: "600",
-    marginBottom: 8,
+    fontSize: 15,
+    fontWeight: "700",
+    marginBottom: 10,
   },
 
   menu: {
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 16,
     overflow: "hidden",
   },
 
   item: {
-    minHeight: 40,
-    paddingHorizontal: 12,
+    minHeight: 54,
+    paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
   },
 
   label: {
     flex: 1,
-    fontSize: 11,
-    marginLeft: 12,
+    fontSize: 12,
+    fontWeight: "500",
+    marginLeft: 14,
   },
 });

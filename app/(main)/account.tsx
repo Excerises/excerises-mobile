@@ -1,26 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { router } from "expo-router";
-
 import { LogOut } from "lucide-react-native";
-
 import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { currentUser } from "@/components/data/User";
-
 import { userProfiles } from "@/components/data/User_Profile";
-
 import UIText from "@/components/ui/common/text";
-
-import ProfileInfoCard from "@/components/ui/main/profile/profile-info-card";
-
-import ProfileMenu from "@/components/ui/main/profile/profile-menu";
-
-import ProfileStats from "@/components/ui/main/profile/profile-stats";
-
-import useThemeColor from "@/hooks/use-theme-color";
-
 import Header from "@/components/ui/main/header";
+import ProfileInfoCard from "@/components/ui/main/profile/profile-info-card";
+import ProfileMenu from "@/components/ui/main/profile/profile-menu";
+import ProfileStats from "@/components/ui/main/profile/profile-stats";
+import useThemeColor from "@/hooks/use-theme-color";
 
 export default function Profile() {
   const themeColor = useThemeColor();
@@ -35,10 +25,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     Alert.alert("Confirm Logout", "Are you sure you want to log out?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
+      { text: "Cancel", style: "cancel" },
       {
         text: "Log Out",
         style: "destructive",
@@ -46,8 +33,8 @@ export default function Profile() {
           try {
             await AsyncStorage.removeItem("user");
             router.replace("/(auth)/login");
-          } catch (e) {
-            console.error("Failed to log out", e);
+          } catch (error) {
+            console.error("Failed to log out", error);
           }
         },
       },
@@ -56,12 +43,7 @@ export default function Profile() {
 
   return (
     <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: themeColor.background,
-        },
-      ]}
+      style={[styles.container, { backgroundColor: themeColor.background }]}
     >
       <View style={styles.headerContainer}>
         <Header title="Profile" description="Keep going, you're doing great" />
@@ -97,14 +79,7 @@ export default function Profile() {
         >
           <LogOut size={20} color={themeColor.danger} />
 
-          <UIText
-            style={[
-              styles.logoutText,
-              {
-                color: themeColor.danger,
-              },
-            ]}
-          >
+          <UIText style={[styles.logoutText, { color: themeColor.danger }]}>
             Log Out
           </UIText>
         </Pressable>
@@ -125,23 +100,25 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
+    flexGrow: 1,
+    justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 24,
   },
 
   logoutButton: {
-    height: 46,
-    marginTop: 14,
+    minHeight: 54,
+    marginTop: 20,
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 14,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 7,
+    gap: 8,
   },
 
   logoutText: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "600",
   },
 });

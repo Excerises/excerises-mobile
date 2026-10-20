@@ -31,47 +31,29 @@ export default function ProfileInfoCard({
     >
       <View style={styles.topRow}>
         <View
-          style={[
-            styles.avatar,
-            {
-              backgroundColor: themeColor.background,
-              borderColor: themeColor.border,
-            },
-          ]}
+          style={[styles.avatar, { backgroundColor: themeColor.background }]}
         >
-          <User size={34} color={themeColor.foreground} />
+          <User size={36} color={themeColor.foreground} />
         </View>
 
         <View style={styles.info}>
-          <UIText style={styles.name}>{user?.name}</UIText>
+          <UIText style={styles.name}>{user?.name ?? name}</UIText>
 
           <UIText variant="muted" style={styles.email}>
-            {user?.email}
+            {user?.email ?? email}
           </UIText>
 
           <Pressable
-            style={[
-              styles.editButton,
-              {
-                borderColor: themeColor.primary,
-              },
-            ]}
+            style={[styles.editButton, { borderColor: themeColor.primary }]}
             onPress={onEditPress}
           >
-            <UIText
-              style={[
-                styles.editText,
-                {
-                  color: themeColor.foreground,
-                },
-              ]}
-            >
+            <UIText style={[styles.editText, { color: themeColor.foreground }]}>
               Edit Profile
             </UIText>
           </Pressable>
         </View>
 
-        <ChevronRight size={22} color={themeColor.foreground} />
+        <ChevronRight size={23} color={themeColor.foreground} />
       </View>
     </View>
   );
@@ -80,45 +62,54 @@ export default function ProfileInfoCard({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginTop: 18,
-    padding: 10,
+    minHeight: 120,
+    marginTop: 14,
+    padding: 14,
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 16,
+    justifyContent: "center",
   },
+
   topRow: {
     flexDirection: "row",
     alignItems: "center",
   },
+
   avatar: {
-    width: 78,
-    height: 78,
-    borderRadius: 39,
-    borderWidth: 1,
+    width: 82,
+    height: 82,
+    borderRadius: 41,
     alignItems: "center",
     justifyContent: "center",
   },
+
   info: {
     flex: 1,
     marginLeft: 14,
+    marginRight: 8,
   },
+
   name: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
   },
+
   email: {
     fontSize: 11,
-    marginTop: 3,
+    marginTop: 4,
   },
+
   editButton: {
-    height: 26,
-    marginTop: 8,
+    minHeight: 30,
+    marginTop: 10,
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
+
   editText: {
-    fontSize: 10,
-    fontWeight: "500",
+    fontSize: 11,
+    fontWeight: "600",
   },
 });

@@ -1,12 +1,8 @@
 import { Clock3, Dumbbell, Flame } from "lucide-react-native";
-
 import { StyleSheet, View } from "react-native";
 
 import UIText from "@/components/ui/common/text";
-
 import useThemeColor from "@/hooks/use-theme-color";
-
-
 
 type ProfileStatsProps = {
   workoutCount: number;
@@ -54,7 +50,7 @@ export default function ProfileStats({
 
         return (
           <View key={stat.label} style={styles.item}>
-            <Icon size={22} color={themeColor.primary} />
+            <Icon size={25} color={themeColor.primary} />
 
             <UIText style={styles.value}>{stat.value}</UIText>
 
@@ -71,12 +67,12 @@ export default function ProfileStats({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    minHeight: 86,
-    marginTop: 8,
-    paddingVertical: 10,
+    minHeight: 106,
+    marginTop: 12,
+    paddingVertical: 14,
     flexDirection: "row",
     borderWidth: 1,
-    borderRadius: 7,
+    borderRadius: 16,
   },
 
   item: {
@@ -86,14 +82,14 @@ const styles = StyleSheet.create({
   },
 
   value: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginTop: 4,
+    fontSize: 18,
+    fontWeight: "700",
+    marginTop: 7,
   },
 
   label: {
-    fontSize: 9,
-    marginTop: 2,
+    fontSize: 10,
+    marginTop: 4,
     textAlign: "center",
   },
 });
