@@ -1,4 +1,7 @@
-import { HomeScreen, HomeScreenTitle } from "@/component/screen/main/home-screen";
+import {
+  HomeScreen,
+  HomeScreenTitle,
+} from "@/component/screen/main/home-screen";
 import { Button, Text, View } from "@/component/ui";
 import { Fonts } from "@/constant/theme";
 import { useActiveSession } from "@/context/active-session-context";
@@ -22,16 +25,13 @@ export default function ActiveWorkout() {
   } = useActiveSession();
 
   const id = useMemo(() => decodeURIComponent(exerciseId ?? ""), [exerciseId]);
-  const index = exercises.findIndex(
-    (exercise) => String(exercise.id) === id
-  );
+  const index = exercises.findIndex((exercise) => String(exercise.id) === id);
 
   useEffect(() => {
     if (index >= 0) {
       startWorkout(id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, index]);
+  }, []);
 
   if (index < 0) {
     return <Redirect href="/session/active" />;
@@ -43,9 +43,9 @@ export default function ActiveWorkout() {
     completeWorkout();
 
     if (currentIndex >= exercises.length - 1) {
-      router.replace("/session/active/finish");
+      router.push("/session/active/finish");
     } else {
-      router.replace("/session/active/break");
+      router.push("/session/active/break");
     }
   };
 
@@ -55,10 +55,7 @@ export default function ActiveWorkout() {
       actions={[
         {
           icon: (
-            <ArrowLeftIcon
-              size={Fonts.size.xl}
-              color={themeColor.foreground}
-            />
+            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
           ),
           onTap: () => router.back(),
         },
@@ -77,11 +74,7 @@ export default function ActiveWorkout() {
           </Text>
 
           <View variant="card" style={styles.timerCard}>
-            <Text
-              size="xl7"
-              weight="bold"
-              style={styles.timerText}
-            >
+            <Text size="xl7" weight="bold" style={styles.timerText}>
               {formatSeconds(currentElapsed)}
             </Text>
             <Text variant="muted" size="sm" style={styles.timerText}>
