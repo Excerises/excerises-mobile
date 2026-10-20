@@ -1,4 +1,7 @@
-import { HomeScreen, HomeScreenTitle } from "@/component/screen/main/home-screen";
+import {
+  HomeScreen,
+  HomeScreenTitle,
+} from "@/component/screen/main/home-screen";
 import { Button, Text, View } from "@/component/ui";
 import { Fonts } from "@/constant/theme";
 import { useActiveSession } from "@/context/active-session-context";
@@ -31,28 +34,24 @@ export default function ActiveBreak() {
     advancedRef.current = true;
 
     if (!advanceFromBreak()) {
-      router.replace("/session/active/finish");
+      router.push("/session/active/finish");
       return;
     }
 
     const next = exercises[currentIndex + 1];
-    router.replace(
-      `/session/active/${encodeURIComponent(String(next.id))}`
-    );
+    router.push(`/session/active/${encodeURIComponent(String(next.id))}`);
   }, [advanceFromBreak, currentIndex, exercises, router]);
 
-  // Auto advance when the break countdown reaches 00:00.
   useEffect(() => {
     if (breakRemaining > 0 || advancedRef.current) return;
     goNext();
   }, [breakRemaining, goNext]);
 
-  // Safety: no next exercise (last item), skip the break entirely.
   useEffect(() => {
     if (isLast && !advancedRef.current) {
       advancedRef.current = true;
       endSession();
-      router.replace("/session/active/finish");
+      router.push("/session/active/finish");
     }
   }, [isLast, endSession, router]);
 
@@ -66,10 +65,7 @@ export default function ActiveBreak() {
       actions={[
         {
           icon: (
-            <ArrowLeftIcon
-              size={Fonts.size.xl}
-              color={themeColor.foreground}
-            />
+            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
           ),
           onTap: () => router.back(),
         },
@@ -78,11 +74,7 @@ export default function ActiveBreak() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={styles.container}>
           <View variant="card" style={styles.timerCard}>
-            <Text
-              size="xl7"
-              weight="bold"
-              style={styles.timerText}
-            >
+            <Text size="xl7" weight="bold" style={styles.timerText}>
               {formatSeconds(breakRemaining)}
             </Text>
             <Text variant="muted" size="sm" style={styles.timerText}>
