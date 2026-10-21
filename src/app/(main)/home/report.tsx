@@ -1,4 +1,5 @@
 import { NoRecordCard } from "@/component/common/no-record";
+import { ProgressSnapshotCard } from "@/component/home/progress-snapshot-card";
 import {
   HomeScreen,
   HomeScreenTitle,
@@ -59,19 +60,7 @@ export default function Page() {
     <HomeScreen title={<HomeScreenTitle>Report</HomeScreenTitle>}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={styles.container}>
-          <View variant="card" style={styles.stats}>
-            {stats.map((stat, i) => (
-              <View key={i} variant="ghost" style={styles.statItem}>
-                <stat.icon color={themeColor.primary} size={Fonts.size.xl2} />
-                <Text size="xl2" weight="bold">
-                  {stat.value > 0 ? stat.value : "NA"}
-                </Text>
-                <Text variant="muted" size="sm">
-                  {stat.label}
-                </Text>
-              </View>
-            ))}
-          </View>
+          <ProgressSnapshotCard stats={stats} />
           <View variant="ghost" style={{ gap: 10 }}>
             <Text weight="semibold" size="lg">
               BMI (Body Mass Index)
