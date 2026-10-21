@@ -23,6 +23,13 @@ type ActiveSessionContextValue = {
   totalElapsed: number;
   breakRemaining: number;
   initialized: boolean;
+  /**
+   * Freezes every session timer (workout stopwatch and break countdown).
+   * Used while the instruction sheet is open so the user can read at their
+   * own pace without losing time.
+   */
+  paused: boolean;
+  setPaused: (paused: boolean) => void;
   initSession: (exercises: Exercise[]) => void;
   startWorkout: (sessionId: string) => void;
   completeWorkout: () => void;
@@ -45,10 +52,14 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
   const [totalElapsed, setTotalElapsed] = useState(0);
   const [breakRemaining, setBreakRemaining] = useState(BREAK_SECONDS);
   const [initialized, setInitialized] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   // Single timer for the whole active session: it keeps running while
-  // navigating between workout, break, and finish screens.
+  // navigating between workout, break, and finish screens. It is suspended
+  // entirely while `paused` is true.
   useEffect(() => {
+    if (paused) return;
+
     if (phase === "workout") {
       const interval = setInterval(() => {
         setCurrentElapsed((value) => value + 1);
@@ -64,7 +75,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
     }
 
     return;
-  }, [phase]);
+  }, [phase, paused]);
 
   const initSession = useCallback((list: Exercise[]) => {
     setExercises(list);
@@ -73,6 +84,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
     setCurrentElapsed(0);
     setTotalElapsed(0);
     setBreakRemaining(BREAK_SECONDS);
+    setPaused(false);
     setInitialized(true);
   }, []);
 
@@ -86,6 +98,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
       setCurrentIndex(index);
       setCurrentElapsed(0);
       setPhase("workout");
+      setPaused(false);
     },
     [exercises]
   );
@@ -95,6 +108,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
     setCurrentElapsed(0);
     setBreakRemaining(BREAK_SECONDS);
     setPhase("break");
+    setPaused(false);
   }, [currentElapsed]);
 
   const advanceFromBreak = useCallback(() => {
@@ -107,11 +121,13 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
     setCurrentElapsed(0);
     setBreakRemaining(BREAK_SECONDS);
     setPhase("workout");
+    setPaused(false);
     return true;
   }, [currentIndex, exercises.length]);
 
   const endSession = useCallback(() => {
     setPhase("finished");
+    setPaused(false);
   }, []);
 
   const value = useMemo(
@@ -123,6 +139,8 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
       totalElapsed,
       breakRemaining,
       initialized,
+      paused,
+      setPaused,
       initSession,
       startWorkout,
       completeWorkout,
@@ -137,6 +155,8 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
       totalElapsed,
       breakRemaining,
       initialized,
+      paused,
+      setPaused,
       initSession,
       startWorkout,
       completeWorkout,

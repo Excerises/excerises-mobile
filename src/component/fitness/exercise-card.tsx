@@ -1,23 +1,10 @@
 import { StyleSheet, Pressable, StyleProp, ViewStyle } from "react-native";
 import { Text, View } from "../ui";
 import { Borders } from "@/constant/theme";
-import {
-  Exercise,
-  ExerciseDifficulty,
-  ExerciseCategory,
-} from "@/../type/entity";
+import { Exercise } from "@/../type/entity";
 import { capitalize } from "@/utils/common/text";
-import { ComponentType, ReactNode } from "react";
-import {
-  Dumbbell,
-  HeartPulse,
-  Scale,
-  Cross,
-  PersonStanding,
-  Zap,
-  StretchHorizontal,
-  LucideProps,
-} from "lucide-react-native";
+import { ReactNode } from "react";
+import { categoryIcons, difficultyColors } from "./exercise-visuals";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -25,22 +12,6 @@ interface ExerciseCardProps {
   trailing?: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
-
-const difficultyColors: Record<ExerciseDifficulty, string> = {
-  beginner: "#16C84E",
-  intermediate: "#f9a237",
-  advanced: "#FF2C2C",
-};
-
-const categoryIcons: Record<ExerciseCategory, ComponentType<LucideProps>> = {
-  strength: Dumbbell,
-  cardio: HeartPulse,
-  balance: Scale,
-  rehabilitation: Cross,
-  mobility: PersonStanding,
-  plyometrics: Zap,
-  stretching: StretchHorizontal,
-};
 
 export function ExerciseCard({
   exercise,
