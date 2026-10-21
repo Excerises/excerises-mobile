@@ -16,6 +16,7 @@ export function useGetProfile() {
 
       return res.data;
     },
+    retry: 1,
   });
 
   return { query };

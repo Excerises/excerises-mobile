@@ -1,9 +1,7 @@
 import {
   Button,
   FormControl,
-  FormGroup,
   Input,
-  Label,
   Separator,
   Text,
   View,
@@ -14,6 +12,8 @@ import GoogleIcon from "@/assets/images/auth/google.png";
 import AppleIcon from "@/assets/images/auth/apple.png";
 import { useRouter } from "expo-router";
 import { useLoginForm } from "@/hook/form/auth/use-login-form";
+import { useLogin } from "@/hook/api/auth/use-login";
+import { getError } from "@/utils/common/error";
 
 function OauthButton({ icon, label }: { icon: any; label: string }) {
   function onPress() {
@@ -33,11 +33,16 @@ function OauthButton({ icon, label }: { icon: any; label: string }) {
 
 export default function Login() {
   const router = useRouter();
-  const { control, handleSubmit } = useLoginForm();
+  const { mutation } = useLogin();
+  const { control, handleSubmit, setError } = useLoginForm();
 
-  const handleLogin = handleSubmit((v) => {
-    console.log(v);
-    router.push("/home");
+  const handleLogin = handleSubmit(async (v) => {
+    try {
+      await mutation.mutateAsync(v);
+      router.push("/home");
+    } catch (err: any) {
+      setError("password", { message: getError(err) });
+    }
   });
 
   return (
@@ -85,7 +90,11 @@ export default function Login() {
         Forgot password?
       </Text>
 
-      <Button size="lg" style={{ alignSelf: "stretch" }} onPress={handleLogin}>
+      <Button
+        size="lg"
+        style={{ alignSelf: "stretch" }}
+        onPress={() => handleLogin()}
+      >
         <Text weight="semibold" size="lg">
           LOGIN
         </Text>
@@ -103,7 +112,7 @@ export default function Login() {
       </View>
 
       <View style={styles.action}>
-        <Text variant="muted">Doesn't have an account? </Text>
+        <Text variant="muted">Doesn{"'"}t have an account? </Text>
         <Pressable onPress={() => router.replace("/register")}>
           <Text variant="primary">Sign up</Text>
         </Pressable>
