@@ -7,6 +7,7 @@ import { Text, View } from "@/component/ui";
 import { LinearGauge } from "@/component/visual/gauge/linear-gauge";
 import { bmiCategories } from "@/constant/fitness/bmi-categories";
 import { Borders, Fonts } from "@/constant/theme";
+import { useAuth } from "@/context/auth-context";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { getBmiCategory } from "@/utils/fitness/bmi-category";
 import { AwardIcon, ClockIcon, FlameIcon } from "lucide-react-native";
@@ -15,6 +16,7 @@ import { ScrollView, StyleSheet } from "react-native";
 
 export default function Page() {
   const themeColor = useThemeColor();
+  const { user } = useAuth();
 
   const stats = useMemo(
     () => [
@@ -41,15 +43,17 @@ export default function Page() {
     () => [
       {
         label: "Height (cm)",
-        value: 169,
+        value: user?.profile?.height || 0,
       },
       {
         label: "Weight (kg)",
-        value: 55,
+        value: user?.profile?.weight || 0,
       },
     ],
     [],
   );
+
+  const bmi = user?.profile?.bmi || 15.0;
 
   return (
     <HomeScreen title={<HomeScreenTitle>Report</HomeScreenTitle>}>
@@ -85,7 +89,7 @@ export default function Page() {
               >
                 <View variant="ghost" style={{ flex: 1 }}>
                   <Text weight="bold" size="xl3">
-                    18.5
+                    {bmi.toFixed(1)}
                   </Text>
                 </View>
                 <View
@@ -97,15 +101,15 @@ export default function Page() {
                     style={{
                       width: 16,
                       height: 16,
-                      backgroundColor: getBmiCategory(18.5).color,
+                      backgroundColor: getBmiCategory(bmi).color,
                       borderRadius: 9999,
                     }}
                   ></View>
-                  <Text>{getBmiCategory(18.5).name}</Text>
+                  <Text>{getBmiCategory(bmi).name}</Text>
                 </View>
               </View>
               <LinearGauge
-                value={18.5}
+                value={bmi}
                 min={10}
                 max={Math.max(...bmiCategories.map((c) => c.max))}
                 ranges={bmiCategories.map((c) => c.max)}

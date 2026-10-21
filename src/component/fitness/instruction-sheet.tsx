@@ -31,7 +31,7 @@ export function InstructionSheet({
   const accent = exercise
     ? difficultyColors[exercise.difficulty]
     : themeColor.primary;
-  const steps = exercise?.instruction ?? [];
+  const steps = exercise?.instructions ?? [];
 
   return (
     <Modal
