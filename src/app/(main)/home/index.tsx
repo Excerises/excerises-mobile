@@ -3,24 +3,20 @@ import {
   HomeScreen,
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
-import { Text, View } from "@/component/ui";
+import { Text, View, Button } from "@/component/ui";
 import { Fonts } from "@/constant/theme";
 import { useThemeColor } from "@/hook/use-theme-color";
-import {
-  AwardIcon,
-  BellIcon,
-  ClockIcon,
-  DumbbellIcon,
-  FlameIcon,
-} from "lucide-react-native";
+import { BellIcon, DumbbellIcon } from "lucide-react-native";
 import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
 import { StatsBannerCard } from "@/component/home/stats-banner-card";
 import { WeeklyActivityCard } from "@/component/home/weekly-activity-card";
 import { NoRecordCard } from "@/component/common/no-record";
-import { Button } from "@/component/ui";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/context/auth-context";
+import { useGetNews } from "@/hook/api/news/use-get-news";
+import { SessionCard } from "@/component/fitness";
+import { useGetLatestSessions } from "@/hook/api/session/use-get-session";
 
 function SectionHeader({
   title,
@@ -70,6 +66,12 @@ export default function Page() {
   const { user } = useAuth();
   const router = useRouter();
   const themeColor = useThemeColor();
+  const {
+    query: { data: newsData },
+  } = useGetNews();
+  const {
+    query: { data: sessionsData },
+  } = useGetLatestSessions();
 
   const firstName = user?.name.split(" ")[0] || "Warrior";
 
@@ -97,21 +99,27 @@ export default function Page() {
             subtitle="Your latest workouts"
             onSeeAll={() => router.push("/home/report")}
           />
-          <NoRecordCard
-            icon={DumbbellIcon}
-            message="No sessions yet. Your first workout is waiting!"
-            actions={
-              <Button onPress={() => router.push("/session/new")}>
-                <Text
-                  size="sm"
-                  weight="semibold"
-                  style={{ textTransform: "uppercase" }}
-                >
-                  Start Workout
-                </Text>
-              </Button>
-            }
-          />
+          {sessionsData && sessionsData.data.length == 0 ? (
+            <NoRecordCard
+              icon={DumbbellIcon}
+              message="No sessions yet. Your first workout is waiting!"
+              actions={
+                <Button onPress={() => router.push("/session/new")}>
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    style={{ textTransform: "uppercase" }}
+                  >
+                    Start Workout
+                  </Text>
+                </Button>
+              }
+            />
+          ) : (
+            sessionsData?.data.map((session) => (
+              <SessionCard key={session.id} session={session} />
+            ))
+          )}
         </View>
 
         <View variant="ghost" style={{ gap: 12 }}>
@@ -119,20 +127,11 @@ export default function Page() {
             title="Latest News"
             subtitle="Tips & insights for your fitness journey"
           />
-          {Array.from({ length: 2 }).map((_, i) => (
-            <NewsCard
-              key={i}
-              news={{
-                id: i,
-                title: "Good Food",
-                content: "",
-                created_at: "2024-01-01",
-                updated_at: "2024-01-01",
-                created_by_id: "1",
-                viewed_count: 0,
-              }}
-            />
-          ))}
+          {newsData && newsData.data.length == 0 ? (
+            <NoRecordCard message="No latest news yet" />
+          ) : (
+            newsData?.data.map((news) => <NewsCard key={news.id} news={news} />)
+          )}
         </View>
       </ScrollView>
     </HomeScreen>
