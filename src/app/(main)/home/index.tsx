@@ -117,7 +117,11 @@ export default function Page() {
             />
           ) : (
             sessionsData?.data.map((session) => (
-              <SessionCard key={session.id} session={session} />
+              <SessionCard
+                key={session.id}
+                session={session}
+                onPress={() => router.push(`/session/${session.id}`)}
+              />
             ))
           )}
         </View>
