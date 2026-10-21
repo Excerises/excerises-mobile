@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { UpdateProfile } from "../../type/request/profile/update-profile";
+import { UpdateProfile } from "../../type/api/profile/update-profile";
 
 export type OnboardingContext = {
   step: number;

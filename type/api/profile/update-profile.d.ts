@@ -1,4 +1,4 @@
-import { CalculateFitnessRequest } from "../onboarding/calculate-fitness-level";
+import { CalculateFitnessRequest } from "../public/calculate-fitness-level";
 
 export interface UpdateProfile extends CalculateFitnessRequest {
   reminder_days: number[];

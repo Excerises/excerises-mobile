@@ -5,12 +5,19 @@ import { Stack } from "expo-router";
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar, StatusBarStyle } from "expo-status-bar";
 import { useMemo } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function RootLayout() {
+  const queryClient = useMemo(() => {
+    return new QueryClient();
+  }, []);
+
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Content />
+        <QueryClientProvider client={queryClient}>
+          <Content />
+        </QueryClientProvider>
       </AuthProvider>
     </ThemeProvider>
   );
