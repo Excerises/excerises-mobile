@@ -8,3 +8,7 @@ export interface CalculateFitnessRequest {
   workout_duration_per_day: number;
   water_intake_daily: number;
 }
+
+export interface CalculateFitnessResponse {
+  level: string;
+}
