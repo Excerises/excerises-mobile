@@ -5,9 +5,18 @@ import {
 import { SelectExerciseCard } from "@/component/fitness";
 import { Button, Text, View } from "@/component/ui";
 import { Fonts } from "@/constant/theme";
+import { useAuth } from "@/context/auth-context";
+import { useRecommendExercises } from "@/hook/api/public/use-recommend-exercises";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { capitalize } from "@/utils/common/text";
-import { Exercise } from "@/../type/entity";
+import {
+  Exercise,
+  ExerciseBodyPart,
+  ExerciseCategory,
+  ExerciseDifficulty,
+  ExerciseEquipment,
+  ExerciseTarget,
+} from "@/../type/entity";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -17,6 +26,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Recommendations() {
   const router = useRouter();
   const themeColor = useThemeColor();
+  const { user } = useAuth();
+  const { mutation } = useRecommendExercises();
   const { body_part, equipment, target, category } = useLocalSearchParams<{
     body_part: string;
     equipment: string;
@@ -25,114 +36,32 @@ export default function Recommendations() {
   }>();
 
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
+  const loading = mutation.isIdle || mutation.isPending;
+  const difficulty = (user?.profile?.fitness_level ??
+    "beginner") as ExerciseDifficulty;
+
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      const mockExercises: Exercise[] = [
-        {
-          id: "1",
-          name: "Assisted Crunch",
-          description:
-            "A machine-assisted crunch targeting the abdominal muscles.",
-          body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment: (equipment as Exercise["equipment"]) || "assisted",
-          target: (target as Exercise["target"]) || "abs",
-          secondary_muscles: ["obliques"],
-          instruction: [
-            "Sit on the machine and grab the handles.",
-            "Crunch forward by contracting your abs.",
-            "Slowly return to the starting position.",
-          ],
-          difficulty: "beginner",
-          category: (category as Exercise["category"]) || "strength",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
+    mutation.mutate(
+      {
+        body_part: body_part as ExerciseBodyPart,
+        equipment: equipment as ExerciseEquipment,
+        target: target as ExerciseTarget,
+        difficulty,
+        category: category as ExerciseCategory,
+      },
+      {
+        onSuccess: (res) => {
+          setExercises(res.data?.exercises ?? []);
         },
-        {
-          id: "2",
-          name: "Cable Crunch",
-          description: "A cable-based crunch for building core strength.",
-          body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment: (equipment as Exercise["equipment"]) || "cable",
-          target: (target as Exercise["target"]) || "abs",
-          secondary_muscles: ["obliques", "hip flexors"],
-          instruction: [
-            "Kneel below a high pulley with a rope attachment.",
-            "Hold the rope beside your head.",
-            "Crunch downward, bringing your elbows toward your knees.",
-          ],
-          difficulty: "intermediate",
-          category: (category as Exercise["category"]) || "strength",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
+        onError: () => {
+          setExercises([]);
         },
-        {
-          id: "3",
-          name: "Decline Sit-up",
-          description:
-            "A sit-up performed on a decline bench to increase resistance.",
-          body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment: (equipment as Exercise["equipment"]) || "body weight",
-          target: (target as Exercise["target"]) || "abs",
-          secondary_muscles: ["hip flexors", "obliques"],
-          instruction: [
-            "Secure your legs on a decline bench.",
-            "Cross your arms over your chest.",
-            "Sit up by contracting your abs.",
-          ],
-          difficulty: "intermediate",
-          category: (category as Exercise["category"]) || "strength",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "4",
-          name: "Plank",
-          description:
-            "An isometric core exercise that strengthens the entire midsection.",
-          body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment: (equipment as Exercise["equipment"]) || "body weight",
-          target: (target as Exercise["target"]) || "abs",
-          secondary_muscles: ["shoulders", "glutes", "lower back"],
-          instruction: [
-            "Get into a push-up position with forearms on the ground.",
-            "Keep your body in a straight line from head to heels.",
-            "Hold the position for the desired duration.",
-          ],
-          difficulty: "beginner",
-          category: (category as Exercise["category"]) || "strength",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: "5",
-          name: "Russian Twist",
-          description:
-            "A rotational core exercise targeting the obliques and abs.",
-          body_part: (body_part as Exercise["body_part"]) || "waist",
-          equipment: (equipment as Exercise["equipment"]) || "body weight",
-          target: (target as Exercise["target"]) || "abs",
-          secondary_muscles: ["obliques", "hip flexors"],
-          instruction: [
-            "Sit on the floor with knees bent and feet elevated.",
-            "Lean back slightly and hold your hands together.",
-            "Rotate your torso from side to side.",
-          ],
-          difficulty: "intermediate",
-          category: (category as Exercise["category"]) || "strength",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ];
-
-      setExercises(mockExercises);
-      setLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timeout);
-  }, [body_part, equipment, target, category]);
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [body_part, equipment, target, category, difficulty]);
 
   const filters = [body_part, target].filter(Boolean);
 

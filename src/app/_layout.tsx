@@ -1,6 +1,7 @@
 import { SplashScreen } from "@/component/screen/splash-screen";
 import { AuthProvider, useAuth } from "@/context/auth-context";
 import { ThemeProvider, useTheme } from "@/context/theme-context";
+import { useAppEntry } from "@/hook/use-app-entry";
 import { Stack } from "expo-router";
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar, StatusBarStyle } from "expo-status-bar";
@@ -25,7 +26,7 @@ export default function RootLayout() {
 
 function Content() {
   const { theme } = useTheme();
-  const { isLoaded } = useAuth();
+  const { isReady } = useAppEntry();
 
   const barStyle = useMemo<StatusBarStyle>(() => {
     switch (theme) {
@@ -42,7 +43,7 @@ function Content() {
     <>
       <StatusBar style={barStyle} />
       <NavigationBar style={barStyle} />
-      {isLoaded ? (
+      {isReady ? (
         <Stack screenOptions={{ headerShown: false }} />
       ) : (
         <SplashScreen />

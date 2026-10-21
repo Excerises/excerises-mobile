@@ -57,7 +57,9 @@ export default function Page() {
   return (
     <HomeScreen
       title={
-        <HomeScreenTitle>Hi, {user?.name || "Warrior"} 👋</HomeScreenTitle>
+        <HomeScreenTitle>
+          Hi, {user?.name.split(" ")[0] || "Warrior"} 👋
+        </HomeScreenTitle>
       }
       actions={[
         {
