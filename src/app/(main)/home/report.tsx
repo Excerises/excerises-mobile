@@ -22,6 +22,8 @@ import {
 import { useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { useGetSessions } from "@/hook/api/session/use-get-session";
+import { SessionCard } from "@/component/fitness";
 
 function SectionHeader({
   title,
@@ -48,6 +50,9 @@ export default function Page() {
   const themeColor = useThemeColor();
   const { user } = useAuth();
   const router = useRouter();
+  const {
+    query: { data: sessionsData },
+  } = useGetSessions();
 
   const stats = useMemo(
     () => [
@@ -173,21 +178,27 @@ export default function Page() {
             title="Sessions Record"
             subtitle="Every workout adds up"
           />
-          <NoRecordCard
-            icon={DumbbellIcon}
-            message="No workout sessions yet. Start your first one!"
-            actions={
-              <Button onPress={() => router.push("/session/new")}>
-                <Text
-                  size="sm"
-                  weight="semibold"
-                  style={{ textTransform: "uppercase" }}
-                >
-                  Start Workout
-                </Text>
-              </Button>
-            }
-          />
+          {sessionsData && sessionsData.data.length === 0 ? (
+            <NoRecordCard
+              icon={DumbbellIcon}
+              message="No workout sessions yet. Start your first one!"
+              actions={
+                <Button onPress={() => router.push("/session/new")}>
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    style={{ textTransform: "uppercase" }}
+                  >
+                    Start Workout
+                  </Text>
+                </Button>
+              }
+            />
+          ) : (
+            sessionsData?.data.map((session) => (
+              <SessionCard key={session.id} session={session} />
+            ))
+          )}
         </View>
       </ScrollView>
     </HomeScreen>

@@ -1,5 +1,8 @@
 import { SessionActionBar } from "@/component/fitness";
-import { HomeScreen, HomeScreenTitle } from "@/component/screen/main/home-screen";
+import {
+  HomeScreen,
+  HomeScreenTitle,
+} from "@/component/screen/main/home-screen";
 import { Button, Text, View } from "@/component/ui";
 import { Borders } from "@/constant/theme";
 import { useActiveSession } from "@/context/active-session-context";
@@ -9,15 +12,31 @@ import { ArrowRightIcon, CheckCircle2 } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
+import { useCreateSession } from "@/hook/api/session/use-save-session";
 
 export default function ActiveFinish() {
   const router = useRouter();
   const themeColor = useThemeColor();
   const { exercises, totalElapsed, endSession } = useActiveSession();
+  const { mutation: createSessionMutation } = useCreateSession();
 
   useEffect(() => {
     endSession();
   }, [endSession]);
+
+  async function saveSessionAndBackHome() {
+    const durationPerWorkout = totalElapsed / exercises.length;
+
+    await createSessionMutation.mutateAsync({
+      duration: totalElapsed,
+      exercises: exercises.map((ex) => ({
+        exercise_id: ex.id,
+        duration: durationPerWorkout,
+      })),
+    });
+
+    router.replace("/home");
+  }
 
   return (
     <HomeScreen title={<HomeScreenTitle>Session Complete</HomeScreenTitle>}>
@@ -56,7 +75,7 @@ export default function ActiveFinish() {
       </ScrollView>
 
       <SessionActionBar>
-        <Button full size="lg" onPress={() => router.replace("/home")}>
+        <Button full size="lg" onPress={saveSessionAndBackHome}>
           <Text weight="semibold">Back to Home</Text>
           <ArrowRightIcon size={18} color={themeColor.foreground} />
         </Button>
