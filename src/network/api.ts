@@ -1,5 +1,6 @@
+import moment from "moment";
 import { asyncStorage } from "@/constant/data/storage";
-import { useRefreshToken } from "@/hook/api/auth/use-refresh-token";
+// import { useRefreshToken } from "@/hook/api/auth/use-refresh-token";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
 const REFRESH_TOKEN_KEY = "refresh_token";
@@ -20,32 +21,43 @@ class ApiNetwork {
   }
 
   setInterceptor() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { mutation: refreshTokenMutation } = useRefreshToken();
+    // const { mutation: refreshTokenMutation } = useRefreshToken();
+
+    function log(config: AxiosRequestConfig, status: number = 200) {
+      console.log(
+        `${moment().format("YYYY-MM-DD HH:mm:ss")}: ${config.method} ${config.url} with status ${status}`,
+      );
+    }
 
     this.client.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        log(response.config, response.status);
+
+        return response;
+      },
       async (error) => {
         if (error instanceof AxiosError) {
+          log(error.config!, error.response?.status || 500);
+
           const config = error.config as AxiosRequestConfig & {
             _retried?: boolean;
           };
           const shouldRefresh =
             error.response?.status === 401 &&
-            !(config.url || "").includes("/auth/refresh");
+            !(config.url || "").includes("/auth");
 
           if (config && !config._retried && shouldRefresh) {
             config._retried = true;
             const token = await this.getSavedRefreshToken();
 
             if (token) {
-              const res = await refreshTokenMutation.mutateAsync({
-                refresh_token: token,
-              });
-              config._retried = false;
-              config.headers!.Authorization = `Bearer ${res.data.access_token}`;
-
-              return api.client(config);
+              // const res = await refreshTokenMutation.mutateAsync({
+              //   refresh_token: token,
+              // });
+              // config._retried = false;
+              // config.headers!.Authorization = `Bearer ${res.data.access_token}`;
+              //
+              // return api.client(config);
             }
           }
         }
