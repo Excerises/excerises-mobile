@@ -17,23 +17,15 @@ type ActiveSessionContextValue = {
   exercises: Exercise[];
   currentIndex: number;
   phase: SessionPhase;
-  /** Seconds elapsed for the current workout item (count up from 00:00). */
   currentElapsed: number;
-  /** Cumulative workout seconds (breaks excluded) since the session started. */
   totalElapsed: number;
   breakRemaining: number;
   initialized: boolean;
-  /**
-   * Freezes every session timer (workout stopwatch and break countdown).
-   * Used while the instruction sheet is open so the user can read at their
-   * own pace without losing time.
-   */
   paused: boolean;
   setPaused: (paused: boolean) => void;
   initSession: (exercises: Exercise[]) => void;
   startWorkout: (sessionId: string) => void;
   completeWorkout: () => void;
-  /** Advance to the next workout item. Returns false when it was the last one. */
   advanceFromBreak: () => boolean;
   endSession: () => void;
 };
@@ -54,9 +46,6 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
   const [initialized, setInitialized] = useState(false);
   const [paused, setPaused] = useState(false);
 
-  // Single timer for the whole active session: it keeps running while
-  // navigating between workout, break, and finish screens. It is suspended
-  // entirely while `paused` is true.
   useEffect(() => {
     if (paused) return;
 
@@ -91,7 +80,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
   const startWorkout = useCallback(
     (sessionId: string) => {
       const index = exercises.findIndex(
-        (exercise) => String(exercise.id) === sessionId
+        (exercise) => String(exercise.id) === sessionId,
       );
       if (index < 0) return;
 
@@ -100,7 +89,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
       setPhase("workout");
       setPaused(false);
     },
-    [exercises]
+    [exercises],
   );
 
   const completeWorkout = useCallback(() => {
@@ -162,7 +151,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
       completeWorkout,
       advanceFromBreak,
       endSession,
-    ]
+    ],
   );
 
   return (
