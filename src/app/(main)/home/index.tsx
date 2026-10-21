@@ -12,6 +12,7 @@ import { Pressable, ScrollView, StyleSheet } from "react-native";
 import { StatsBannerCard } from "@/component/home/stats-banner-card";
 import { NoRecordCard } from "@/component/common/no-record";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/context/auth-context";
 
 function RecentItem({
   title,
@@ -49,12 +50,15 @@ function RecentItem({
 }
 
 export default function Page() {
+  const { user } = useAuth();
   const router = useRouter();
   const themeColor = useThemeColor();
 
   return (
     <HomeScreen
-      title={<HomeScreenTitle>Hi, Alfiansyah 👋</HomeScreenTitle>}
+      title={
+        <HomeScreenTitle>Hi, {user?.name || "Warrior"} 👋</HomeScreenTitle>
+      }
       actions={[
         {
           icon: <BellIcon color={themeColor.foreground} size={Fonts.size.xl} />,

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LoginRequest, LoginResponse } from "../../../../type/api/auth/login";
 import { api } from "@/network/api";
 import { ApiResponse } from "../../../../type/common/api";
@@ -6,6 +6,7 @@ import { useSetAuthToken } from "./use-set-auth-token";
 
 export function useLogin() {
   const { setToken } = useSetAuthToken();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationKey: ["login"],
@@ -16,6 +17,7 @@ export function useLogin() {
       );
 
       await setToken(res.data.data);
+      queryClient.invalidateQueries({ queryKey: ["get-profile"] });
 
       return res.data;
     },
