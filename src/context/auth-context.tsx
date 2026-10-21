@@ -6,6 +6,8 @@ import {
   useState,
 } from "react";
 import { User } from "../../type/entity";
+import { useGetProfile } from "@/hook/api/profile/use-get-profile";
+import { usePathname, useRouter } from "expo-router";
 
 type AuthContext = {
   user: User | null;
@@ -20,18 +22,38 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [user, setUser] = useState<User | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const {
+    query: { isPending },
+  } = useGetProfile();
+
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    if (isPending || isLoaded) {
+      return;
+    }
+
+    const timeout = setTimeout(async () => {
       setIsLoaded(true);
     }, 1000);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [isPending]);
+
+  useEffect(() => {
+    const needRedirect = !(
+      pathname.startsWith("/home") && pathname.startsWith("/session")
+    );
+    if (user?.id && needRedirect) {
+      router.replace("/home");
+    }
+  }, [user?.id]);
 
   return (
     <AuthContext.Provider
