@@ -73,7 +73,7 @@ export interface Exercise {
   equipment: ExerciseEquipment;
   target: ExerciseTarget;
   secondary_muscles: string[];
-  instruction: string[];
+  instructions: string[];
   difficulty: ExerciseDifficulty;
   category: ExerciseCategory;
   created_at: string;

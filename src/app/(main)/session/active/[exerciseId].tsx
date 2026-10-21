@@ -57,7 +57,7 @@ export default function ActiveWorkout() {
   }
 
   const exercise = exercises[index];
-  const steps = exercise.instruction ?? [];
+  const steps = exercise.instructions ?? [];
   const accent = difficultyColors[exercise.difficulty];
   const CategoryIcon = categoryIcons[exercise.category];
 
@@ -250,10 +250,7 @@ export default function ActiveWorkout() {
                   <View
                     key={muscle}
                     variant="ghost"
-                    style={[
-                      styles.chip,
-                      { backgroundColor: themeColor.muted },
-                    ]}
+                    style={[styles.chip, { backgroundColor: themeColor.muted }]}
                   >
                     <Text size="xs" variant="muted">
                       {capitalize(muscle)}
