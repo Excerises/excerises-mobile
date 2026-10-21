@@ -25,7 +25,7 @@ class ApiNetwork {
 
     function log(config: AxiosRequestConfig, status: number = 200) {
       console.log(
-        `${moment().format("YYYY-MM-DD HH:mm:ss")}: ${config.method} ${config.url} with status ${status}`,
+        `${moment().format("YYYY-MM-DD HH:mm:ss")}: [${config.method?.toUpperCase()}] ${config.url} with status ${status}`,
       );
     }
 

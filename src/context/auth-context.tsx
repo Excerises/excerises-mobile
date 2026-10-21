@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const {
-    query: { isPending },
+    query: { isPending, data },
   } = useGetProfile();
 
   useEffect(() => {
@@ -54,6 +54,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       router.replace("/home");
     }
   }, [user?.id]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setUser(data?.data || null);
+  }, [data?.data]);
 
   return (
     <AuthContext.Provider
