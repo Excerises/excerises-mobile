@@ -7,15 +7,18 @@ import {
   Text,
   View,
 } from "@/component/ui";
+import { useRegister } from "@/hook/api/auth/use-register";
 import { useRegisterForm } from "@/hook/form/auth/use-register-form";
+import { getError } from "@/utils/common/error";
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet } from "react-native";
 
 export default function Register() {
   const router = useRouter();
   const { control, handleSubmit, setError } = useRegisterForm();
+  const { mutation } = useRegister();
 
-  const handleRegister = handleSubmit((v) => {
+  const handleRegister = handleSubmit(async (v) => {
     if (v.password !== v.passwordConfirmation) {
       setError("passwordConfirmation", {
         message: "Password does not match",
@@ -23,8 +26,16 @@ export default function Register() {
       return;
     }
 
-    console.log(v);
-    router.replace("/onboarding");
+    try {
+      await mutation.mutateAsync({
+        name: v.name,
+        email: v.email,
+        password: v.password,
+      });
+      router.replace("/onboarding");
+    } catch (err: any) {
+      setError("email", { message: getError(err) });
+    }
   });
 
   return (
@@ -98,11 +109,16 @@ export default function Register() {
       <Button
         size="lg"
         style={{ alignSelf: "stretch" }}
-        onPress={handleRegister}
+        onPress={() => handleRegister()}
+        disabled={mutation.isPending}
       >
-        <Text weight="semibold" size="lg">
-          REGISTER
-        </Text>
+        {mutation.isPending ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text weight="semibold" size="lg">
+            REGISTER
+          </Text>
+        )}
       </Button>
 
       <View style={styles.action}>

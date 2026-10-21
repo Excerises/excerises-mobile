@@ -1,9 +1,9 @@
 import moment from "moment";
-import { asyncStorage } from "@/constant/data/storage";
-// import { useRefreshToken } from "@/hook/api/auth/use-refresh-token";
+import { asyncStorage, STORAGE_KEYS } from "@/constant/data/storage";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
-
-const REFRESH_TOKEN_KEY = "refresh_token";
+import { ApiResponse } from "../../type/common/api";
+import { RefreshTokenResponse } from "../../type/api/auth/refresh-token";
+import { useSetAuthToken } from "@/hook/api/auth/use-set-auth-token";
 
 class ApiNetwork {
   client: AxiosInstance;
@@ -21,7 +21,7 @@ class ApiNetwork {
   }
 
   setInterceptor() {
-    // const { mutation: refreshTokenMutation } = useRefreshToken();
+    const { setToken } = useSetAuthToken();
 
     function log(config: AxiosRequestConfig, status: number = 200) {
       console.log(
@@ -51,13 +51,14 @@ class ApiNetwork {
             const token = await this.getSavedRefreshToken();
 
             if (token) {
-              // const res = await refreshTokenMutation.mutateAsync({
-              //   refresh_token: token,
-              // });
-              // config._retried = false;
-              // config.headers!.Authorization = `Bearer ${res.data.access_token}`;
-              //
-              // return api.client(config);
+              const res = await api.client.post<
+                ApiResponse<RefreshTokenResponse>
+              >("/auth/refresh", { refresh_token: token });
+              setToken(res.data.data);
+              config._retried = false;
+              config.headers!.Authorization = `Bearer ${res.data.data.access_token}`;
+
+              return api.client(config);
             }
           }
         }
@@ -76,16 +77,16 @@ class ApiNetwork {
         break;
       case "refresh":
         if (token) {
-          await asyncStorage.setItem(REFRESH_TOKEN_KEY, token);
+          await asyncStorage.setItem(STORAGE_KEYS.refreshToken, token);
         } else {
-          await asyncStorage.removeItem(REFRESH_TOKEN_KEY);
+          await asyncStorage.removeItem(STORAGE_KEYS.refreshToken);
         }
         break;
     }
   }
 
   async getSavedRefreshToken() {
-    const token = await asyncStorage.getItem(REFRESH_TOKEN_KEY);
+    const token = await asyncStorage.getItem(STORAGE_KEYS.refreshToken);
 
     return token || undefined;
   }

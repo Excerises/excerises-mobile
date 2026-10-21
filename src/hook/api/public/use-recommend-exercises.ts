@@ -12,7 +12,7 @@ export function useRecommendExercises() {
     mutationFn: async (req: RecommendExercisesRequest) => {
       const res = await api.client.post<
         ApiResponse<RecommendExercisesResponse>
-      >("/recommend-exercises", req);
+      >("/recommend-exercise", req);
       return res.data;
     },
   });

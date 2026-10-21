@@ -39,7 +39,6 @@ export default function Login() {
   const handleLogin = handleSubmit(async (v) => {
     try {
       await mutation.mutateAsync(v);
-      router.push("/home");
     } catch (err: any) {
       setError("password", { message: getError(err) });
     }

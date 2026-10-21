@@ -47,13 +47,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [isPending]);
 
   useEffect(() => {
-    const needRedirect = !(
-      pathname.startsWith("/home") && pathname.startsWith("/session")
-    );
-    if (user?.id && needRedirect) {
-      router.replace("/home");
+    const isPublicRoute = ["/", "/login", "/register"].includes(pathname);
+    if (user && isPublicRoute) {
+      if (user.profile) {
+        router.replace('/home');
+      }
+
+      router.replace("/onboarding");
     }
-  }, [user?.id]);
+  }, [user, pathname]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
