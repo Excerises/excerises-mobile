@@ -134,7 +134,13 @@ export default function Page() {
           {newsData && newsData.data.length == 0 ? (
             <NoRecordCard message="No latest news yet" />
           ) : (
-            newsData?.data.map((news) => <NewsCard key={news.id} news={news} />)
+            newsData?.data.map((news) => (
+              <NewsCard
+                key={news.id}
+                news={news}
+                onPress={() => router.push(`/news/${news.id}`)}
+              />
+            ))
           )}
         </View>
       </ScrollView>
