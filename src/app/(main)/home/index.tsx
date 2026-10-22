@@ -17,6 +17,7 @@ import { useAuth } from "@/context/auth-context";
 import { useGetNews } from "@/hook/api/news/use-get-news";
 import { SessionCard } from "@/component/fitness";
 import { useGetLatestSessions } from "@/hook/api/session/use-get-session";
+import { useGetProfileProgress } from "@/hook/api/profile/use-get-profile";
 
 function SectionHeader({
   title,
@@ -72,6 +73,9 @@ export default function Page() {
   const {
     query: { data: sessionsData },
   } = useGetLatestSessions();
+  const {
+    query: { data: progressData },
+  } = useGetProfileProgress();
 
   const firstName = user?.name.split(" ")[0] || "Warrior";
 
@@ -91,7 +95,13 @@ export default function Page() {
       >
         <StatsBannerCard onPress={() => router.push("/session/new")} />
 
-        <WeeklyActivityCard />
+        <WeeklyActivityCard
+          minutes={
+            progressData && progressData.data?.weeklyDurations.length == 7
+              ? progressData.data.weeklyDurations
+              : undefined
+          }
+        />
 
         <View variant="ghost" style={{ gap: 12 }}>
           <SectionHeader
