@@ -4,7 +4,7 @@ import {
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
 import { Text, View, Button } from "@/component/ui";
-import { Fonts } from "@/constant/theme";
+import { Colors, Fonts } from "@/constant/theme";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { BellIcon, DumbbellIcon } from "lucide-react-native";
 import { useMemo } from "react";
@@ -18,6 +18,7 @@ import { useGetNews } from "@/hook/api/news/use-get-news";
 import { SessionCard } from "@/component/fitness";
 import { useGetLatestSessions } from "@/hook/api/session/use-get-session";
 import { useGetProfileProgress } from "@/hook/api/profile/use-get-profile";
+import { useGetCountUnreadNotification } from "@/hook/api/notification/use-notification";
 
 function SectionHeader({
   title,
@@ -76,6 +77,9 @@ export default function Page() {
   const {
     query: { data: progressData },
   } = useGetProfileProgress();
+  const {
+    query: { data: countUnreadNotificationData },
+  } = useGetCountUnreadNotification();
 
   const firstName = user?.name.split(" ")[0] || "Warrior";
 
@@ -84,7 +88,35 @@ export default function Page() {
       title={<HomeScreenTitle>Hi, {firstName} 👋</HomeScreenTitle>}
       actions={[
         {
-          icon: <BellIcon color={themeColor.foreground} size={Fonts.size.xl} />,
+          icon: (
+            <View variant="ghost" style={{ position: "relative" }}>
+              <BellIcon color={themeColor.foreground} size={Fonts.size.xl} />
+              {countUnreadNotificationData &&
+                countUnreadNotificationData?.data > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      top: -5,
+                      right: -5,
+                      backgroundColor: Colors.red[500],
+                      height: 15,
+                      width: 15,
+                      borderRadius: 9999,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{ color: Colors.white }}
+                      size="xs"
+                      weight="semibold"
+                    >
+                      {countUnreadNotificationData?.data || 0}
+                    </Text>
+                  </View>
+                )}
+            </View>
+          ),
         },
       ]}
     >
