@@ -24,6 +24,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useGetSessions } from "@/hook/api/session/use-get-session";
 import { SessionCard } from "@/component/fitness";
+import { useGetProfileProgress } from "@/hook/api/profile/use-get-profile";
 
 function SectionHeader({
   title,
@@ -53,14 +54,29 @@ export default function Page() {
   const {
     query: { data: sessionsData },
   } = useGetSessions();
+  const {
+    query: { data: progressData },
+  } = useGetProfileProgress();
 
   const stats = useMemo(
     () => [
-      { label: "Streaks", value: 0, icon: FlameIcon },
-      { label: "Workouts", value: 0, icon: AwardIcon },
-      { label: "Minutes", value: 0, icon: ClockIcon },
+      {
+        label: "Streaks",
+        value: progressData?.data.streaks || 0,
+        icon: FlameIcon,
+      },
+      {
+        label: "Workouts",
+        value: progressData?.data.workouts || 0,
+        icon: AwardIcon,
+      },
+      {
+        label: "Minutes",
+        value: progressData?.data.minutes || 0,
+        icon: ClockIcon,
+      },
     ],
-    [],
+    [progressData],
   );
 
   const bodyStats = useMemo(
