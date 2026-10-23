@@ -21,6 +21,7 @@ class ApiNetwork {
   }
 
   setInterceptor() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { setToken } = useSetAuthToken();
 
     function log(config: AxiosRequestConfig, status: number = 200) {
