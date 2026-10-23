@@ -72,7 +72,7 @@ export default function Page() {
       },
       {
         label: "Minutes",
-        value: progressData?.data.minutes || 0,
+        value: (progressData?.data.minutes || 0).toFixed(0),
         icon: ClockIcon,
       },
     ],
