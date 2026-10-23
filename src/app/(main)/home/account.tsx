@@ -6,6 +6,7 @@ import { Text, View } from "@/component/ui";
 import { Borders, Fonts } from "@/constant/theme";
 import { useAuth } from "@/context/auth-context";
 import { useThemeColor } from "@/hook/use-theme-color";
+import { useRouter } from "expo-router";
 import {
   BellIcon,
   ChevronRightIcon,
@@ -79,6 +80,7 @@ function MenuSection({ title, items }: { title: string; items: MenuItem[] }) {
 
 export default function Page() {
   const { user, setUser } = useAuth();
+  const router = useRouter();
 
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -105,7 +107,7 @@ export default function Page() {
     {
       label: "Notifications",
       icon: BellIcon,
-      onPress: () => {},
+      onPress: () => router.push("/notification"),
     },
   ];
 
