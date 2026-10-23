@@ -89,33 +89,35 @@ export default function Page() {
       actions={[
         {
           icon: (
-            <View variant="ghost" style={{ position: "relative" }}>
-              <BellIcon color={themeColor.foreground} size={Fonts.size.xl} />
-              {countUnreadNotificationData &&
-                countUnreadNotificationData?.data > 0 && (
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: -5,
-                      right: -5,
-                      backgroundColor: Colors.red[500],
-                      height: 15,
-                      width: 15,
-                      borderRadius: 9999,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Text
-                      style={{ color: Colors.white }}
-                      size="xs"
-                      weight="semibold"
+            <Pressable onPress={() => router.push("/notification")}>
+              <View variant="ghost" style={{ position: "relative" }}>
+                <BellIcon color={themeColor.foreground} size={Fonts.size.xl} />
+                {countUnreadNotificationData &&
+                  countUnreadNotificationData?.data > 0 && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        top: -5,
+                        right: -5,
+                        backgroundColor: Colors.red[500],
+                        height: 15,
+                        width: 15,
+                        borderRadius: 9999,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
-                      {countUnreadNotificationData?.data || 0}
-                    </Text>
-                  </View>
-                )}
-            </View>
+                      <Text
+                        style={{ color: Colors.white }}
+                        size="xs"
+                        weight="semibold"
+                      >
+                        {countUnreadNotificationData?.data || 0}
+                      </Text>
+                    </View>
+                  )}
+              </View>
+            </Pressable>
           ),
         },
       ]}
