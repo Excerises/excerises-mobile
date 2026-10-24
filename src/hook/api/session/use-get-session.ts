@@ -8,7 +8,7 @@ export function useGetLatestSessions() {
     queryKey: ["get-latest-sessions"],
     queryFn: async () => {
       const res = await api.client.get<ApiResponse<Session[]>>("/session", {
-        params: { limit: 3 },
+        params: { limit: 2 },
       });
       return res.data;
     },
