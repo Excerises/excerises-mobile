@@ -34,7 +34,7 @@ export function NInput({
           styles.input,
           {
             color: themeColor.foreground,
-            backgroundColor: themeColor.background,
+            backgroundColor: themeColor.card,
             borderColor: focus ? themeColor.mutedForeground : themeColor.border,
             shadowRadius: 4,
             shadowColor: themeColor.mutedForeground,

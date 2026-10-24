@@ -39,7 +39,7 @@ export function ExerciseCard({
           </View>
           <View variant="ghost" style={styles.content}>
             <Text size="lg" weight="semibold">
-              {exercise.name}
+              {capitalize(exercise.name)}
             </Text>
             <View style={styles.itemRow} variant="ghost">
               <View style={styles.item} variant="ghost">

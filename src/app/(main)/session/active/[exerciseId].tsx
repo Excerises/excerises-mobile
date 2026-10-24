@@ -105,7 +105,7 @@ export default function ActiveWorkout() {
                 EXERCISE {index + 1} OF {exercises.length}
               </Text>
               <Text size="xl3" weight="bold">
-                {exercise.name}
+                {capitalize(exercise.name)}
               </Text>
             </View>
           </View>
@@ -143,7 +143,6 @@ export default function ActiveWorkout() {
             ].map((item) => (
               <View
                 key={item.label}
-                variant="ghost"
                 style={[styles.metaItem, { backgroundColor: themeColor.muted }]}
               >
                 <Text size="xs" variant="muted">

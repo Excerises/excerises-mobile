@@ -41,6 +41,12 @@ export default function Recommendations() {
     "beginner") as ExerciseDifficulty;
 
   useEffect(() => {
+    const top_n = {
+      beginner: 8,
+      intermediate: 14,
+      advanced: 20,
+    }[difficulty];
+
     mutation.mutate(
       {
         body_part: body_part as ExerciseBodyPart,
@@ -48,6 +54,7 @@ export default function Recommendations() {
         target: target as ExerciseTarget,
         difficulty,
         category: category as ExerciseCategory,
+        top_n,
       },
       {
         onSuccess: (res) => {
@@ -111,26 +118,28 @@ export default function Recommendations() {
         </View>
       ) : (
         <>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.list}
-          >
-            {exercises.map((exercise) => (
-              <SelectExerciseCard
-                key={exercise.id}
-                exercise={exercise}
-                selected={selectedIds.has(exercise.id)}
-                onToggle={() => toggleSelect(exercise.id)}
-              />
-            ))}
-          </ScrollView>
+          <View style={{ flex: 1 }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.list}
+            >
+              {exercises.map((exercise) => (
+                <SelectExerciseCard
+                  key={exercise.id}
+                  exercise={exercise}
+                  selected={selectedIds.has(exercise.id)}
+                  onToggle={() => toggleSelect(exercise.id)}
+                />
+              ))}
+            </ScrollView>
+          </View>
 
           {selectedCount > 0 && (
             <View
               variant="ghost"
               style={[styles.bottomBar, { borderTopColor: themeColor.border }]}
             >
-              <View variant="ghost" style={styles.bottomBarContent}>
+              <View style={styles.bottomBarContent}>
                 <Text weight="semibold" size="lg">
                   {selectedCount} exercise{selectedCount > 1 ? "s" : ""}{" "}
                   selected
@@ -179,10 +188,9 @@ const styles = StyleSheet.create({
   },
   list: {
     gap: 12,
-    paddingBottom: 100,
+    paddingBottom: 10,
   },
   bottomBar: {
-    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
