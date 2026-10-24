@@ -4,7 +4,7 @@ import {
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
 import { Text, View } from "@/component/ui";
-import { Fonts } from "@/constant/theme";
+import { Borders, Fonts } from "@/constant/theme";
 import { useGetNewsDetail } from "@/hook/api/news/use-get-news";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { News } from "../../../../type/entity";
@@ -63,37 +63,44 @@ export default function Page() {
             style={styles.cover}
           />
 
-          <View variant="ghost" style={{ gap: 8 }}>
-            <Text weight="semibold" size="xl">
-              {news.title}
-            </Text>
-
-            <View variant="ghost" style={styles.metaRow}>
-              <View variant="ghost" style={styles.metaItem}>
-                <CalendarIcon
-                  size={Fonts.size.xs}
-                  color={colors.mutedForeground}
-                />
-                <Text size="xs" variant="muted">
-                  {moment(news.created_at).format("DD MMMM YYYY, HH:mm")}
-                </Text>
-              </View>
-              <View variant="ghost" style={styles.metaItem}>
-                <EyeIcon size={Fonts.size.xs} color={colors.mutedForeground} />
-                <Text size="xs" variant="muted">
-                  {news.viewed_count} viewed
-                </Text>
-              </View>
-            </View>
-
-            {news.description && (
-              <Text size="sm" variant="muted">
-                {news.description}
+          <View>
+            <View variant="ghost" style={{ gap: 8 }}>
+              <Text weight="semibold" size="xl">
+                {news.title}
               </Text>
-            )}
+
+              <View variant="ghost" style={styles.metaRow}>
+                <View variant="ghost" style={styles.metaItem}>
+                  <CalendarIcon
+                    size={Fonts.size.xs}
+                    color={colors.mutedForeground}
+                  />
+                  <Text size="xs" variant="muted">
+                    {moment(news.created_at).format("DD MMMM YYYY, HH:mm")}
+                  </Text>
+                </View>
+                <View variant="ghost" style={styles.metaItem}>
+                  <EyeIcon
+                    size={Fonts.size.xs}
+                    color={colors.mutedForeground}
+                  />
+                  <Text size="xs" variant="muted">
+                    {news.viewed_count} viewed
+                  </Text>
+                </View>
+              </View>
+
+              {news.description && (
+                <Text size="sm" variant="muted">
+                  {news.description}
+                </Text>
+              )}
+            </View>
           </View>
 
-          <Text size="sm">{stripHtml(news.content)}</Text>
+          <View>
+            <Text size="sm">{stripHtml(news.content)}</Text>
+          </View>
         </ScrollView>
       )}
     </HomeScreen>
@@ -124,5 +131,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
+  },
+  card: {
+    borderRadius: Borders.radius.md,
+    padding: 14,
   },
 });
