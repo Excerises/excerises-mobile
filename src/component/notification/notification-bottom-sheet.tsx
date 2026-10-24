@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
   actions: {
     marginTop: 28,
     gap: 12,
+    marginBottom: 14,
   },
   readButton: {
     minHeight: 52,
