@@ -215,8 +215,6 @@ const NotificationCard = ({
 const styles = StyleSheet.create({
   card: {
     position: "relative",
-    marginHorizontal: 16,
-    marginVertical: 6,
     borderRadius: 8,
     borderWidth: 1,
     overflow: "hidden",

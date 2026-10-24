@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import {
   useGetNotifications,
   useReadNotification,
@@ -6,13 +6,28 @@ import {
 } from "@/hook/api/notification/use-notification";
 import { Notification } from "../../../../type/entity/notificaton";
 import { ActivityIndicator, StyleSheet, FlatList } from "react-native";
-import { Text, View, Button } from "@/component/ui";
+import { Text, View } from "@/component/ui";
 import { NoRecord } from "@/component/common/no-record";
 import NotificationCard from "@/component/notification/notification-card";
 import { BottomSheet, BottomSheetContent } from "@/component/ui/bottom-sheet";
 import NotificationBottomSheet from "@/component/notification/notification-bottom-sheet";
+import {
+  HomeScreen,
+  HomeScreenTitle,
+} from "@/component/screen/main/home-screen";
 
 export default function Page() {
+  return (
+    <HomeScreen
+      title={<HomeScreenTitle>Notifications</HomeScreenTitle>}
+      canBack
+    >
+      <PageContent />
+    </HomeScreen>
+  );
+}
+
+export function PageContent() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [selectedNotification, setSelectedNotification] =
     useState<Notification | null>(null);
@@ -118,7 +133,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
-    paddingVertical: 10,
     flex: 1,
   },
 });

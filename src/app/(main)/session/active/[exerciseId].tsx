@@ -10,13 +10,12 @@ import {
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
 import { Button, Text, View } from "@/component/ui";
-import { Borders, Fonts } from "@/constant/theme";
+import { Borders } from "@/constant/theme";
 import { useActiveSession } from "@/context/active-session-context";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { capitalize } from "@/utils/common/text";
 import { formatSeconds } from "@/utils/common/format";
 import {
-  ArrowLeftIcon,
   ArrowRightIcon,
   ChevronRightIcon,
   CircleHelp,
@@ -85,14 +84,7 @@ export default function ActiveWorkout() {
   return (
     <HomeScreen
       title={<HomeScreenTitle>Active Session</HomeScreenTitle>}
-      actions={[
-        {
-          icon: (
-            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
-          ),
-          onTap: () => router.back(),
-        },
-      ]}
+      canBack
     >
       <ScrollView
         style={styles.scroll}

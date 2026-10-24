@@ -4,7 +4,6 @@ import {
 } from "@/component/screen/main/home-screen";
 import { SelectExerciseCard } from "@/component/fitness";
 import { Button, Text, View } from "@/component/ui";
-import { Fonts } from "@/constant/theme";
 import { useAuth } from "@/context/auth-context";
 import { useRecommendExercises } from "@/hook/api/public/use-recommend-exercises";
 import { useThemeColor } from "@/hook/use-theme-color";
@@ -18,7 +17,6 @@ import {
   ExerciseTarget,
 } from "@/../type/entity";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -83,14 +81,7 @@ export default function Recommendations() {
   return (
     <HomeScreen
       title={<HomeScreenTitle>Recommendations</HomeScreenTitle>}
-      actions={[
-        {
-          icon: (
-            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
-          ),
-          onTap: () => router.back(),
-        },
-      ]}
+      canBack
     >
       <View variant="ghost" style={styles.filtersRow}>
         {filters.map((filter, i) => (

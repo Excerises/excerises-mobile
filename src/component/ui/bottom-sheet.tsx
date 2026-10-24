@@ -9,8 +9,10 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  StyleProp,
   StyleSheet,
   useWindowDimensions,
+  ViewStyle,
 } from "react-native";
 import { View } from ".";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -54,9 +56,11 @@ export function BottomSheet({
 export function BottomSheetContent({
   children,
   size,
+  style,
 }: {
   children?: ReactNode;
   size?: number;
+  style?: StyleProp<ViewStyle>;
 }) {
   const { open, onOpenChange } = useBottomSheet();
   const { height } = useWindowDimensions();
@@ -71,8 +75,9 @@ export function BottomSheetContent({
       }}
     >
       <Pressable style={styles.mask} onPress={() => onOpenChange(false)} />
+      <View variant="ghost" style={{ flex: 1 }}></View>
       <View
-        style={[styles.content, { maxHeight: height * (size || 0.65) }]}
+        style={[styles.content, style, { maxHeight: height * (size || 0.65) }]}
         variant="card"
       >
         <ScrollView>
@@ -85,7 +90,11 @@ export function BottomSheetContent({
 
 const styles = StyleSheet.create({
   mask: {
-    flex: 1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   content: {
