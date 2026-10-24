@@ -174,17 +174,20 @@ export default function Page() {
           <SectionHeader
             title="Latest News"
             subtitle="Tips & insights for your fitness journey"
+            onSeeAll={() => router.push("/news")}
           />
           {newsData && newsData.data.length == 0 ? (
             <NoRecordCard message="No latest news yet" />
           ) : (
-            newsData?.data.map((news) => (
-              <NewsCard
-                key={news.id}
-                news={news}
-                onPress={() => router.push(`/news/${news.id}`)}
-              />
-            ))
+            newsData?.data
+              .slice(0, 1)
+              .map((news) => (
+                <NewsCard
+                  key={news.id}
+                  news={news}
+                  onPress={() => router.push(`/news/${news.id}`)}
+                />
+              ))
           )}
         </View>
       </ScrollView>

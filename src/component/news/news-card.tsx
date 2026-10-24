@@ -2,8 +2,9 @@ import { Image, Pressable, StyleSheet } from "react-native";
 import { News } from "../../../type/entity";
 import { Text, View } from "../ui";
 import { Borders, Colors, Fonts } from "@/constant/theme";
-import { EyeIcon } from "lucide-react-native";
+import { CalendarIcon, EyeIcon } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { formatDate } from "@/utils/common/format";
 
 interface NewsCardProps {
   news: News;
@@ -28,14 +29,18 @@ export function NewsCard({ news, onPress }: NewsCardProps) {
           <Text size="xl" weight="semibold" style={{ color: Colors.white }}>
             {news.title}
           </Text>
-          <View
-            style={{ flexDirection: "row", gap: 6, alignItems: "center" }}
-            variant="ghost"
-          >
-            <EyeIcon size={Fonts.size.xs} color={Colors.white} />
-            <Text style={{ color: Colors.white }} size="xs">
-              {news.viewed_count} viewed
-            </Text>
+          <View style={[styles.itemRow, { gap: 12 }]} variant="ghost">
+            {[
+              { label: formatDate(news.created_at), icon: CalendarIcon },
+              { label: `${news.viewed_count} viewed`, icon: EyeIcon },
+            ].map((info, i) => (
+              <View style={styles.itemRow} variant="ghost" key={i}>
+                <info.icon size={Fonts.size.xs} color={Colors.white} />
+                <Text style={{ color: Colors.white }} size="xs">
+                  {info.label}
+                </Text>
+              </View>
+            ))}
           </View>
         </LinearGradient>
       </View>
@@ -70,5 +75,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     padding: 16,
     gap: 4,
+  },
+  itemRow: {
+    flexDirection: "row",
+    gap: 6,
+    alignItems: "center",
   },
 });
