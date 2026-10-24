@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Text, View } from "../ui";
 import { categoryIcons, difficultyColors } from "./exercise-visuals";
+import { BottomSheet, BottomSheetContent } from "../ui/bottom-sheet";
 
 interface InstructionSheetProps {
   exercise?: Exercise;
@@ -34,22 +35,13 @@ export function InstructionSheet({
   const steps = exercise?.instructions ?? [];
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      onRequestClose={onClose}
+    <BottomSheet
+      open={visible}
+      onOpenChange={(v) => {
+        if (!v) onClose();
+      }}
     >
-      <Pressable style={styles.mask} onPress={onClose} />
-
-      <View variant="card" style={[styles.sheet, { maxHeight: height * 0.8 }]}>
-        <View variant="ghost" style={styles.grabberArea}>
-          <View
-            variant="ghost"
-            style={[styles.grabber, { backgroundColor: themeColor.border }]}
-          />
-        </View>
-
+      <BottomSheetContent style={styles.sheet}>
         <View variant="ghost" style={styles.header}>
           <View
             variant="ghost"
@@ -140,30 +132,15 @@ export function InstructionSheet({
             <Text weight="semibold">Got it</Text>
           </Button>
         </SafeAreaView>
-      </View>
-    </Modal>
+      </BottomSheetContent>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  mask: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
   sheet: {
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-  },
-  grabberArea: {
-    alignItems: "center",
-    paddingVertical: 8,
-  },
-  grabber: {
-    height: 4,
-    width: 44,
-    borderRadius: 9999,
+    paddingHorizontal: 20,
+    paddingVertical: 28,
   },
   header: {
     flexDirection: "row",

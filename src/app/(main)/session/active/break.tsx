@@ -9,7 +9,7 @@ import {
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
 import { Button, Text, View } from "@/component/ui";
-import { Borders, Fonts } from "@/constant/theme";
+import { Borders } from "@/constant/theme";
 import {
   BREAK_SECONDS,
   useActiveSession,
@@ -17,7 +17,7 @@ import {
 import { useThemeColor } from "@/hook/use-theme-color";
 import { capitalize } from "@/utils/common/text";
 import { formatSeconds } from "@/utils/common/format";
-import { ArrowLeftIcon, Hourglass, SkipForwardIcon } from "lucide-react-native";
+import { Hourglass, SkipForwardIcon } from "lucide-react-native";
 import { Redirect, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef } from "react";
 import { ScrollView, StyleSheet } from "react-native";
@@ -79,17 +79,7 @@ export default function ActiveBreak() {
     : Hourglass;
 
   return (
-    <HomeScreen
-      title={<HomeScreenTitle>Break</HomeScreenTitle>}
-      actions={[
-        {
-          icon: (
-            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
-          ),
-          onTap: () => router.back(),
-        },
-      ]}
-    >
+    <HomeScreen title={<HomeScreenTitle>Break</HomeScreenTitle>} canBack>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}

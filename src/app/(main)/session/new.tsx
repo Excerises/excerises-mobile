@@ -13,7 +13,6 @@ import {
   Text,
   View,
 } from "@/component/ui";
-import { Fonts } from "@/constant/theme";
 import { useNewSessionForm } from "@/hook/form/session/use-new-session-form";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { capitalize } from "@/utils/common/text";
@@ -24,7 +23,6 @@ import {
   ExerciseTarget,
 } from "@/../type/entity/exercise";
 import { useRouter } from "expo-router";
-import { ArrowLeftIcon } from "lucide-react-native";
 import { ScrollView } from "react-native";
 
 const bodyPartOptions: { label: string; value: string }[] = (
@@ -122,17 +120,7 @@ export default function NewSession() {
   });
 
   return (
-    <HomeScreen
-      title={<HomeScreenTitle>New Session</HomeScreenTitle>}
-      actions={[
-        {
-          icon: (
-            <ArrowLeftIcon size={Fonts.size.xl} color={themeColor.foreground} />
-          ),
-          onTap: () => router.back(),
-        },
-      ]}
-    >
+    <HomeScreen title={<HomeScreenTitle>New Session</HomeScreenTitle>} canBack>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={{ gap: 20, paddingBottom: 40 }}>
           <View variant="ghost" style={{ gap: 6 }}>
@@ -152,7 +140,12 @@ export default function NewSession() {
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger>
-                  <SelectInput placeholder="Select body part" />
+                  <SelectInput
+                    value={
+                      bodyPartOptions.find((v) => v.value == field.value)?.label
+                    }
+                    placeholder="Select body part"
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {bodyPartOptions.map((option) => (
@@ -173,7 +166,13 @@ export default function NewSession() {
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger>
-                  <SelectInput placeholder="Select equipment" />
+                  <SelectInput
+                    value={
+                      equipmentOptions.find((v) => v.value == field.value)
+                        ?.label
+                    }
+                    placeholder="Select equipment"
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {equipmentOptions.map((option) => (
@@ -194,7 +193,12 @@ export default function NewSession() {
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger>
-                  <SelectInput placeholder="Select target muscle" />
+                  <SelectInput
+                    value={
+                      targetOptions.find((v) => v.value == field.value)?.label
+                    }
+                    placeholder="Select target muscle"
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {targetOptions.map((option) => (
@@ -215,7 +219,12 @@ export default function NewSession() {
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger>
-                  <SelectInput placeholder="Select category" />
+                  <SelectInput
+                    value={
+                      categoryOptions.find((v) => v.value == field.value)?.label
+                    }
+                    placeholder="Select category"
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {categoryOptions.map((option) => (

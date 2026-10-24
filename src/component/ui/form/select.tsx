@@ -5,19 +5,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  useWindowDimensions,
-  ScrollView,
-} from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { Input, Text, View } from "..";
 import { NInputProps } from "./input";
 import { Borders } from "@/constant/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronsUpDownIcon } from "lucide-react-native";
 import { useThemeColor } from "@/hook/use-theme-color";
+import { BottomSheet, BottomSheetContent } from "../bottom-sheet";
 
 type SelectContext = {
   show: boolean;
@@ -113,27 +108,13 @@ export function SelectInput({
 
 export function SelectContent({ children }: { children?: ReactNode }) {
   const { show, setShow } = useSelect();
-  const { height } = useWindowDimensions();
 
   return (
-    <Modal
-      visible={show}
-      animationType="slide"
-      transparent
-      onRequestClose={() => {
-        setShow(false);
-      }}
-    >
-      <Pressable style={styles.mask} onPress={() => setShow(false)} />
-      <View
-        style={[styles.content, { maxHeight: height * 0.65 }]}
-        variant="card"
-      >
-        <ScrollView>
-          <SafeAreaView>{children}</SafeAreaView>
-        </ScrollView>
-      </View>
-    </Modal>
+    <BottomSheet open={show} onOpenChange={setShow}>
+      <BottomSheetContent>
+        <SafeAreaView>{children}</SafeAreaView>
+      </BottomSheetContent>
+    </BottomSheet>
   );
 }
 
@@ -169,15 +150,6 @@ export function SelectItem({
 }
 
 const styles = StyleSheet.create({
-  mask: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  content: {
-    padding: 20,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
   item: {
     padding: 12,
     borderRadius: Borders.radius.md,

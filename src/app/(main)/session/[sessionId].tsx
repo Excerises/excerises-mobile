@@ -12,13 +12,8 @@ import { formatDuration } from "@/utils/fitness/format-duration";
 import { Exercise, SessionExercise } from "@/../type/entity";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import moment from "moment";
+import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
-import {
-  ArrowLeftIcon,
   CalendarIcon,
   ClockIcon,
   DumbbellIcon,
@@ -53,13 +48,8 @@ export default function SessionDetailScreen() {
   return (
     <HomeScreen
       title={<HomeScreenTitle>Session Detail</HomeScreenTitle>}
+      canBack
       actions={[
-        {
-          icon: (
-            <ArrowLeftIcon size={Fonts.size.xl} color={colors.foreground} />
-          ),
-          onTap: () => router.back(),
-        },
         {
           icon: (
             <RotateCcwIcon size={Fonts.size.xl} color={colors.foreground} />
@@ -73,10 +63,7 @@ export default function SessionDetailScreen() {
           <ActivityIndicator color={colors.primary} />
         </View>
       ) : !session ? (
-        <NoRecordCard
-          icon={DumbbellIcon}
-          message="Session not found"
-        />
+        <NoRecordCard icon={DumbbellIcon} message="Session not found" />
       ) : (
         <>
           <ScrollView

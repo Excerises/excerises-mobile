@@ -20,8 +20,8 @@ type ThemeColor = {
 export const ThemeColors: Record<string, ThemeColor> = {
   light: {
     primary: "#f9a237",
-    card: "#F2F2F2",
-    background: "#FFFFFF",
+    background: "#F2F2F2",
+    card: "#FFFFFF",
     foreground: "#01101C",
     muted: "#E6E6E6",
     mutedForeground: "#7d8287",
