@@ -23,7 +23,7 @@ export default function Page() {
         <>
           <View style={styles.info}>
             <Text variant="muted">
-              Menampilkan {newsQuery.data.data.length} list berita.
+              Showing {newsQuery.data.data.length} news list data.
             </Text>
           </View>
           <View style={styles.container}>
