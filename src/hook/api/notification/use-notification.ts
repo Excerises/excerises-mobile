@@ -8,7 +8,7 @@ export function useGetNotifications() {
     queryKey: ["get-notifications"],
     queryFn: async () => {
       const res =
-        await api.client.get<ApiResponse<Notification>>("/notifications");
+        await api.client.get<ApiResponse<Notification[]>>("/notifications");
       return res.data;
     },
   });
@@ -20,7 +20,9 @@ export function useReadNotification() {
   const mutation = useMutation({
     mutationKey: ["read-notification"],
     mutationFn: async ({ notificationId }: { notificationId: any }) => {
-      const res = await api.client.post(`/notifications/${notificationId}`);
+      const res = await api.client.post(
+        `/notifications/${notificationId}/read`,
+      );
       return res.data;
     },
   });

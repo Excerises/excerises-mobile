@@ -16,7 +16,7 @@ import {
 } from "@/context/active-session-context";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { capitalize } from "@/utils/common/text";
-import { formatSeconds } from "@/utils/common/format-seconds";
+import { formatSeconds } from "@/utils/common/format";
 import { ArrowLeftIcon, Hourglass, SkipForwardIcon } from "lucide-react-native";
 import { Redirect, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef } from "react";
