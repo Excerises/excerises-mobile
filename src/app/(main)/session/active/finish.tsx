@@ -6,7 +6,7 @@ import {
 import { Button, Text, View } from "@/component/ui";
 import { Borders } from "@/constant/theme";
 import { useActiveSession } from "@/context/active-session-context";
-import { formatSeconds } from "@/utils/common/format-seconds";
+import { formatSeconds } from "@/utils/common/format";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { ArrowRightIcon, CheckCircle2 } from "lucide-react-native";
 import { useRouter } from "expo-router";
