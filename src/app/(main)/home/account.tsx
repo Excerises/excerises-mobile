@@ -109,7 +109,7 @@ export default function Page() {
     {
       label: "My Preference",
       icon: SlidersHorizontalIcon,
-      onPress: () => {},
+      onPress: () => router.push("/settings/edit-preferences"),
     },
     {
       label: "Notifications",

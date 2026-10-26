@@ -179,7 +179,7 @@ export default function Page() {
             full
             size="xl"
             disabled={mutation.isPending}
-            onPress={handleSave}
+            onPress={() => handleSave()}
           >
             <Text weight="semibold">Save Changes</Text>
           </Button>
