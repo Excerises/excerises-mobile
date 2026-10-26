@@ -1,3 +1,4 @@
+import { ProfileCard } from "@/component/account/profile-card";
 import {
   HomeScreen,
   HomeScreenTitle,
@@ -103,7 +104,7 @@ export default function Page() {
     {
       label: "Edit Profile",
       icon: UserPenIcon,
-      onPress: () => {},
+      onPress: () => router.push("/settings/edit-profile"),
     },
     {
       label: "My Preference",
@@ -135,24 +136,7 @@ export default function Page() {
     <HomeScreen title={<HomeScreenTitle>Account</HomeScreenTitle>}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View variant="ghost" style={styles.container}>
-          <View variant="card" style={styles.profileCard}>
-            <View
-              variant="ghost"
-              style={[styles.avatar, { backgroundColor: "#f9a237" }]}
-            >
-              <Text size="xl3" weight="bold" style={{ color: "#fff" }}>
-                {user?.name?.charAt(0)?.toUpperCase() || "U"}
-              </Text>
-            </View>
-            <View variant="ghost" style={styles.profileInfo}>
-              <Text size="lg" weight="semibold">
-                {user?.name || "User"}
-              </Text>
-              <Text variant="muted" size="sm">
-                {user?.email || "user@demo.com"}
-              </Text>
-            </View>
-          </View>
+          {user && <ProfileCard user={user} />}
 
           <MenuSection title="Account" items={accountItems} />
           <MenuSection title="More" items={moreItems} />
@@ -166,24 +150,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 20,
-  },
-  profileCard: {
-    borderRadius: Borders.radius.lg,
-    padding: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  profileInfo: {
-    flex: 1,
-    gap: 2,
   },
   section: {
     gap: 8,
