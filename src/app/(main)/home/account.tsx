@@ -5,6 +5,7 @@ import {
 import { Text, View } from "@/component/ui";
 import { Borders, Fonts } from "@/constant/theme";
 import { useAuth } from "@/context/auth-context";
+import { useLogout } from "@/hook/api/auth/use-login";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { useRouter } from "expo-router";
 import {
@@ -80,7 +81,12 @@ function MenuSection({ title, items }: { title: string; items: MenuItem[] }) {
 
 export default function Page() {
   const { user, setUser } = useAuth();
+  const { mutation: logoutMutation } = useLogout();
   const router = useRouter();
+
+  async function onLogout() {
+    await logoutMutation.mutateAsync();
+  }
 
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -88,7 +94,7 @@ export default function Page() {
       {
         text: "Logout",
         style: "destructive",
-        onPress: () => setUser(null),
+        onPress: onLogout,
       },
     ]);
   };
