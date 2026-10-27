@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import {
   createContext,
   ReactNode,
@@ -36,7 +37,7 @@ export function ModalDatePicker({
   onValueChange?: (value: Date | null) => void;
 }) {
   const [show, setShow] = useState(false);
-  const [value, setValue] = useState<Date | null>(null);
+  const [value, setValue] = useState<Date | null>(baseValue || null);
 
   useEffect(() => {
     if (baseValue && baseValue != value) setValue(value);

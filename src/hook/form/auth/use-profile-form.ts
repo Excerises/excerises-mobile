@@ -33,7 +33,7 @@ export function useEditPreferencesForm() {
         height: z.number().positive("Height must be greater than zero"),
         weight: z.number().positive("Weight must be greater than zero"),
         workout_freq_per_week: z.number().int().min(1).max(6),
-        workout_duration_per_day: z.number().min(1, "Duration is required"),
+        workout_duration_per_day: z.number().min(0.01, "Duration is required"),
         water_intake_daily: z.number().min(0).max(4),
         reminder_days: z.array(z.number().int().min(1).max(7)),
         reminder_time: z.string().min(1, "Reminder time is required"),

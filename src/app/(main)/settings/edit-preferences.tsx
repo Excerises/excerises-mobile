@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -6,14 +6,15 @@ import {
   StyleSheet,
 } from "react-native";
 import moment from "moment";
-import { useRouter } from "expo-router";
 import { useUpdateProfile } from "@/hook/api/profile/use-update-profile";
 import { useAuth } from "@/context/auth-context";
 import { useEditPreferencesForm } from "@/hook/form/auth/use-profile-form";
 import {
   Button,
   FormControl,
+  FormGroup,
   Input,
+  Label,
   ModalDatePicker,
   ModalDatePickerContent,
   ModalDatePickerInput,
@@ -33,10 +34,24 @@ import {
   HomeScreen,
   HomeScreenTitle,
 } from "@/component/screen/main/home-screen";
-import { Colors } from "@/constant/theme";
+import { Colors, Fonts } from "@/constant/theme";
 import { useThemeColor } from "@/hook/use-theme-color";
 import { days } from "@/constant/data/days";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { workoutDurationOptions } from "@/constant/fitness/workout-duration-per-session";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/component/ui/dialog";
+import { LoadingBrain } from "@/app/(auth)/onboarding/measurement";
+import { TrophyIcon } from "lucide-react-native";
+import { fitnessLevels } from "@/constant/fitness/fitness-levels";
+import { calculateBmi } from "@/utils/fitness/calculate-bmi";
+import { BmiCard } from "@/component/fitness/bmi-card";
 
 type TabKey = "identity" | "workout" | "reminder";
 
@@ -46,45 +61,25 @@ const TABS: { label: string; value: TabKey }[] = [
   { label: "Reminder", value: "reminder" },
 ];
 
-const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
-const WORKOUT_DURATIONS = [
-  { label: "15 minutes", value: "15" },
-  { label: "30 minutes", value: "30" },
-  { label: "45 minutes", value: "45" },
-  { label: "60 minutes", value: "60" },
-  { label: "90 minutes", value: "90" },
-];
-
 export default function EditPreferencesScreen() {
   const [activeTab, setActiveTab] = useState<TabKey>("identity");
   const themeColor = useThemeColor();
   const [fitnessDialogVisible, setFitnessDialogVisible] = useState(false);
-  const [updatedFitnessLevel, setUpdatedFitnessLevel] = useState<
-    string | number | null
-  >(null);
+  const [updatedFitnessLevel, setUpdatedFitnessLevel] = useState<string | null>(
+    null,
+  );
 
-  const router = useRouter();
+  const fitnessLevel = fitnessLevels.find(
+    (v) => v.name.toLowerCase() === updatedFitnessLevel,
+  );
   const { user } = useAuth();
   const { mutation } = useUpdateProfile();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isDirty },
-    reset,
-  } = useEditPreferencesForm();
+  const { control, handleSubmit, getValues } = useEditPreferencesForm();
 
   const onSubmit = handleSubmit(async (values) => {
     try {
+      setUpdatedFitnessLevel(null);
       const updatedUser = await mutation.mutateAsync({
         birth_date: values.birth_date,
         gender: values.gender,
@@ -102,12 +97,29 @@ export default function EditPreferencesScreen() {
         user?.profile?.fitness_level ??
         null;
 
-      setUpdatedFitnessLevel(fitnessLevel);
       setFitnessDialogVisible(true);
+      await new Promise((res) => setTimeout(res, 2000));
+      setUpdatedFitnessLevel(fitnessLevel);
     } catch (error) {
       console.error("Failed to update preferences:", error);
     }
   });
+
+  const [bmi, setBmi] = useState(0);
+
+  function getBmi() {
+    setBmi(
+      calculateBmi({
+        height: getValues("height"),
+        weight: getValues("weight"),
+      }),
+    );
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getBmi();
+  }, []);
 
   const renderIdentityTab = () => (
     <View style={styles.form}>
@@ -130,7 +142,10 @@ export default function EditPreferencesScreen() {
             }
           >
             <ModalDatePickerTrigger>
-              <ModalDatePickerInput placeholder="Select birth date" />
+              <ModalDatePickerInput
+                value={field.value}
+                placeholder="Select birth date"
+              />
             </ModalDatePickerTrigger>
             <ModalDatePickerContent mode="date" />
           </ModalDatePicker>
@@ -163,9 +178,10 @@ export default function EditPreferencesScreen() {
           <Input
             placeholder="Enter your height"
             value={String(field.value ?? "")}
-            onChangeText={(value) =>
-              field.onChange(value === "" ? undefined : Number(value))
-            }
+            onChangeText={(value) => {
+              field.onChange(value === "" ? undefined : Number(value));
+              getBmi();
+            }}
             keyboardType="numeric"
           />
         )}
@@ -180,13 +196,19 @@ export default function EditPreferencesScreen() {
           <Input
             placeholder="Enter your weight"
             value={String(field.value ?? "")}
-            onChangeText={(value) =>
-              field.onChange(value === "" ? undefined : Number(value))
-            }
+            onChangeText={(value) => {
+              field.onChange(value === "" ? undefined : Number(value));
+              getBmi();
+            }}
             keyboardType="numeric"
           />
         )}
       />
+
+      <FormGroup>
+        <Label>BMI</Label>
+        <BmiCard value={bmi} />
+      </FormGroup>
     </View>
   );
 
@@ -225,17 +247,20 @@ export default function EditPreferencesScreen() {
         label="Duration per session"
         required
         render={({ field }) => (
-          <Select
-            value={String(field.value ?? "")}
-            onValueChange={field.onChange}
-          >
+          <Select value={field.value} onValueChange={(v) => field.onChange(v)}>
             <SelectTrigger>
-              <SelectInput placeholder="Select duration" />
+              <SelectInput
+                value={
+                  workoutDurationOptions.find((o) => o.value == field.value)
+                    ?.label
+                }
+                placeholder="Select duration"
+              />
             </SelectTrigger>
             <SelectContent>
-              {WORKOUT_DURATIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  <Text>{option.label}</Text>
+              {workoutDurationOptions.map((o) => (
+                <SelectItem key={o.value} value={o.value}>
+                  <Text>{o.label}</Text>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -336,7 +361,10 @@ export default function EditPreferencesScreen() {
   );
 
   return (
-    <HomeScreen title={<HomeScreenTitle>Edit Preferences</HomeScreenTitle>}>
+    <HomeScreen
+      canBack
+      title={<HomeScreenTitle>Edit Preferences</HomeScreenTitle>}
+    >
       <View style={styles.screen}>
         <View style={[styles.tabs, { borderBottomColor: themeColor.border }]}>
           {TABS.map((tab) => {
@@ -375,50 +403,63 @@ export default function EditPreferencesScreen() {
         </ScrollView>
 
         <SafeAreaView edges={["bottom"]}>
-          <View style={styles.footer}>
+          <View style={[styles.footer, { borderTopColor: themeColor.border }]}>
             <Button
               onPress={() => onSubmit()}
-              disabled={mutation.isPending || !isDirty}
+              disabled={mutation.isPending}
               style={styles.saveButton}
               full
             >
               {mutation.isPending ? (
-                <ActivityIndicator color={themeColor.mutedForeground} />
+                <ActivityIndicator color={themeColor.foreground} />
               ) : (
-                <Text style={styles.saveButtonText}>Save Changes</Text>
+                <Text size="md" weight="semibold">
+                  Save Changes
+                </Text>
               )}
             </Button>
           </View>
         </SafeAreaView>
 
-        {/* <Dialog */}
-        {/*   open={fitnessDialogVisible} */}
-        {/*   onOpenChange={setFitnessDialogVisible} */}
-        {/* > */}
-        {/*   <DialogContent> */}
-        {/*     <DialogHeader> */}
-        {/*       <DialogTitle>Preferences Updated!</DialogTitle> */}
-        {/*       <DialogDescription> */}
-        {/*         Your fitness profile has been updated successfully. */}
-        {/*       </DialogDescription> */}
-        {/*     </DialogHeader> */}
-        {/**/}
-        {/*     <View style={styles.fitnessResult}> */}
-        {/*       <Text style={styles.fitnessLabel}>Your Fitness Level</Text> */}
-        {/*       <Text style={styles.fitnessValue}> */}
-        {/*         {updatedFitnessLevel == null */}
-        {/*           ? "Unavailable" */}
-        {/*           : String(updatedFitnessLevel)} */}
-        {/*       </Text> */}
-        {/*     </View> */}
-        {/**/}
-        {/*     <DialogFooter> */}
-        {/*       <Button onPress={() => setFitnessDialogVisible(false)}> */}
-        {/*         <Text>Close</Text> */}
-        {/*       </Button> */}
-        {/*     </DialogFooter> */}
-        {/*   </DialogContent> */}
-        {/* </Dialog> */}
+        <Dialog
+          open={fitnessDialogVisible}
+          onOpenChange={setFitnessDialogVisible}
+        >
+          <DialogContent dismissOnBackdropPress={!!fitnessLevel}>
+            {fitnessLevel ? (
+              <View variant="ghost" style={styles.fitnessResult}>
+                <TrophyIcon size={Fonts.size.xl6} color={fitnessLevel.color} />
+                <View variant="ghost" style={styles.fitnessResult}>
+                  <Text variant="muted">Your Fitness Level</Text>
+                  <Text
+                    weight="bold"
+                    size="xl5"
+                    style={{ color: fitnessLevel.color }}
+                  >
+                    {fitnessLevel.name}
+                  </Text>
+                </View>
+                <Text variant="muted">{fitnessLevel.description}</Text>
+              </View>
+            ) : (
+              <View variant="ghost" style={styles.fitnessResult}>
+                <LoadingBrain />
+                <Text variant="muted">Measuring your fitness level...</Text>
+              </View>
+            )}
+
+            {fitnessLevel && (
+              <DialogFooter>
+                <Button
+                  variant="ghost"
+                  onPress={() => setFitnessDialogVisible(false)}
+                >
+                  <Text>Close</Text>
+                </Button>
+              </DialogFooter>
+            )}
+          </DialogContent>
+        </Dialog>
       </View>
     </HomeScreen>
   );
@@ -507,14 +548,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 12,
   },
-  saveButtonText: {
-    fontSize: 15,
-    fontWeight: "700",
-  },
   fitnessResult: {
     alignItems: "center",
     paddingVertical: 24,
-    gap: 10,
   },
   fitnessLabel: {
     fontSize: 14,

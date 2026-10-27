@@ -25,6 +25,7 @@ import { useRouter } from "expo-router";
 import { useGetSessions } from "@/hook/api/session/use-get-session";
 import { SessionCard } from "@/component/fitness";
 import { useGetProfileProgress } from "@/hook/api/profile/use-get-profile";
+import { BmiCard } from "@/component/fitness/bmi-card";
 
 function SectionHeader({
   title,
@@ -98,8 +99,6 @@ export default function Page() {
   );
 
   const bmi = user?.profile?.bmi || 15.0;
-  const bmiCategory = getBmiCategory(bmi);
-  const maxBmi = Math.max(...bmiCategories.map((c) => c.max));
 
   return (
     <HomeScreen title={<HomeScreenTitle>Report</HomeScreenTitle>}>
@@ -114,45 +113,7 @@ export default function Page() {
             title="Body Mass Index"
             subtitle="Where you stand today"
           />
-          <View variant="card" style={styles.card}>
-            <View variant="ghost" style={styles.bmiTop}>
-              <View variant="ghost" style={{ gap: 4 }}>
-                <Text variant="muted" size="xs">
-                  Your BMI
-                </Text>
-                <Text weight="bold" size="xl4">
-                  {bmi.toFixed(1)}
-                </Text>
-              </View>
-              <View
-                variant="ghost"
-                style={[
-                  styles.categoryPill,
-                  { backgroundColor: `${bmiCategory.color}24` },
-                ]}
-              >
-                <View
-                  variant="ghost"
-                  style={[styles.dot, { backgroundColor: bmiCategory.color }]}
-                />
-                <Text
-                  size="sm"
-                  weight="semibold"
-                  style={{ color: bmiCategory.color }}
-                >
-                  {bmiCategory.name}
-                </Text>
-              </View>
-            </View>
-            <LinearGauge
-              value={bmi}
-              min={10}
-              max={maxBmi}
-              ranges={bmiCategories.map((c) => c.max)}
-              colors={bmiCategories.map((c) => c.color)}
-              style={{ marginTop: 24 }}
-            />
-          </View>
+          <BmiCard value={bmi} />
         </View>
 
         <View variant="ghost" style={{ gap: 12 }}>
@@ -229,51 +190,6 @@ const styles = StyleSheet.create({
   content: {
     gap: 20,
     paddingBottom: 24,
-  },
-  card: {
-    borderRadius: 16,
-    padding: 16,
-    gap: 4,
-  },
-  bmiTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  categoryPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 9999,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 9999,
-  },
-  legend: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-    marginTop: 16,
-  },
-  legendItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    width: "46%",
-  },
-  legendDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 9999,
-  },
-  legendDotActive: {
-    width: 14,
-    height: 14,
-    borderWidth: 2,
   },
   bodyRow: {
     flexDirection: "row",

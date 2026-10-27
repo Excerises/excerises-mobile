@@ -24,7 +24,7 @@ const steps = [
   "Calculating your fitness level",
 ];
 
-function LoadingBrain() {
+export function LoadingBrain() {
   const themeColor = useThemeColor();
   const rotateValue = new Animated.Value(0);
 
