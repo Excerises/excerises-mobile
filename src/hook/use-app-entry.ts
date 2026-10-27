@@ -1,7 +1,7 @@
 import { asyncStorage, STORAGE_KEYS } from "@/constant/data/storage";
 import { useAuth } from "@/context/auth-context";
 import { usePathname, useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useAppEntry() {
   const router = useRouter();
@@ -9,51 +9,50 @@ export function useAppEntry() {
   const { user, isLoaded } = useAuth();
 
   const [isReady, setIsReady] = useState(false);
-  const hasResolvedRef = useRef(false);
+
+  function redirectTo(to: any) {
+    if (pathname !== to) {
+      router.replace(to);
+    }
+  }
+
+  async function resolve() {
+    try {
+      const hasOpenedApp = await asyncStorage.getItem(
+        STORAGE_KEYS.hasOpenedApp,
+      );
+
+      const inPublicRoute = ["/", "/login", "/register"].includes(pathname);
+
+      if (user && inPublicRoute) {
+        if (user?.profile) {
+          redirectTo("/home");
+          return;
+        } else {
+          redirectTo("/onboarding");
+          return;
+        }
+      }
+
+      if (hasOpenedApp !== null && !user) {
+        redirectTo("/login");
+        return;
+      }
+
+      await asyncStorage.setItem(STORAGE_KEYS.hasOpenedApp, "true");
+    } finally {
+      setIsReady(true);
+    }
+  }
 
   useEffect(() => {
-    if (!isLoaded || hasResolvedRef.current) {
+    if (!isLoaded) {
       return;
     }
 
-    hasResolvedRef.current = true;
-
-    function redirectTo(to: any) {
-      if (pathname !== to) {
-        router.replace(to);
-      }
-    }
-
-    async function resolve() {
-      setIsReady(false);
-
-      try {
-        const hasOpenedApp = await asyncStorage.getItem(
-          STORAGE_KEYS.hasOpenedApp,
-        );
-
-        if (user?.id) {
-          if (user?.profile) {
-            redirectTo("/home");
-          } else {
-            redirectTo("/onboarding");
-          }
-          return;
-        }
-
-        if (hasOpenedApp !== null) {
-          redirectTo("/login");
-          return;
-        }
-
-        await asyncStorage.setItem(STORAGE_KEYS.hasOpenedApp, "true");
-      } finally {
-        setIsReady(true);
-      }
-    }
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     resolve();
-  }, [isLoaded, pathname, user?.id]);
+  }, [isLoaded, pathname, user]);
 
   return { isReady };
 }
