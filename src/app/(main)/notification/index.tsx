@@ -93,7 +93,7 @@ export function PageContent() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={notificationsQuery.data?.data || []}
+        data={notifications}
         keyExtractor={(n) => n.id}
         renderItem={({ item: notification }) => (
           <View style={{ marginBottom: 8 }}>
