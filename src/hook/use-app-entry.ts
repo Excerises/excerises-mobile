@@ -22,9 +22,10 @@ export function useAppEntry() {
         STORAGE_KEYS.hasOpenedApp,
       );
 
-      const inPublicRoute = ["/", "/login", "/register"].includes(pathname);
+      const isAuthRoute = ["/login", "/register"].includes(pathname);
+      const isWelcomeRoute = ["/"].includes(pathname);
 
-      if (user && inPublicRoute) {
+      if (user && (isWelcomeRoute || isAuthRoute)) {
         if (user?.profile) {
           redirectTo("/home");
           return;
@@ -34,7 +35,7 @@ export function useAppEntry() {
         }
       }
 
-      if (hasOpenedApp !== null && !user) {
+      if (hasOpenedApp !== null && !user && !isAuthRoute) {
         redirectTo("/login");
         return;
       }
