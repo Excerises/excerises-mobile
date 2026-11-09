@@ -15,6 +15,7 @@ export type SessionPhase = "workout" | "break" | "finished";
 
 type ActiveSessionContextValue = {
   exercises: Exercise[];
+  exercisesDurations: number[];
   currentIndex: number;
   phase: SessionPhase;
   currentElapsed: number;
@@ -38,6 +39,7 @@ export function useActiveSession() {
 
 export function ActiveSessionProvider({ children }: { children: ReactNode }) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [exercisesDurations, setExercisesDurations] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<SessionPhase>("workout");
   const [currentElapsed, setCurrentElapsed] = useState(0);
@@ -68,6 +70,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
 
   const initSession = useCallback((list: Exercise[]) => {
     setExercises(list);
+    setExercisesDurations(list.map((l) => 0));
     setCurrentIndex(0);
     setPhase("workout");
     setCurrentElapsed(0);
@@ -93,6 +96,11 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
   );
 
   const completeWorkout = useCallback(() => {
+    setExercisesDurations((prev) => {
+      prev[currentIndex] = currentElapsed;
+      return prev;
+    });
+
     setTotalElapsed((value) => value + currentElapsed);
     setCurrentElapsed(0);
     setBreakRemaining(BREAK_SECONDS);
@@ -122,6 +130,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       exercises,
+      exercisesDurations,
       currentIndex,
       phase,
       currentElapsed,
@@ -138,6 +147,7 @@ export function ActiveSessionProvider({ children }: { children: ReactNode }) {
     }),
     [
       exercises,
+      exercisesDurations,
       currentIndex,
       phase,
       currentElapsed,

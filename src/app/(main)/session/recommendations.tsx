@@ -18,8 +18,14 @@ import {
 } from "@/../type/entity";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Checkbox } from "expo-checkbox";
 
 export default function Recommendations() {
   const router = useRouter();
@@ -82,20 +88,49 @@ export default function Recommendations() {
     });
   };
 
+  const handleSelectAll = () => {
+    if (exercises.length > selectedCount) {
+      setSelectedIds(new Set(exercises.map((e) => e.id)));
+    } else {
+      setSelectedIds(new Set());
+    }
+  };
+
   const selectedCount = selectedIds.size;
   const selectedExercises = exercises.filter((e) => selectedIds.has(e.id));
+  const isAllSelected = exercises.length == selectedCount;
 
   return (
     <HomeScreen
       title={<HomeScreenTitle>Recommendations</HomeScreenTitle>}
       canBack
     >
-      <View variant="ghost" style={styles.filtersRow}>
-        {filters.map((filter, i) => (
-          <View key={i} variant="card" style={styles.filterChip}>
-            <Text size="sm">{capitalize(filter!)}</Text>
-          </View>
-        ))}
+      <View variant="ghost" style={styles.actionRow}>
+        <View variant="ghost" style={styles.filtersRow}>
+          {filters.map((filter, i) => (
+            <View key={i} variant="card" style={styles.filterChip}>
+              <Text size="sm">{capitalize(filter!)}</Text>
+            </View>
+          ))}
+        </View>
+        <TouchableOpacity
+          style={[
+            styles.selectAllButton,
+            {
+              backgroundColor: themeColor.card,
+              borderWidth: 1,
+              borderColor: isAllSelected ? themeColor.primary : "transparent",
+            },
+          ]}
+          onPress={handleSelectAll}
+        >
+          <Text size="sm">Select All</Text>
+          <Checkbox
+            color={themeColor.primary}
+            style={{ pointerEvents: "none" }}
+            value={isAllSelected}
+          />
+        </TouchableOpacity>
       </View>
 
       {loading ? (
@@ -170,11 +205,24 @@ export default function Recommendations() {
 }
 
 const styles = StyleSheet.create({
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  selectAllButton: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+    borderRadius: 9999,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
   filtersRow: {
     flexDirection: "row",
     gap: 8,
     flexWrap: "wrap",
-    marginBottom: 16,
   },
   filterChip: {
     paddingHorizontal: 12,
