@@ -17,7 +17,8 @@ import { useCreateSession } from "@/hook/api/session/use-save-session";
 export default function ActiveFinish() {
   const router = useRouter();
   const themeColor = useThemeColor();
-  const { exercises, totalElapsed, endSession } = useActiveSession();
+  const { exercises, exercisesDurations, totalElapsed, endSession } =
+    useActiveSession();
   const { mutation: createSessionMutation } = useCreateSession();
 
   useEffect(() => {
@@ -29,9 +30,9 @@ export default function ActiveFinish() {
 
     await createSessionMutation.mutateAsync({
       duration: totalElapsed,
-      exercises: exercises.map((ex) => ({
+      exercises: exercises.map((ex, i) => ({
         exercise_id: ex.id,
-        duration: durationPerWorkout,
+        duration: exercisesDurations[i] || Math.round(durationPerWorkout),
       })),
     });
 
