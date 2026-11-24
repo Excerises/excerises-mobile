@@ -340,11 +340,10 @@ export default function EditPreferencesScreen() {
         render={({ field }) => (
           <ModalDatePicker
             value={
-              field.value
-                ? moment(`1970-01-01 ${field.value}:00`).toDate()
-                : null
+              field.value ? moment(`1970-01-01 ${field.value}`).toDate() : null
             }
             onValueChange={(v) => {
+              console.log(v);
               field.onChange(moment(v).format("HH:mm"));
             }}
           >

@@ -76,7 +76,12 @@ export default function ActiveFinish() {
       </ScrollView>
 
       <SessionActionBar>
-        <Button full size="lg" onPress={saveSessionAndBackHome}>
+        <Button
+          full
+          size="lg"
+          disabled={createSessionMutation.isPending}
+          onPress={saveSessionAndBackHome}
+        >
           <Text weight="semibold">Back to Home</Text>
           <ArrowRightIcon size={18} color={themeColor.foreground} />
         </Button>
